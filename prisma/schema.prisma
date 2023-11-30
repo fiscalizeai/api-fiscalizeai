@@ -16,15 +16,34 @@ enum Role {
   SECRETARY
 }
 
+enum Permission {
+  ACCEPTED
+  DENIED
+}
+
 model User {
-  id         String   @id() @default(uuid())
+  id         String     @id() @default(uuid())
   name       String
-  email      String   @unique
+  email      String     @unique
   password   String
-  city       String
-  state      String
-  created_At DateTime @default(now())
-  role       Role     @default(MEMBER)
+  cpf        String
+  created_At DateTime   @default(now())
+  permission Permission @default(ACCEPTED)
+  role       Role       @default(MEMBER)
+
+  Chamber   Chamber? @relation(fields: [chamberId], references: [id])
+  chamberId String?
 
   @@map("users")
+}
+
+model Chamber {
+  id         String   @id() @default(cuid())
+  name       String
+  state      String
+  created_At DateTime @default(now())
+
+  users User[]
+
+  @@map("chambers")
 }
