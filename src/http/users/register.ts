@@ -9,9 +9,10 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     name: z.string(),
     email: z.string().email(),
     cpf: z.string(),
+    chamberId: z.string(),
   })
 
-  const { name, email, cpf } = registerBodySchema.parse(request.body)
+  const { name, email, cpf, chamberId } = registerBodySchema.parse(request.body)
 
   try {
     const prismaUsersRepository = new PrismaUsersRepository()
@@ -21,6 +22,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       name,
       email,
       cpf,
+      chamberId,
     })
   } catch (error) {
     if (error instanceof UserAlreadyExistsError) {

@@ -26,13 +26,13 @@ model User {
   name       String
   email      String     @unique
   password   String
-  cpf        String
+  cpf        String     @unique
   created_At DateTime   @default(now())
   permission Permission @default(ACCEPTED)
   role       Role       @default(MEMBER)
 
-  Chamber   Chamber? @relation(fields: [chamberId], references: [id])
-  chamberId String?
+  chamber    Chamber @relation(fields: [chamber_id], references: [id])
+  chamber_id String
 
   @@map("users")
 }
