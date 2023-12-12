@@ -11,6 +11,30 @@ export class PrismaUsersRepository implements UsersRepository {
     return user
   }
 
+  async fetchByName(name: string, page: number) {
+    const users = await prisma.user.findMany({
+      where: {
+        name,
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+    })
+
+    return users
+  }
+
+  async fetchByChamber(chamberId: string, page: number) {
+    const users = await prisma.user.findMany({
+      where: {
+        chamber_id: chamberId,
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+    })
+
+    return users
+  }
+
   async findByCpf(cpf: string) {
     const user = await prisma.user.findUnique({
       where: {
