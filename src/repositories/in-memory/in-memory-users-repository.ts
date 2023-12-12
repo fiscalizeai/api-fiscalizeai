@@ -1,4 +1,4 @@
-import { $Enums, Prisma, User } from '@prisma/client'
+import { Prisma, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { UsersRepository } from '../users'
 
@@ -33,6 +33,24 @@ export class InMemoryUsersRepository implements UsersRepository {
     }
 
     return user
+  }
+
+  async fetchByName(name: string, page: number) {
+    const users = this.items
+      .filter((item) =>
+        item.name.toLocaleLowerCase().includes(name.toLocaleLowerCase()),
+      )
+      .slice((page - 1) * 20, page * 20)
+
+    return users
+  }
+
+  async fetchByChamber(chamberId: string, page: number) {
+    const users = this.items
+      .filter((item) => item.chamber_id === chamberId)
+      .slice((page - 1) * 20, page * 20)
+
+    return users
   }
 
   async create(data: Prisma.UserUncheckedCreateInput) {
