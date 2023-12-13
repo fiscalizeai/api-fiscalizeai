@@ -26,6 +26,10 @@ describe('Register Users Use Case', () => {
       cpf: '12345678905',
     })
 
-    expect(user?.name).toEqual('Vereador 5')
+    if (!user) {
+      return null
+    }
+
+    expect(user.name).toEqual('Vereador 5')
   })
 })
