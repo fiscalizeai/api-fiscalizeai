@@ -11,10 +11,12 @@ export class PrismaUsersRepository implements UsersRepository {
     return user
   }
 
-  async fetchByName(name: string, page: number) {
+  async searchByName(query: string, page: number) {
     const users = await prisma.user.findMany({
       where: {
-        name,
+        name: {
+          contains: query,
+        },
       },
       take: 20,
       skip: (page - 1) * 20,

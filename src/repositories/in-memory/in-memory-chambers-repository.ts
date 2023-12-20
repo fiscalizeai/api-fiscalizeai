@@ -31,7 +31,7 @@ export class InMemoryChambersRepository implements ChambersRepository {
 
   async create(data: Prisma.ChamberCreateInput) {
     const chamber: Chamber = {
-      id: randomUUID(),
+      id: data.id ?? randomUUID(),
       name: data.name,
       state: data.state,
       created_At: new Date(),

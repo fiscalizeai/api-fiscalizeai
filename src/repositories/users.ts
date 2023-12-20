@@ -5,6 +5,6 @@ export interface UsersRepository {
   findById(id: string): Promise<User | null>
   findByEmail(email: string): Promise<User | null>
   findByCpf(cpf: string): Promise<User | null>
-  fetchByName(name: string, page: number): Promise<User[] | null>
+  searchByName(query: string, page: number): Promise<User[]>
   fetchByChamber(chamberId: string, page: number): Promise<User[]>
 }

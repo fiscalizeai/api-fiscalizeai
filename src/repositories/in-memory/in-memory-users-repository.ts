@@ -35,14 +35,12 @@ export class InMemoryUsersRepository implements UsersRepository {
     return user
   }
 
-  async fetchByName(name: string, page: number) {
-    const users = this.items
+  async searchByName(query: string, page: number) {
+    return this.items
       .filter((item) =>
-        item.name.toLocaleLowerCase().includes(name.toLocaleLowerCase()),
+        item.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
       )
       .slice((page - 1) * 20, page * 20)
-
-    return users
   }
 
   async fetchByChamber(chamberId: string, page: number) {
