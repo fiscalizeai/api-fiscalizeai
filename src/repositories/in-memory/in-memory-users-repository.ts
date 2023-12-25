@@ -59,7 +59,7 @@ export class InMemoryUsersRepository implements UsersRepository {
       password: data.password,
       cpf: data.cpf,
       chamber_id: data.chamber_id,
-      permission: 'ACCEPTED',
+      permission: data.permission ?? 'ACCEPTED',
       role: 'ADMIN',
       created_At: new Date(),
     }

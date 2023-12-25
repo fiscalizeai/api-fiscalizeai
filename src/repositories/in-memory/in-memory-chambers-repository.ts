@@ -29,6 +29,28 @@ export class InMemoryChambersRepository implements ChambersRepository {
     return chambers
   }
 
+  async findById(id: string) {
+    const chamber = this.items.find((item) => item.id === id)
+
+    if (!chamber) {
+      return null
+    }
+
+    return chamber
+  }
+
+  async edit(id: string, data: Chamber) {
+    const chamberIndex = this.items.findIndex((item) => item.id === id)
+
+    if (chamberIndex < 0) {
+      return null
+    }
+
+    const updatedChamber = { ...this.items[chamberIndex], ...data }
+
+    return updatedChamber
+  }
+
   async create(data: Prisma.ChamberCreateInput) {
     const chamber: Chamber = {
       id: data.id ?? randomUUID(),
