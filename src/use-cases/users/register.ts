@@ -27,7 +27,9 @@ export class RegisterUseCase {
 
     const usersWithSameEmail = await this.userRepository.findByEmail(email)
 
-    if (usersWithSameEmail) {
+    const userWithSameCpf = await this.userRepository.findByCpf(cpf)
+
+    if (usersWithSameEmail || userWithSameCpf) {
       throw new UserAlreadyExistsError()
     }
 

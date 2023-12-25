@@ -3,6 +3,7 @@ import { AuthenticateUseCase } from './authenticate'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { hash } from 'bcryptjs'
 import { InvalidCredentialsError } from '../errors/invalid-credentials'
+import { ResouceNotFoundError } from '../errors/resource-not-found'
 
 let usersRepository: InMemoryUsersRepository
 let sut: AuthenticateUseCase
@@ -54,5 +55,23 @@ describe('Authenticate Use Case', () => {
         password: 'wrong-email',
       }),
     ).rejects.toBeInstanceOf(InvalidCredentialsError)
+  })
+
+  it('should not be able to athenticate with denied permission', async () => {
+    await usersRepository.create({
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      password: await hash('12345678910', 6),
+      chamber_id: 'chamber-01',
+      cpf: '12345678910',
+      permission: 'DENIED',
+    })
+
+    expect(() =>
+      sut.execute({
+        email: 'johndoe@example.com',
+        password: '12345678910',
+      }),
+    ).rejects.toBeInstanceOf(ResouceNotFoundError)
   })
 })

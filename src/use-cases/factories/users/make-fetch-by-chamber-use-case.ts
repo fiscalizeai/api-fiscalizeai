@@ -1,9 +1,14 @@
+import { PrismaChambersRepository } from '@/repositories/prisma/prisma-chambers-repository'
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
-import { GetUserByCpfUseCase } from '@/use-cases/users/get-user-by-cpf'
+import { FetchUserByChamberUseCase } from '@/use-cases/users/fetch-by-chamber'
 
 export function makeFetchByChamberUseCase() {
   const usersRepository = new PrismaUsersRepository()
-  const useCase = new GetUserByCpfUseCase(usersRepository)
+  const chambersRepository = new PrismaChambersRepository()
+  const useCase = new FetchUserByChamberUseCase(
+    usersRepository,
+    chambersRepository,
+  )
 
   return useCase
 }
