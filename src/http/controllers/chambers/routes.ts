@@ -11,7 +11,11 @@ export async function chambersRoutes(app: FastifyInstance) {
 
   app.post('/chambers', { onRequest: [verifyUserRole('ADMIN')] }, create)
   app.post('/chambers/fetch', { onRequest: [verifyUserRole('ADMIN')] }, fetch)
-  app.patch('/chambers/:chamberId', edit) // adicionar / edit na frente
+  app.patch(
+    '/chambers/:chamberId/edit',
+    { onRequest: [verifyUserRole('ADMIN')] },
+    edit,
+  )
 
   app.delete(
     '/chambers/:chamberId/delete',

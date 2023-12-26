@@ -8,6 +8,7 @@ import { info } from './info'
 import { searchByName } from './search-by-name'
 import { getByCpf } from './get-by-cpf'
 import { fetchByChamber } from './fetch-by-chamber'
+import { edit } from './edit'
 
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/sessions', authenticate)
@@ -17,6 +18,12 @@ export async function usersRoutes(app: FastifyInstance) {
     '/users',
     { onRequest: [verifyJwt, verifyUserRole('ADMIN')] },
     register,
+  )
+
+  app.patch(
+    '/users/:userId/edit',
+    { onRequest: [verifyJwt, verifyUserRole('ADMIN')] },
+    edit,
   )
 
   app.get('/users/cpf', getByCpf)

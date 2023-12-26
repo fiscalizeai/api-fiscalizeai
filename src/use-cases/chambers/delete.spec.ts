@@ -33,8 +33,6 @@ describe('Delete Chamber Users Use Case', () => {
 
     const chambers = chamberRepository.findByState('MG', 1)
 
-    console.log(chambers)
-
     expect(chambers)
   })
 })
