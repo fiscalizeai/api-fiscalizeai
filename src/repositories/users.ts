@@ -8,4 +8,5 @@ export interface UsersRepository {
   searchByName(query: string, page: number): Promise<User[]>
   fetchByChamber(chamberId: string, page: number): Promise<User[]>
   edit(id: string, data: Prisma.UserUncheckedUpdateInput): Promise<User | null>
+  delete(id: string): Promise<void>
 }
