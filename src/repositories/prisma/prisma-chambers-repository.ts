@@ -11,6 +11,14 @@ export class PrismaChambersRepository implements ChambersRepository {
     return chamber
   }
 
+  async delete(id: string) {
+    await prisma.chamber.delete({
+      where: {
+        id,
+      },
+    })
+  }
+
   async edit(id: string, data: Chamber) {
     const chamber = await prisma.chamber.update({
       where: { id },

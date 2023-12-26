@@ -51,6 +51,14 @@ export class InMemoryChambersRepository implements ChambersRepository {
     return updatedChamber
   }
 
+  async delete(id: string) {
+    const chamberIndex = this.items.findIndex((item) => item.id === id)
+
+    if (chamberIndex > -1) {
+      this.items.splice(chamberIndex, 1)
+    }
+  }
+
   async create(data: Prisma.ChamberCreateInput) {
     const chamber: Chamber = {
       id: data.id ?? randomUUID(),

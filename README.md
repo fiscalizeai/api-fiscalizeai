@@ -2,8 +2,8 @@
 ## Requisitos Funcionais
 - [X] Deve ser possivel cadastrar uma camara como administrador;
 - [X] Deve ser possivel listar cidades como administrador;
-- [ ] Deve ser possivel editar cidade e estado de uma camara como administrador;
-- [ ] Deve ser possivel apagar camara como administrador;
+- [X] Deve ser possivel editar cidade e estado de uma camara como administrador;
+- [X] Deve ser possivel apagar camara como administrador;
 - [X] Deve ser possivel cadastrar usuarios como administrador;
 - [ ] Deve ser possivel editar informacoes de usuario como administrador;
 - [ ] Deve ser possivel permitir quem pode usar a plataforma como administrador;

@@ -9,4 +9,5 @@ export interface ChambersRepository {
     id: string,
     data: Prisma.ChamberUncheckedUpdateInput,
   ): Promise<Chamber | null>
+  delete(id: string): Promise<void>
 }
