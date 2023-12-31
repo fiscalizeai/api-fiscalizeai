@@ -7,7 +7,7 @@
 - [X] Deve ser possivel cadastrar usuarios como administrador;
 - [X] Deve ser possivel editar informacoes de usuario como administrador;
 - [X] Deve ser possivel permitir quem pode usar a plataforma como administrador;
-- [ ] Deve ser possivel apagar usuarios como administrador;
+- [X] Deve ser possivel apagar usuarios como administrador;
 - [X] Deve ser possivel buscar usuarios pela cidade como administrador;
 - [X] Deve ser possivel buscar usuarios pelo nome como administrador;
 - [X] Deve ser possivel buscar usuario pelo cpf como administrador;

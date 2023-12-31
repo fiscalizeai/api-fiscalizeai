@@ -10,6 +10,7 @@ import { getByCpf } from './get-by-cpf'
 import { fetchByChamber } from './fetch-by-chamber'
 import { edit } from './edit'
 import { deleteUser } from './delete'
+import { fetch } from './fetch'
 
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/sessions', authenticate)
@@ -33,7 +34,13 @@ export async function usersRoutes(app: FastifyInstance) {
     deleteUser,
   )
 
-  app.get('/users/cpf', getByCpf)
+  app.get('/users', { onRequest: [verifyJwt, verifyUserRole('ADMIN')] }, fetch)
+
+  app.get(
+    '/users/cpf',
+    { onRequest: [verifyJwt, verifyUserRole('ADMIN')] },
+    getByCpf,
+  )
 
   app.get(
     '/users/fetch/name',

@@ -7,6 +7,7 @@ export interface UsersRepository {
   findByCpf(cpf: string): Promise<User | null>
   searchByName(query: string, page: number): Promise<User[]>
   fetchByChamber(chamberId: string, page: number): Promise<User[]>
+  fetch(page: number): Promise<User[]>
   edit(id: string, data: Prisma.UserUncheckedUpdateInput): Promise<User | null>
   delete(id: string): Promise<void>
 }

@@ -43,6 +43,12 @@ export class InMemoryUsersRepository implements UsersRepository {
       .slice((page - 1) * 20, page * 20)
   }
 
+  async fetch(page: number) {
+    const users = this.items.slice((page - 1) * 20, page * 20)
+
+    return users
+  }
+
   async fetchByChamber(chamberId: string, page: number) {
     const users = this.items
       .filter((item) => item.chamber_id === chamberId)

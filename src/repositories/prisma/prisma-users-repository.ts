@@ -42,6 +42,15 @@ export class PrismaUsersRepository implements UsersRepository {
     return users
   }
 
+  async fetch(page: number) {
+    const users = await prisma.user.findMany({
+      take: 20,
+      skip: (page - 1) * 20,
+    })
+
+    return users
+  }
+
   async fetchByChamber(chamberId: string, page: number) {
     const users = await prisma.user.findMany({
       where: {
