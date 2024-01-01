@@ -28,6 +28,15 @@ export class PrismaChambersRepository implements ChambersRepository {
     return chamber
   }
 
+  async fetch(page: number) {
+    const chambers = await prisma.chamber.findMany({
+      take: 20,
+      skip: (page - 1) * 20,
+    })
+
+    return chambers
+  }
+
   async findByName(name: string, state: string) {
     const chamber = await prisma.chamber.findFirst({
       where: {

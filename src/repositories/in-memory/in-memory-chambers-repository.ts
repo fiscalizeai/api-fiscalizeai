@@ -39,6 +39,12 @@ export class InMemoryChambersRepository implements ChambersRepository {
     return chamber
   }
 
+  async fetch(page: number) {
+    const chambers = this.items.slice((page - 1) * 20, page * 20)
+
+    return chambers
+  }
+
   async edit(id: string, data: Chamber) {
     const chamberIndex = this.items.findIndex((item) => item.id === id)
 

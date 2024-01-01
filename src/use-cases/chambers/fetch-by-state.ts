@@ -2,22 +2,22 @@ import { Chamber } from '@prisma/client'
 import { ResouceNotFoundError } from '../errors/resource-not-found'
 import { ChambersRepository } from '@/repositories/chambers'
 
-interface FetchChambersUseCaseRequest {
+interface FetchByStateUseCaseRequest {
   state: string
   page: number
 }
 
-interface FetchChambersCaseResponse {
+interface FetchByStateUseCaseResponse {
   chambers: Chamber[] | null
 }
 
-export class FetchChambersUseCase {
+export class FetchByStateUseCase {
   constructor(private chamberRepository: ChambersRepository) {}
 
   async execute({
     page,
     state,
-  }: FetchChambersUseCaseRequest): Promise<FetchChambersCaseResponse> {
+  }: FetchByStateUseCaseRequest): Promise<FetchByStateUseCaseResponse> {
     const chambers = await this.chamberRepository.findByState(state, page)
 
     if (!chambers) {
