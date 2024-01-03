@@ -11,52 +11,89 @@ import { fetchByChamber } from './fetch-by-chamber'
 import { edit } from './edit'
 import { deleteUser } from './delete'
 import { fetch } from './fetch'
+import {
+  authenticateSchema,
+  deleteUserSchema,
+  editUserSchema,
+  fetchUserByNameSchema,
+  fetchUsersByChamberSchema,
+  fetchUsersSchema,
+  getUserByCpfSchema,
+  getUserByIdSchema,
+  refreshTokenSchema,
+  userCreateSchema,
+} from './schemas'
 
 export async function usersRoutes(app: FastifyInstance) {
-  app.post('/sessions', authenticate)
-  app.patch('/token/refresh', refresh)
+  app.post('/sessions', { schema: authenticateSchema }, authenticate)
+  app.patch('/token/refresh', { schema: refreshTokenSchema }, refresh)
 
   app.post(
     '/users',
-    { onRequest: [verifyJwt, verifyUserRole('ADMIN')] },
+    {
+      onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      schema: userCreateSchema,
+    },
     register,
   )
 
-  app.patch(
-    '/users/:userId/edit',
-    { onRequest: [verifyJwt, verifyUserRole('ADMIN')] },
+  app.put(
+    '/users/:userId',
+    { onRequest: [verifyJwt, verifyUserRole('ADMIN')], schema: editUserSchema },
     edit,
   )
 
   app.delete(
     '/users/:userId',
-    { onRequest: [verifyJwt, verifyUserRole('ADMIN')] },
+    {
+      onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      schema: deleteUserSchema,
+    },
     deleteUser,
   )
 
-  app.get('/users', { onRequest: [verifyJwt, verifyUserRole('ADMIN')] }, fetch)
+  app.get(
+    '/users',
+    {
+      onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      schema: fetchUsersSchema,
+    },
+    fetch,
+  )
 
   app.get(
     '/users/cpf',
-    { onRequest: [verifyJwt, verifyUserRole('ADMIN')] },
+    {
+      onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      schema: getUserByCpfSchema,
+    },
     getByCpf,
   )
 
   app.get(
     '/users/fetch/name',
-    { onRequest: [verifyJwt, verifyUserRole('ADMIN')] },
+    {
+      onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      schema: fetchUserByNameSchema,
+    },
     searchByName,
   )
 
   app.get(
-    '/users/:userId/info',
-    { onRequest: [verifyJwt, verifyUserRole('ADMIN')] },
+    '/users/:userId',
+    {
+      onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      schema: getUserByIdSchema,
+    },
     info,
   )
 
   app.get(
     '/users/chamber',
-    { onRequest: [verifyJwt, verifyUserRole('ADMIN')] },
+    {
+      onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      schema: fetchUsersByChamberSchema,
+    },
     fetchByChamber,
   )
 }

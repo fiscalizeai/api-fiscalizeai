@@ -6,6 +6,9 @@ import cors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
 import fastifyCookie from '@fastify/cookie'
 import { chambersRoutes } from './http/controllers/chambers/routes'
+import swaggerUi from '@fastify/swagger-ui'
+import swagger from '@fastify/swagger'
+import swaggerFile from './swagger.json'
 
 export const app = fastify()
 
@@ -26,6 +29,14 @@ app.register(fastifyJwt, {
 })
 
 app.register(fastifyCookie)
+
+app.register(swagger, {
+  swagger: swaggerFile,
+})
+
+app.register(swaggerUi, {
+  routePrefix: '/documentation',
+})
 
 app.register(usersRoutes)
 app.register(chambersRoutes)

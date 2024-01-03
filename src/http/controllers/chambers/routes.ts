@@ -6,28 +6,44 @@ import { fetchByState } from './fetch-by-state'
 import { edit } from './edit'
 import { deleteChamber } from './delete'
 import { fetch } from './fetch'
+import {
+  chamberCreateSchema,
+  deleteChamberSchema,
+  editChamberSchema,
+  fetchChamberByStateSchema,
+  fetchChamberSchema,
+} from './schemas'
 
 export async function chambersRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJwt)
 
-  app.post('/chambers', { onRequest: [verifyUserRole('ADMIN')] }, create)
-
-  app.get('/chambers', { onRequest: [verifyUserRole('ADMIN')] }, fetch)
-
-  app.get(
-    '/chambers/fetch',
-    { onRequest: [verifyUserRole('ADMIN')] },
-    fetchByState,
+  app.post(
+    '/chambers',
+    { onRequest: [verifyUserRole('ADMIN')], schema: chamberCreateSchema },
+    create,
   )
-  app.patch(
-    '/chambers/:chamberId/edit',
-    { onRequest: [verifyUserRole('ADMIN')] },
+
+  app.put(
+    '/chambers/:chamberId',
+    { onRequest: [verifyUserRole('ADMIN')], schema: editChamberSchema },
     edit,
   )
 
   app.delete(
-    '/chambers/:chamberId/delete',
-    { onRequest: [verifyUserRole('ADMIN')] },
+    '/chambers/:chamberId',
+    { onRequest: [verifyUserRole('ADMIN')], schema: deleteChamberSchema },
     deleteChamber,
+  )
+
+  app.get(
+    '/chambers',
+    { onRequest: [verifyUserRole('ADMIN')], schema: fetchChamberSchema },
+    fetch,
+  )
+
+  app.get(
+    '/chambers/fetch',
+    { onRequest: [verifyUserRole('ADMIN')], schema: fetchChamberByStateSchema },
+    fetchByState,
   )
 }
