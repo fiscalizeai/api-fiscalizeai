@@ -14,10 +14,7 @@ export const userCreateSchema: FastifySchema = {
   response: {
     201: {
       description: 'Successful created',
-      type: 'object',
-      properties: {
-        user: { type: 'object' },
-      },
+      type: 'null',
     },
   },
 }
