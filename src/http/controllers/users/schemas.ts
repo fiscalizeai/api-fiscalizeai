@@ -50,7 +50,7 @@ export const getUserByCpfSchema: FastifySchema = {
 
 export const authenticateSchema: FastifySchema = {
   description: 'POST authenticate user',
-  tags: ['user'],
+  tags: ['auth'],
   body: {
     type: 'object',
     properties: {
@@ -71,14 +71,14 @@ export const authenticateSchema: FastifySchema = {
 
 export const refreshTokenSchema: FastifySchema = {
   description: 'PATCH a refresh token user',
-  tags: ['user'],
+  tags: ['auth'],
 
   response: {
     200: {
       description: 'Successful',
       type: 'object',
       properties: {
-        refreshToken: { type: 'string' },
+        token: { type: 'string' },
       },
     },
   },

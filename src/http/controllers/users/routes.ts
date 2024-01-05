@@ -25,8 +25,8 @@ import {
 } from './schemas'
 
 export async function usersRoutes(app: FastifyInstance) {
-  app.post('/sessions', { schema: authenticateSchema }, authenticate)
-  app.patch('/token/refresh', { schema: refreshTokenSchema }, refresh)
+  app.post('/auth/login', { schema: authenticateSchema }, authenticate)
+  app.patch('/auth/refresh', { schema: refreshTokenSchema }, refresh)
 
   app.post(
     '/users',
