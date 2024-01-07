@@ -9,6 +9,8 @@ export const userCreateSchema: FastifySchema = {
       name: { type: 'string' },
       email: { type: 'string' },
       cpf: { type: 'string' },
+      role: { type: 'string', description: 'ADMIN | MEMBER | SECRETARY' },
+      chamberId: { type: 'string' },
     },
   },
   response: {
@@ -88,7 +90,7 @@ export const getUserByIdSchema: FastifySchema = {
   description: 'GET a user by id',
   tags: ['user'],
   params: {
-    id: { type: 'string' },
+    userId: { type: 'string' },
   },
   response: {
     200: {
@@ -117,12 +119,12 @@ export const deleteUserSchema: FastifySchema = {
   description: 'DELETE a user',
   tags: ['user'],
   params: {
-    id: { type: 'string' },
+    userId: { type: 'string' },
   },
   response: {
     204: {
       description: 'Successful no content',
-      type: 'object',
+      type: 'null',
     },
   },
 }
@@ -131,7 +133,7 @@ export const editUserSchema: FastifySchema = {
   description: 'PUT edit a user',
   tags: ['user'],
   params: {
-    id: { type: 'string' },
+    userId: { type: 'string' },
   },
   body: {
     type: 'object',

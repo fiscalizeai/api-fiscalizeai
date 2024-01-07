@@ -20,6 +20,7 @@ describe('Authenticate Use Case', () => {
       email: 'johndoe@example.com',
       password: await hash('exact-password', 6),
       chamber_id: 'chamber-01',
+      role: 'MEMBER',
       cpf: '12345678910',
     })
 
@@ -46,6 +47,7 @@ describe('Authenticate Use Case', () => {
       email: 'johndoe@example.com',
       password: await hash('exact-password', 6),
       chamber_id: 'chamber-01',
+      role: 'MEMBER',
       cpf: '12345678910',
     })
 
@@ -64,6 +66,7 @@ describe('Authenticate Use Case', () => {
       password: await hash('12345678910', 6),
       chamber_id: 'chamber-01',
       cpf: '12345678910',
+      role: 'MEMBER',
       permission: 'DENIED',
     })
 

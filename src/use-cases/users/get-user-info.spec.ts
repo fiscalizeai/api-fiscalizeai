@@ -19,6 +19,7 @@ describe('Get User Info Use Case', () => {
       email: 'johndoe@example.com',
       cpf: '08636379652',
       password: await hash('08636379652', 6),
+      role: 'MEMBER',
       chamber_id: 'chamber-01',
     })
 

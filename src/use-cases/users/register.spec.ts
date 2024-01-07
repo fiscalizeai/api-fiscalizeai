@@ -18,6 +18,7 @@ describe('Register Users Use Case', () => {
       name: 'Eduardo Rodrigues',
       email: 'edurodrigues@example.com',
       cpf: '123.456.789-10',
+      role: 'MEMBER',
       chamberId: 'chamber-1',
     })
 
@@ -36,6 +37,7 @@ describe('Register Users Use Case', () => {
       name: 'Eduardo Rodrigues',
       email: 'edurodrigues@example.com',
       cpf,
+      role: 'MEMBER',
       chamberId: 'chamber-1',
     })
 
@@ -44,6 +46,7 @@ describe('Register Users Use Case', () => {
         name: 'Eduardo Rodrigues',
         email: 'edurodrigues@example.com',
         cpf,
+        role: 'MEMBER',
         chamberId: 'chamber-1',
       }),
     ).rejects.toBeInstanceOf(UserAlreadyExistsError)
@@ -56,6 +59,7 @@ describe('Register Users Use Case', () => {
       name: 'Eduardo Rodrigues',
       email,
       cpf: '08636379652',
+      role: 'MEMBER',
       chamberId: 'chamber-1',
     })
 
@@ -64,6 +68,7 @@ describe('Register Users Use Case', () => {
         name: 'Eduardo Rodrigues',
         email,
         cpf: '08636379652',
+        role: 'MEMBER',
         chamberId: 'chamber-1',
       }),
     ).rejects.toBeInstanceOf(UserAlreadyExistsError)
@@ -74,6 +79,7 @@ describe('Register Users Use Case', () => {
       name: 'Eduardo Rodrigues',
       email: 'edurodrigues@example.com',
       cpf: '08636379652',
+      role: 'MEMBER',
       chamberId: 'chamber-1',
     })
 

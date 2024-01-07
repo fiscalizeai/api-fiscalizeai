@@ -18,6 +18,7 @@ describe('Fetch Users Use Case', () => {
         cpf: `123456789${i}`,
         password: 'password',
         email: `vereador${i}@example.com`,
+        role: 'MEMBER',
         chamber_id: 'chamber-01',
       })
     }

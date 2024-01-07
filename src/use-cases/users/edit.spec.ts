@@ -17,6 +17,7 @@ describe('Edit Users Use Case', () => {
       cpf: '123.456.789-10',
       email: 'johndoe@example.com',
       password: await hash('123.456.789-10', 6),
+      role: 'MEMBER',
       chamber_id: 'chamber-01',
     })
   })
