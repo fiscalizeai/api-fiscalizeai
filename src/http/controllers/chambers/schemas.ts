@@ -25,7 +25,7 @@ export const editChamberSchema: FastifySchema = {
   description: 'GET fetch all chambers',
   tags: ['chamber'],
   params: {
-    id: { type: 'string' },
+    chamberId: { type: 'string' },
   },
   body: {
     type: 'object',
@@ -51,7 +51,7 @@ export const deleteChamberSchema: FastifySchema = {
   description: 'DELETE a chamber',
   tags: ['chamber'],
   params: {
-    id: { type: 'string' },
+    chamberId: { type: 'string' },
   },
   response: {
     204: {
