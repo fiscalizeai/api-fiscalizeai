@@ -1,6 +1,6 @@
 import { Prisma, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
-import { UsersRepository } from '../users'
+import { UserFilters, UsersRepository } from '../users'
 
 export class InMemoryUsersRepository implements UsersRepository {
   public items: User[] = []
@@ -35,26 +35,36 @@ export class InMemoryUsersRepository implements UsersRepository {
     return user
   }
 
-  async searchByName(query: string, page: number) {
-    return this.items
-      .filter((item) =>
-        item.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+  async fetch(page: number, items = 20, filters?: UserFilters) {
+    const { name, cpf, permission, role } = filters || {}
+
+    let filteredUsers = this.items
+
+    if (name) {
+      filteredUsers = filteredUsers.filter((user) =>
+        user.name.toLocaleLowerCase().includes(name.toLocaleLowerCase()),
       )
-      .slice((page - 1) * 20, page * 20)
-  }
+    }
 
-  async fetch(page: number) {
-    const users = this.items.slice((page - 1) * 20, page * 20)
+    if (cpf) {
+      filteredUsers = filteredUsers.filter((user) =>
+        user.cpf.toLocaleLowerCase().includes(cpf.toLocaleLowerCase()),
+      )
+    }
 
-    return users
-  }
+    if (role) {
+      filteredUsers = filteredUsers.filter((user) => user.role === role)
+    }
 
-  async fetchByChamber(chamberId: string, page: number) {
-    const users = this.items
-      .filter((item) => item.chamber_id === chamberId)
-      .slice((page - 1) * 20, page * 20)
+    if (permission) {
+      filteredUsers = filteredUsers.filter(
+        (user) => user.permission === permission,
+      )
+    }
 
-    return users
+    const paginatedUsers = filteredUsers.slice((page - 1) * items, page * items)
+
+    return paginatedUsers
   }
 
   async delete(id: string) {

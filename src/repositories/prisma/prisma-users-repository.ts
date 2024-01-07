@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
-import { UsersRepository } from '../users'
+import { UserFilters, UsersRepository } from '../users'
 
 export class PrismaUsersRepository implements UsersRepository {
   async create(data: Prisma.UserUncheckedCreateInput) {
@@ -28,36 +28,20 @@ export class PrismaUsersRepository implements UsersRepository {
     return user
   }
 
-  async searchByName(query: string, page: number) {
+  async fetch(page: number, itemAmount: number, filters?: UserFilters) {
+    const { city, name, permission, role, state } = filters || {}
     const users = await prisma.user.findMany({
       where: {
-        name: {
-          contains: query,
+        name: name ? { contains: name, mode: 'insensitive' } : undefined,
+        chamber: {
+          name: city ? { contains: city, mode: 'insensitive' } : undefined,
+          state: state ? { contains: state, mode: 'insensitive' } : undefined,
         },
+        permission,
+        role,
       },
-      take: 20,
-      skip: (page - 1) * 20,
-    })
-
-    return users
-  }
-
-  async fetch(page: number) {
-    const users = await prisma.user.findMany({
-      take: 20,
-      skip: (page - 1) * 20,
-    })
-
-    return users
-  }
-
-  async fetchByChamber(chamberId: string, page: number) {
-    const users = await prisma.user.findMany({
-      where: {
-        chamber_id: chamberId,
-      },
-      take: 20,
-      skip: (page - 1) * 20,
+      take: itemAmount,
+      skip: (page - 1) * itemAmount,
     })
 
     return users

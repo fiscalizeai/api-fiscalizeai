@@ -15,7 +15,7 @@ describe('Fetch Users Use Case', () => {
     for (let i = 1; i <= 22; i++) {
       await usersRepository.create({
         name: `Vereador Sacramento ${i}`,
-        cpf: `123456789${i}`,
+        cpf: `cpf ${i}`,
         password: 'password',
         email: `vereador${i}@example.com`,
         role: 'MEMBER',
@@ -24,7 +24,45 @@ describe('Fetch Users Use Case', () => {
     }
 
     const { users } = await sut.execute({
-      page: 2,
+      items: 10,
+      page: 3,
+    })
+
+    expect(users).toHaveLength(2)
+  })
+
+  it('should be able fetch users by specifc filters', async () => {
+    await usersRepository.create({
+      name: 'John Doe',
+      cpf: '12345678910',
+      password: 'password',
+      email: 'johndoe@example.com',
+      role: 'MEMBER',
+      chamber_id: 'chamber-01',
+    })
+
+    await usersRepository.create({
+      name: 'Joao da Silva',
+      cpf: '12345678911',
+      password: 'password',
+      email: 'joaosilva@example.com',
+      role: 'SECRETARY',
+      chamber_id: 'chamber-01',
+    })
+
+    await usersRepository.create({
+      name: 'Mario Silva',
+      cpf: '12345678912',
+      password: 'password',
+      email: 'mariosilva@example.com',
+      role: 'SECRETARY',
+      chamber_id: 'chamber-01',
+    })
+
+    const { users } = await sut.execute({
+      page: 1,
+      items: 10,
+      name: 'silva',
     })
 
     expect(users).toHaveLength(2)

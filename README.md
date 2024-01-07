@@ -36,9 +36,9 @@
 
 - [ ] Adicionar erros certos
 - [ ] Aumentar tempo do refresh token
-- [ ] Rotas de usuários /users tem que ter paginação no caso ter pageNumber e pageSize como query params da rota
+- [X] Rotas de usuários /users tem que ter paginação no caso ter pageNumber e pageSize como query params da rota
 - [ ] Padronizar para fiscalize ai
-- [ ] Mudanças em nome de rotas
-- [ ] /sessions para /auth/login
-- [ ] /token/refresh para /auth/refresh
+- [X] Mudanças em nome de rotas
+- [X] /sessions para /auth/login
+- [X] /token/refresh para /auth/refresh
 - [ ] Na rota get users colocar query no params

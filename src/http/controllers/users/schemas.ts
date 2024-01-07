@@ -168,8 +168,18 @@ export const editUserSchema: FastifySchema = {
 export const fetchUsersSchema: FastifySchema = {
   description: 'GET a fetch all users',
   tags: ['user'],
-  params: {
-    page: { type: 'number' },
+  querystring: {
+    type: 'object',
+    required: ['page'],
+    properties: {
+      page: { type: 'number' },
+      items: { type: 'number' },
+      name: { type: 'string' },
+      role: { type: 'string' },
+      permission: { type: 'string' },
+      city: { type: 'string' },
+      state: { type: 'string' },
+    },
   },
   response: {
     200: {
