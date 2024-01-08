@@ -1,9 +1,45 @@
 import { Prisma, Chamber } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { ChambersRepository } from '../chambers'
+import { ChamberFilters } from '@/utils/filters-type'
 
 export class InMemoryChambersRepository implements ChambersRepository {
   public items: Chamber[] = []
+
+  async findById(id: string) {
+    const chamber = this.items.find((item) => item.id === id)
+
+    if (!chamber) {
+      return null
+    }
+
+    return chamber
+  }
+
+  async fetch(page: number, items = 20, filters?: ChamberFilters) {
+    const { name, state } = filters || {}
+
+    let filteredChambers = this.items
+
+    if (state) {
+      filteredChambers = filteredChambers.filter((chamber) =>
+        chamber.state.toLocaleLowerCase().includes(state.toLocaleLowerCase()),
+      )
+    }
+
+    if (name) {
+      filteredChambers = filteredChambers.filter((chamber) =>
+        chamber.name.toLocaleLowerCase().includes(name.toLocaleLowerCase()),
+      )
+    }
+
+    const paginatedChambers = filteredChambers.slice(
+      (page - 1) * items,
+      page * items,
+    )
+
+    return paginatedChambers
+  }
 
   async findByName(name: string, state: string) {
     const chamber = this.items.find(
@@ -17,32 +53,6 @@ export class InMemoryChambersRepository implements ChambersRepository {
     }
 
     return chamber
-  }
-
-  async findByState(state: string, page: number) {
-    const chambers = this.items
-      .filter((item) =>
-        item.state.toLocaleLowerCase().includes(state.toLocaleLowerCase()),
-      )
-      .slice((page - 1) * 20, page * 20)
-
-    return chambers
-  }
-
-  async findById(id: string) {
-    const chamber = this.items.find((item) => item.id === id)
-
-    if (!chamber) {
-      return null
-    }
-
-    return chamber
-  }
-
-  async fetch(page: number) {
-    const chambers = this.items.slice((page - 1) * 20, page * 20)
-
-    return chambers
   }
 
   async edit(id: string, data: Chamber) {

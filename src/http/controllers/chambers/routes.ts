@@ -2,7 +2,6 @@ import { FastifyInstance } from 'fastify'
 import { create } from './create'
 import { verifyJwt } from '@/http/middlewares/verify-jwt'
 import { verifyUserRole } from '@/http/middlewares/verify-user-role'
-import { fetchByState } from './fetch-by-state'
 import { edit } from './edit'
 import { deleteChamber } from './delete'
 import { fetch } from './fetch'
@@ -10,7 +9,6 @@ import {
   chamberCreateSchema,
   deleteChamberSchema,
   editChamberSchema,
-  fetchChamberByStateSchema,
   fetchChamberSchema,
 } from './schemas'
 
@@ -39,11 +37,5 @@ export async function chambersRoutes(app: FastifyInstance) {
     '/chambers',
     { onRequest: [verifyUserRole('ADMIN')], schema: fetchChamberSchema },
     fetch,
-  )
-
-  app.get(
-    '/chambers/fetch',
-    { onRequest: [verifyUserRole('ADMIN')], schema: fetchChamberByStateSchema },
-    fetchByState,
   )
 }

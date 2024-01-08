@@ -64,8 +64,15 @@ export const deleteChamberSchema: FastifySchema = {
 export const fetchChamberSchema: FastifySchema = {
   description: 'GET fetch all chambers',
   tags: ['chamber'],
-  params: {
-    page: { type: 'number' },
+  querystring: {
+    type: 'object',
+    required: ['page'],
+    properties: {
+      page: { type: 'number' },
+      items: { type: 'number' },
+      name: { type: 'string' },
+      state: { type: 'string' },
+    },
   },
   response: {
     200: {

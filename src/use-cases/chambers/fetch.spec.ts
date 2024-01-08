@@ -25,4 +25,21 @@ describe('Fetch Chambers Use Case', () => {
 
     expect(chambers).toHaveLength(2)
   })
+
+  it('should be able fetch chambers specific filters', async () => {
+    for (let i = 1; i <= 22; i++) {
+      await chamberRepository.create({
+        name: `City ${i}`,
+        state: 'MG',
+      })
+    }
+
+    const { chambers } = await sut.execute({
+      page: 1,
+      items: 10,
+      name: 'City 2',
+    })
+
+    expect(chambers).toHaveLength(4)
+  })
 })

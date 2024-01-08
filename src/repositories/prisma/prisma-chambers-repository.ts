@@ -1,6 +1,7 @@
 import { Chamber, Prisma } from '@prisma/client'
 import { ChambersRepository } from '../chambers'
 import { prisma } from '@/lib/prisma'
+import { ChamberFilters } from '@/utils/filters-type'
 
 export class PrismaChambersRepository implements ChambersRepository {
   async create(data: Prisma.ChamberCreateInput) {
@@ -28,10 +29,16 @@ export class PrismaChambersRepository implements ChambersRepository {
     return chamber
   }
 
-  async fetch(page: number) {
+  async fetch(page: number, items: number, filters?: ChamberFilters) {
+    const { name, state } = filters || {}
+
     const chambers = await prisma.chamber.findMany({
-      take: 20,
-      skip: (page - 1) * 20,
+      where: {
+        name: name ? { contains: name, mode: 'insensitive' } : undefined,
+        state: state ? { contains: state, mode: 'insensitive' } : undefined,
+      },
+      take: items,
+      skip: (page - 1) * items,
     })
 
     return chambers

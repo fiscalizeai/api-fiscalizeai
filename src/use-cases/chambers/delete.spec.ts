@@ -1,25 +1,22 @@
 import { expect, it, describe, beforeEach } from 'vitest'
 import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
-import { EditChamberUseCase } from './edit'
-import { ResouceNotFoundError } from '../errors/resource-not-found'
 import { DeleteChamberUseCase } from './delete'
-import { promise } from 'zod'
 
-let chamberRepository: InMemoryChambersRepository
+let chambersRepository: InMemoryChambersRepository
 let sut: DeleteChamberUseCase
 
 describe('Delete Chamber Users Use Case', () => {
   beforeEach(async () => {
-    chamberRepository = new InMemoryChambersRepository()
-    sut = new DeleteChamberUseCase(chamberRepository)
+    chambersRepository = new InMemoryChambersRepository()
+    sut = new DeleteChamberUseCase(chambersRepository)
 
-    await chamberRepository.create({
+    await chambersRepository.create({
       id: 'chamber-01',
       name: 'Sacramento',
       state: 'MG',
     })
 
-    await chamberRepository.create({
+    await chambersRepository.create({
       id: 'chamber-02',
       name: 'Uberaba',
       state: 'MG',
@@ -31,8 +28,10 @@ describe('Delete Chamber Users Use Case', () => {
       id: 'chamber-02',
     })
 
-    const chambers = chamberRepository.findByState('MG', 1)
+    const chambers = await chambersRepository.fetch(1, 10)
 
-    expect(chambers)
+    console.log(chambers)
+
+    expect(chambers).toHaveLength(1)
   })
 })

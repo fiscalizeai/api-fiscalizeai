@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
-import { UserFilters, UsersRepository } from '../users'
+import { UsersRepository } from '../users'
+import { UserFilters } from '@/utils/filters-type'
 
 export class PrismaUsersRepository implements UsersRepository {
   async create(data: Prisma.UserUncheckedCreateInput) {
@@ -28,8 +29,9 @@ export class PrismaUsersRepository implements UsersRepository {
     return user
   }
 
-  async fetch(page: number, itemAmount: number, filters?: UserFilters) {
+  async fetch(page: number, items: number, filters?: UserFilters) {
     const { city, name, permission, role, state } = filters || {}
+
     const users = await prisma.user.findMany({
       where: {
         name: name ? { contains: name, mode: 'insensitive' } : undefined,
@@ -40,8 +42,8 @@ export class PrismaUsersRepository implements UsersRepository {
         permission,
         role,
       },
-      take: itemAmount,
-      skip: (page - 1) * itemAmount,
+      take: items,
+      skip: (page - 1) * items,
     })
 
     return users

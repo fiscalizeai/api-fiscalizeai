@@ -1,13 +1,5 @@
-import { Permission, Prisma, Role, User } from '@prisma/client'
-
-export interface UserFilters {
-  name?: string
-  cpf?: string
-  city?: string
-  state?: string
-  role?: Role
-  permission?: Permission
-}
+import { UserFilters } from '@/utils/filters-type'
+import { Prisma, User } from '@prisma/client'
 
 export interface UsersRepository {
   create(data: Prisma.UserUncheckedCreateInput): Promise<User>
