@@ -1,10 +1,11 @@
 import { Chamber, Prisma } from '@prisma/client'
 import { ChambersRepository } from '@/repositories/chambers'
-import { ResouceNotFoundError } from '../errors/resource-not-found'
+import { ChamberNotFound } from '../errors/chambers/chamber-not-found'
+import { ChamberAlreadyExistsError } from '../errors/chambers/chamber-already-exists'
 
 interface EditChamberUseCaseRequest {
   id: string
-  data: Prisma.ChamberUncheckedUpdateInput
+  data: Prisma.ChamberUncheckedCreateInput
 }
 
 interface EditChamberUseCaseResponse {
@@ -21,7 +22,15 @@ export class EditChamberUseCase {
     const chamber = await this.chamberRepository.findById(id)
 
     if (!chamber) {
-      throw new ResouceNotFoundError() // TODO: Colocar o erro certo!
+      throw new ChamberNotFound()
+    }
+
+    const { name, state } = data
+
+    const existingChamber = await this.chamberRepository.findByName(name, state)
+
+    if (existingChamber && existingChamber.id !== id) {
+      throw new ChamberAlreadyExistsError()
     }
 
     const chamberEdited = await this.chamberRepository.edit(id, data)

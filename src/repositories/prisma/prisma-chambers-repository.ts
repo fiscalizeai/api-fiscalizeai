@@ -54,18 +54,6 @@ export class PrismaChambersRepository implements ChambersRepository {
     return chamber
   }
 
-  async findByState(state: string, page: number) {
-    const chambers = await prisma.chamber.findMany({
-      where: {
-        state,
-      },
-      take: 20,
-      skip: (page - 1) * 20,
-    })
-
-    return chambers
-  }
-
   async findById(id: string) {
     const chamber = await prisma.chamber.findUnique({
       where: {
@@ -74,5 +62,19 @@ export class PrismaChambersRepository implements ChambersRepository {
     })
 
     return chamber
+  }
+
+  async countUsersByChamber(id: string) {
+    const count = await prisma.chamber.count({
+      where: {
+        users: {
+          every: {
+            chamber_id: id,
+          },
+        },
+      },
+    })
+
+    return count
   }
 }

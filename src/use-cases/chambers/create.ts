@@ -1,6 +1,6 @@
 import { Chamber } from '@prisma/client'
 import { ChambersRepository } from '@/repositories/chambers'
-import { ChamberAlreadyExistsError } from '../errors/chamber-already-exists'
+import { ChamberAlreadyExistsError } from '../errors/chambers/chamber-already-exists'
 
 interface CreateChamberUseCaseRequest {
   name: string

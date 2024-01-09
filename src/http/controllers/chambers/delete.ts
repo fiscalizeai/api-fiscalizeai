@@ -1,3 +1,5 @@
+import { ChamberAssociatedUsers } from '@/use-cases/errors/chambers/chamber-associated-users'
+import { ChamberNotFound } from '@/use-cases/errors/chambers/chamber-not-found'
 import { ResouceNotFoundError } from '@/use-cases/errors/resource-not-found'
 import { makeDeleteUseCase } from '@/use-cases/factories/chambers/make-delete-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
@@ -20,7 +22,11 @@ export async function deleteChamber(
       id: chamberId,
     })
   } catch (error) {
-    if (error instanceof ResouceNotFoundError) {
+    if (error instanceof ChamberNotFound) {
+      return reply.status(409).send({ message: error.message })
+    }
+
+    if (error instanceof ChamberAssociatedUsers) {
       return reply.status(409).send({ message: error.message })
     }
 

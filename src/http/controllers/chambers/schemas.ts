@@ -33,8 +33,8 @@ export const editChamberSchema: FastifySchema = {
       data: {
         type: 'object',
         properties: {
-          name: { type: 'string', description: 'chamber name (optional)' },
-          state: { type: 'string', description: 'chamber state (optional)' },
+          name: { type: 'string', description: 'chamber name' },
+          state: { type: 'string', description: 'chamber state' },
         },
       },
     },

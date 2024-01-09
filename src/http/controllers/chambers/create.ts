@@ -1,4 +1,4 @@
-import { ChamberAlreadyExistsError } from '@/use-cases/errors/chamber-already-exists'
+import { ChamberAlreadyExistsError } from '@/use-cases/errors/chambers/chamber-already-exists'
 import { makeCreateUseCase } from '@/use-cases/factories/chambers/make-create-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'

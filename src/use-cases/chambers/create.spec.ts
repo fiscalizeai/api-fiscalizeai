@@ -27,7 +27,7 @@ describe('Register Users Use Case', () => {
       state: 'MG',
     })
 
-    expect(() =>
+    await expect(() =>
       sut.execute({
         name: 'Sacramento',
         state: 'MG',
