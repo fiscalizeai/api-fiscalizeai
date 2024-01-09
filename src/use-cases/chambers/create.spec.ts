@@ -1,7 +1,7 @@
 import { expect, it, describe, beforeEach } from 'vitest'
 import { CreateChamberUseCase } from './create'
 import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
-import { ChamberAlreadyExistsError } from '../errors/chamber-already-exists'
+import { ChamberAlreadyExistsError } from '../errors/chambers/chamber-already-exists'
 
 let chamberRepository: InMemoryChambersRepository
 let sut: CreateChamberUseCase
