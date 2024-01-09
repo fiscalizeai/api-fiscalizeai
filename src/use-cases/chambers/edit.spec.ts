@@ -1,7 +1,7 @@
 import { expect, it, describe, beforeEach } from 'vitest'
 import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
 import { EditChamberUseCase } from './edit'
-import { ResouceNotFoundError } from '../errors/resource-not-found'
+import { ChamberNotFound } from '../errors/chambers/chamber-not-found'
 
 let chamberRepository: InMemoryChambersRepository
 let sut: EditChamberUseCase
@@ -32,7 +32,7 @@ describe('Edit Chamber Users Use Case', () => {
   })
 
   it('not should be able edit chamber not exist', async () => {
-    expect(() =>
+    await expect(() =>
       sut.execute({
         id: 'wrong-chamber',
         data: {
@@ -40,6 +40,6 @@ describe('Edit Chamber Users Use Case', () => {
           state: 'MG',
         },
       }),
-    ).rejects.toBeInstanceOf(ResouceNotFoundError)
+    ).rejects.toBeInstanceOf(ChamberNotFound)
   })
 })

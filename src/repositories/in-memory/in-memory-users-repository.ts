@@ -98,7 +98,7 @@ export class InMemoryUsersRepository implements UsersRepository {
       chamber_id: data.chamber_id,
       permission: data.permission ?? 'ACCEPTED',
       role: 'ADMIN',
-      created_At: new Date(),
+      created_at: new Date(),
     }
 
     this.items.push(user)

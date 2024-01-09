@@ -81,7 +81,7 @@ export class InMemoryChambersRepository implements ChambersRepository {
       id: data.id ?? randomUUID(),
       name: data.name,
       state: data.state,
-      created_At: new Date(),
+      created_at: new Date(),
     }
 
     this.items.push(chamber)

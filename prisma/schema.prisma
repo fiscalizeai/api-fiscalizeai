@@ -27,9 +27,14 @@ model User {
   email      String     @unique
   password   String
   cpf        String     @unique
-  created_At DateTime   @default(now())
+  created_at DateTime   @default(now())
   permission Permission @default(ACCEPTED)
   role       Role       @default(MEMBER)
+
+  education_records Education[]
+  health_records    Health[]
+  transport_records Transport[]
+  person_records    Person[]
 
   chamber    Chamber @relation(fields: [chamber_id], references: [id])
   chamber_id String
@@ -41,9 +46,92 @@ model Chamber {
   id         String   @id() @default(cuid())
   name       String
   state      String
-  created_At DateTime @default(now())
+  created_at DateTime @default(now())
 
-  users User[]
+  users             User[]
+  education_records Education[]
+  person_records    Person[]
+  health_records    Health[]
+  transport_records Transport[]
 
   @@map("chambers")
+}
+
+model Education {
+  id       String @id @default(uuid())
+  schools  Int
+  students Int
+  teachers Int
+  total    Int
+
+  mounth     DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  user    User?   @relation(fields: [user_id], references: [id])
+  user_id String?
+
+  chamber    Chamber? @relation(fields: [chamber_id], references: [id])
+  chamber_id String?
+
+  @@map("education_data")
+}
+
+model Person {
+  id          String @id @default(uuid())
+  staffs      Int
+  contractors Int
+  headcounts  Int
+  total       Int
+
+  mounth     DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  user    User?   @relation(fields: [user_id], references: [id])
+  user_id String?
+
+  chamber    Chamber? @relation(fields: [chamber_id], references: [id])
+  chamber_id String?
+
+  @@map("person_data")
+}
+
+model Health {
+  id String @id @default(uuid())
+
+  services Int
+  doctors  Int
+  total    Int
+
+  mounth     DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  user    User?   @relation(fields: [user_id], references: [id])
+  user_id String?
+
+  chamber    Chamber? @relation(fields: [chamber_id], references: [id])
+  chamber_id String?
+
+  @@map("health_data")
+}
+
+model Transport {
+  id String @id @default(uuid())
+
+  cars     Int
+  bus      Int
+  machines Int
+  total    Int
+
+  mounth     DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  user    User?   @relation(fields: [user_id], references: [id])
+  user_id String?
+
+  chamber    Chamber? @relation(fields: [chamber_id], references: [id])
+  chamber_id String?
 }

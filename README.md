@@ -17,28 +17,29 @@
 - [ ] Deve ser possivel editar demonstrativos como secreatario(a);
 - [ ] Deve ser possivel apagar demonstrativos como secreatario(a);
 - [ ] Deve ser possivel comparar demonstrativos
+- [ ] Deve ser possivel buscar informações do BB
+- [ ] Deve ser possivel comparar informações do mes no banco BB
 
 ## Regras de negocio
 
 - [X] O usuario deve estar associado a uma camara;
 - [X] Nao pode realizar cadastro com um e-mail e cpf duplicado;
-- [ ] Nao pode ter cidade com o mesmo nome no mesmo estado;
+- [X] Nao pode ter cidade com o mesmo nome no mesmo estado;
 - [X] Usuarios so pode ser cadastrado por administradores;
 
 ## Requisitos nao funcionais
 
 - [X] A senha do usuario precisa estar criptografada;
 - [X] Os dados da aplicacao precisa estar persistido em banco PostgresSQL;
-- [ ] Todas as listas de dados precisam estar paginadas com 20 itens por pagina;
 - [X] O usuario deve ser identifcado por um JWT
 
 ## TODOS
 
 - [ ] Adicionar erros certos
-- [ ] Aumentar tempo do refresh token
+- [X] Aumentar tempo do refresh token
 - [X] Rotas de usuários /users tem que ter paginação no caso ter pageNumber e pageSize como query params da rota
 - [ ] Padronizar para fiscalize ai
 - [X] Mudanças em nome de rotas
 - [X] /sessions para /auth/login
 - [X] /token/refresh para /auth/refresh
-- [ ] Na rota get users colocar query no params
+- [X] Na rota get users colocar query no params
