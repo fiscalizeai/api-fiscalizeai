@@ -65,7 +65,25 @@ export const authenticateSchema: FastifySchema = {
       description: 'Successful',
       type: 'object',
       properties: {
-        token: { type: 'string' },
+        authMetadata: {
+          type: 'object',
+          properties: {
+            token: { type: 'string' },
+            expireIn: { type: 'number' },
+            refreshToken: { type: 'string' },
+          },
+        },
+        user: {
+          properties: {
+            id: { type: 'string' },
+            name: { type: 'string' },
+            email: { type: 'string' },
+            cpf: { type: 'string' },
+            chamber_id: { type: 'string' },
+            permission: { type: 'string' },
+            role: { type: 'string' },
+          },
+        },
       },
     },
   },
@@ -100,13 +118,36 @@ export const profileSchema: FastifySchema = {
 export const refreshTokenSchema: FastifySchema = {
   description: 'PATCH a refresh token user',
   tags: ['auth'],
-
+  body: {
+    type: 'object',
+    properties: {
+      refreshToken: { type: 'string' },
+    },
+  },
   response: {
     200: {
       description: 'Successful',
       type: 'object',
       properties: {
-        token: { type: 'string' },
+        authMetadata: {
+          type: 'object',
+          properties: {
+            token: { type: 'string' },
+            expireIn: { type: 'number' },
+            refreshToken: { type: 'string' },
+          },
+        },
+        user: {
+          properties: {
+            id: { type: 'string' },
+            name: { type: 'string' },
+            email: { type: 'string' },
+            cpf: { type: 'string' },
+            chamber_id: { type: 'string' },
+            permission: { type: 'string' },
+            role: { type: 'string' },
+          },
+        },
       },
     },
   },
