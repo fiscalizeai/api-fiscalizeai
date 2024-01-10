@@ -64,15 +64,15 @@ model Education {
   teachers Int
   total    Int
 
-  mounth     DateTime
+  month      DateTime
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  user    User?   @relation(fields: [user_id], references: [id])
-  user_id String?
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
 
-  chamber    Chamber? @relation(fields: [chamber_id], references: [id])
-  chamber_id String?
+  chamber    Chamber @relation(fields: [chamber_id], references: [id])
+  chamber_id String
 
   @@map("education_data")
 }
@@ -84,15 +84,15 @@ model Person {
   headcounts  Int
   total       Int
 
-  mounth     DateTime
+  month      DateTime
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  user    User?   @relation(fields: [user_id], references: [id])
-  user_id String?
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
 
-  chamber    Chamber? @relation(fields: [chamber_id], references: [id])
-  chamber_id String?
+  chamber    Chamber @relation(fields: [chamber_id], references: [id])
+  chamber_id String
 
   @@map("person_data")
 }
@@ -104,15 +104,15 @@ model Health {
   doctors  Int
   total    Int
 
-  mounth     DateTime
+  month      DateTime
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  user    User?   @relation(fields: [user_id], references: [id])
-  user_id String?
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
 
-  chamber    Chamber? @relation(fields: [chamber_id], references: [id])
-  chamber_id String?
+  chamber    Chamber @relation(fields: [chamber_id], references: [id])
+  chamber_id String
 
   @@map("health_data")
 }
@@ -125,13 +125,13 @@ model Transport {
   machines Int
   total    Int
 
-  mounth     DateTime
+  month      DateTime
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  user    User?   @relation(fields: [user_id], references: [id])
-  user_id String?
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
 
-  chamber    Chamber? @relation(fields: [chamber_id], references: [id])
-  chamber_id String?
+  chamber    Chamber @relation(fields: [chamber_id], references: [id])
+  chamber_id String
 }

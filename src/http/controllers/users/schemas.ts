@@ -56,7 +56,7 @@ export const authenticateSchema: FastifySchema = {
   body: {
     type: 'object',
     properties: {
-      email: { type: 'string', description: 'user email' },
+      email: { type: 'string' },
       password: { type: 'string' },
     },
   },
