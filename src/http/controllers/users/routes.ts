@@ -16,13 +16,20 @@ import {
   fetchUsersSchema,
   getUserByCpfSchema,
   getUserByIdSchema,
+  profileSchema,
   refreshTokenSchema,
   userCreateSchema,
 } from './schemas'
+import { profile } from './profile'
 
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/auth/login', { schema: authenticateSchema }, authenticate)
   app.patch('/auth/refresh', { schema: refreshTokenSchema }, refresh)
+  app.get(
+    '/profile',
+    { onRequest: [verifyJwt], schema: profileSchema },
+    profile,
+  )
 
   app.post(
     '/users',

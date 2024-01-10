@@ -71,6 +71,32 @@ export const authenticateSchema: FastifySchema = {
   },
 }
 
+export const profileSchema: FastifySchema = {
+  description: 'GET profile user',
+  tags: ['auth'],
+  response: {
+    200: {
+      description: 'Successful',
+      type: 'object',
+      properties: {
+        user: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            name: { type: 'string' },
+            email: { type: 'string' },
+            cpf: { type: 'string' },
+            permission: { type: 'string' },
+            role: { type: 'string' },
+            chamber_id: { type: 'string' },
+            created_at: { type: 'string' },
+          },
+        },
+      },
+    },
+  },
+}
+
 export const refreshTokenSchema: FastifySchema = {
   description: 'PATCH a refresh token user',
   tags: ['auth'],
