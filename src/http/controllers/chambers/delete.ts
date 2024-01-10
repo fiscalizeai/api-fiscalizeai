@@ -1,6 +1,5 @@
 import { ChamberAssociatedUsers } from '@/use-cases/errors/chambers/chamber-associated-users'
 import { ChamberNotFound } from '@/use-cases/errors/chambers/chamber-not-found'
-import { ResouceNotFoundError } from '@/use-cases/errors/resource-not-found'
 import { makeDeleteUseCase } from '@/use-cases/factories/chambers/make-delete-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'

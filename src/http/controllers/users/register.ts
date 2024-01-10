@@ -3,15 +3,20 @@ import { makeRegisterUseCase } from '@/use-cases/factories/users/make-register-u
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
+const roleEnum = ['ADMIN', 'SECRETARY', 'MEMBER'] as const
+
 export async function register(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
     name: z.string(),
     email: z.string().email(),
+    role: z.enum(roleEnum),
     cpf: z.string(),
     chamberId: z.string(),
   })
 
-  const { name, email, cpf, chamberId } = registerBodySchema.parse(request.body)
+  const { name, role, email, cpf, chamberId } = registerBodySchema.parse(
+    request.body,
+  )
 
   try {
     const registerUseCase = makeRegisterUseCase()
@@ -20,6 +25,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       name,
       email,
       cpf,
+      role,
       chamberId,
     })
   } catch (error) {
