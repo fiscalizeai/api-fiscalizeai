@@ -4,6 +4,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 export async function refresh(request: FastifyRequest, reply: FastifyReply) {
+  await request.jwtVerify({ onlyCookie: true })
   const getUserProfile = makeGetUserInfoUseCase()
 
   const refreshBodySchema = z.object({
@@ -12,9 +13,7 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
 
   let { refreshToken } = refreshBodySchema.parse(request.body)
 
-  await request.jwtVerify()
-
-  const { role } = request.user
+  const { role, chamber } = request.user
   const { user } = await getUserProfile.execute({ userId: request.user.sub })
 
   if (!user) {
@@ -22,7 +21,7 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
   }
 
   const token = await reply.jwtSign(
-    { role },
+    { role, chamber },
     {
       sign: {
         sub: request.user.sub,
@@ -31,7 +30,7 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
   )
 
   refreshToken = await reply.jwtSign(
-    { role },
+    { role, chamber },
     {
       sign: {
         sub: request.user.sub,
@@ -40,15 +39,24 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
     },
   )
 
-  return reply.status(200).send({
-    authMetadata: {
-      token,
-      expireIn: 600,
-      refreshToken,
-    },
-    user: {
-      ...user,
-      password: undefined,
-    },
-  })
+  return reply
+    .setCookie('refreshToken', refreshToken, {
+      path: '/',
+      secure: true,
+      sameSite: true,
+      httpOnly: true,
+    })
+    .status(200)
+    .send({
+      authMetadata: {
+        token,
+        expireIn: 600,
+        refreshToken,
+      },
+      user: {
+        ...user,
+        cpf: undefined,
+        password: undefined,
+      },
+    })
 }

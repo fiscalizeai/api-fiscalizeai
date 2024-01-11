@@ -14,3 +14,8 @@ export interface ChamberFilters {
   name?: string
   state?: string
 }
+
+export interface EducationFilters {
+  month?: Date
+  year?: Date
+}

@@ -44,14 +44,16 @@ export class RegisterEducationRecordsUseCase {
     const hasSameEducationRecord =
       await this.educationRecordsRepository.findByMonthAndYear(month)
 
-    console.log(hasSameEducationRecord)
-
     if (hasSameEducationRecord) {
       throw new ResouceNotFoundError() // TODO: Colocar o erro certo
     }
 
+    const monthUTC = new Date(month)
+
+    console.log(month)
+
     const education_record = await this.educationRecordsRepository.register({
-      month,
+      month: monthUTC,
       schools,
       students,
       teachers,

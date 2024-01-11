@@ -60,6 +60,11 @@ export const authenticateSchema: FastifySchema = {
       password: { type: 'string' },
     },
   },
+  headers: {
+    setCookies: {
+      type: 'object',
+    },
+  },
   response: {
     200: {
       description: 'Successful',
@@ -78,7 +83,6 @@ export const authenticateSchema: FastifySchema = {
             id: { type: 'string' },
             name: { type: 'string' },
             email: { type: 'string' },
-            cpf: { type: 'string' },
             chamber_id: { type: 'string' },
             permission: { type: 'string' },
             role: { type: 'string' },
@@ -142,7 +146,6 @@ export const refreshTokenSchema: FastifySchema = {
             id: { type: 'string' },
             name: { type: 'string' },
             email: { type: 'string' },
-            cpf: { type: 'string' },
             chamber_id: { type: 'string' },
             permission: { type: 'string' },
             role: { type: 'string' },

@@ -26,6 +26,7 @@ export async function authenticate(
     const token = await reply.jwtSign(
       {
         role: user.role,
+        chamber: user.chamber_id,
       },
       {
         sign: {
@@ -38,6 +39,7 @@ export async function authenticate(
     const refreshToken = await reply.jwtSign(
       {
         role: user.role,
+        chamber: user.chamber_id,
       },
       {
         sign: {
@@ -47,17 +49,26 @@ export async function authenticate(
       },
     )
 
-    return reply.status(200).send({
-      authMetadata: {
-        token,
-        expireIn: 600,
-        refreshToken,
-      },
-      user: {
-        ...user,
-        password: undefined,
-      },
-    })
+    return reply
+      .setCookie('refreshToken', refreshToken, {
+        path: '/',
+        secure: true,
+        sameSite: true,
+        httpOnly: true,
+      })
+      .status(200)
+      .send({
+        authMetadata: {
+          token,
+          expireIn: 600,
+          refreshToken,
+        },
+        user: {
+          ...user,
+          cpf: undefined,
+          password: undefined,
+        },
+      })
   } catch (err) {
     if (err instanceof InvalidCredentialsError) {
       return reply.status(400).send({ message: err.message })

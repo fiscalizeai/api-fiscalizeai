@@ -5,17 +5,21 @@ import { z } from 'zod'
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
-    month: z.date(),
+    month: z.coerce.date(),
     schools: z.number(),
     students: z.number(),
     teachers: z.number(),
     total: z.number(),
-    chamberId: z.string(),
-    userId: z.string(),
   })
 
-  const { month, schools, students, teachers, total, chamberId, userId } =
+  const { month, schools, students, teachers, total } =
     registerBodySchema.parse(request.body)
+
+  const { sub, chamber } = request.user
+
+  console.log(chamber)
+
+  console.log(month)
 
   try {
     const registerUseCase = makeRegisterUseCase()
@@ -26,8 +30,8 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       students,
       teachers,
       total,
-      chamberId,
-      userId,
+      chamberId: chamber,
+      userId: sub,
     })
   } catch (error) {
     if (error instanceof ChamberAlreadyExistsError) {

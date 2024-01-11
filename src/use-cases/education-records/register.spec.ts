@@ -39,7 +39,7 @@ describe('Register Education Records Use Case', () => {
     })
 
     const { education_record } = await sut.execute({
-      month: new Date('09/01/2024'),
+      month: new Date('2024-02'),
       schools: 10,
       students: 24789,
       teachers: 256,

@@ -1,6 +1,8 @@
 import { Prisma, Education, Chamber, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { EducationRecordsRepository } from '../education'
+import { EducationFilters } from '@/utils/filters-type'
+import { isSameMonth, isSameYear } from 'date-fns'
 
 export class InMemoryEducationRecordsRepository
   implements EducationRecordsRepository
@@ -40,5 +42,30 @@ export class InMemoryEducationRecordsRepository
     }
 
     return education_record
+  }
+
+  async fetch(page: number, chamberId: string, items = 20, date?: Date) {
+    let filteredEducationRecords = this.items.filter(
+      (educationRecord) => educationRecord.chamber_id === chamberId,
+    )
+
+    if (!filteredEducationRecords) {
+      return null
+    }
+
+    if (date) {
+      filteredEducationRecords = filteredEducationRecords.filter(
+        (educationRecord) =>
+          isSameMonth(educationRecord.month, date) &&
+          isSameMonth(educationRecord.month, date),
+      )
+    }
+
+    const paginatedEducationRecords = filteredEducationRecords.slice(
+      (page - 1) * items,
+      page * items,
+    )
+
+    return paginatedEducationRecords
   }
 }
