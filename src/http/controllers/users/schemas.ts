@@ -60,11 +60,6 @@ export const authenticateSchema: FastifySchema = {
       password: { type: 'string' },
     },
   },
-  headers: {
-    setCookies: {
-      type: 'object',
-    },
-  },
   response: {
     200: {
       description: 'Successful',
