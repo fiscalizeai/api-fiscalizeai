@@ -1,9 +1,12 @@
-import { ChamberAlreadyExistsError } from '@/use-cases/errors/chambers/chamber-already-exists'
+import { EducationRecordsAlreadyExistsError } from '@/use-cases/errors/education/education-record-already-exists'
+import { InvalidUserOrChamberError } from '@/use-cases/errors/education/invalid-user-or-chamber'
 import { makeRegisterUseCase } from '@/use-cases/factories/education-records/make-register-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {
+  request.jwtVerify({ onlyCookie: true })
+
   const registerBodySchema = z.object({
     month: z.coerce.date(),
     schools: z.number(),
@@ -16,10 +19,6 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     registerBodySchema.parse(request.body)
 
   const { sub, chamber } = request.user
-
-  console.log(chamber)
-
-  console.log(month)
 
   try {
     const registerUseCase = makeRegisterUseCase()
@@ -34,8 +33,11 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       userId: sub,
     })
   } catch (error) {
-    if (error instanceof ChamberAlreadyExistsError) {
+    if (error instanceof EducationRecordsAlreadyExistsError) {
       return reply.status(409).send({ message: error.message })
+    }
+    if (error instanceof InvalidUserOrChamberError) {
+      return reply.status(404).send({ message: error.message })
     }
 
     throw error

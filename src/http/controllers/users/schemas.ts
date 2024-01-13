@@ -117,12 +117,12 @@ export const profileSchema: FastifySchema = {
 export const refreshTokenSchema: FastifySchema = {
   description: 'PATCH a refresh token user',
   tags: ['auth'],
-  body: {
-    type: 'object',
-    properties: {
-      refreshToken: { type: 'string' },
-    },
-  },
+  // body: {
+  //   type: 'object',
+  //   properties: {
+  //     refreshToken: { type: 'string' },
+  //   },
+  // },
   response: {
     200: {
       description: 'Successful',

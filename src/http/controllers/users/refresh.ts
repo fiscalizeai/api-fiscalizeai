@@ -1,24 +1,9 @@
-import { ResouceNotFoundError } from '@/use-cases/errors/resource-not-found'
-import { makeGetUserInfoUseCase } from '@/use-cases/factories/users/make-get-user-info-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { z } from 'zod'
 
 export async function refresh(request: FastifyRequest, reply: FastifyReply) {
   await request.jwtVerify({ onlyCookie: true })
-  const getUserProfile = makeGetUserInfoUseCase()
-
-  const refreshBodySchema = z.object({
-    refreshToken: z.string(),
-  })
-
-  let { refreshToken } = refreshBodySchema.parse(request.body)
 
   const { role, chamber } = request.user
-  const { user } = await getUserProfile.execute({ userId: request.user.sub })
-
-  if (!user) {
-    throw new ResouceNotFoundError()
-  }
 
   const token = await reply.jwtSign(
     { role, chamber },
@@ -29,7 +14,7 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
     },
   )
 
-  refreshToken = await reply.jwtSign(
+  const refreshToken = await reply.jwtSign(
     { role, chamber },
     {
       sign: {
@@ -52,11 +37,6 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
         token,
         expireIn: 600,
         refreshToken,
-      },
-      user: {
-        ...user,
-        cpf: undefined,
-        password: undefined,
       },
     })
 }

@@ -3,6 +3,8 @@ import { EducationRecordsRepository } from '@/repositories/education'
 import { UsersRepository } from '@/repositories/users'
 import { ChambersRepository } from '@/repositories/chambers'
 import { ResouceNotFoundError } from '../errors/resource-not-found'
+import { EducationRecordsAlreadyExistsError } from '../errors/education/education-record-already-exists'
+import { InvalidUserOrChamberError } from '../errors/education/invalid-user-or-chamber'
 
 interface RegisterEducationRecordsUseCaseRequest {
   month: Date
@@ -38,19 +40,21 @@ export class RegisterEducationRecordsUseCase {
     const user = await this.usersRepository.findById(userId)
 
     if (!chamber && !user) {
-      throw new ResouceNotFoundError() // TODO: Colocar o erro certo
+      throw new InvalidUserOrChamberError()
     }
 
     const hasSameEducationRecord =
       await this.educationRecordsRepository.findByMonthAndYear(month)
 
-    if (hasSameEducationRecord) {
-      throw new ResouceNotFoundError() // TODO: Colocar o erro certo
+    if (
+      hasSameEducationRecord &&
+      hasSameEducationRecord.chamber_id === chamberId
+    ) {
+      console.log(hasSameEducationRecord.chamber_id, chamberId, 'ids')
+      throw new EducationRecordsAlreadyExistsError()
     }
 
     const monthUTC = new Date(month)
-
-    console.log(month)
 
     const education_record = await this.educationRecordsRepository.register({
       month: monthUTC,
