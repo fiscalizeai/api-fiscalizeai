@@ -32,6 +32,8 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       chamberId: chamber,
       userId: sub,
     })
+
+    return reply.status(201).send()
   } catch (error) {
     if (error instanceof EducationRecordsAlreadyExistsError) {
       return reply.status(409).send({ message: error.message })
@@ -42,6 +44,4 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 
     throw error
   }
-
-  return reply.status(201).send()
 }

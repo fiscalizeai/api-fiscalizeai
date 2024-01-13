@@ -19,7 +19,7 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
     {
       sign: {
         sub: request.user.sub,
-        expiresIn: '7d', // TODO: Increase refresh time...
+        expiresIn: '7d',
       },
     },
   )
@@ -31,6 +31,8 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
       sameSite: true,
       httpOnly: true,
     })
+    .header('Access-Control-Allow-Origin', 'http://localhost:3000')
+    .header('Access-Control-Allow-Credentials', 'true')
     .status(200)
     .send({
       authMetadata: {
