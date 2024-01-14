@@ -4,16 +4,16 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 export async function getById(request: FastifyRequest, reply: FastifyReply) {
-  const getByIdQuerySchema = z.object({
+  const getByIdParamsSchema = z.object({
     educationId: z.string(),
   })
 
-  const { educationId } = getByIdQuerySchema.parse(request.query)
+  const { educationId } = getByIdParamsSchema.parse(request.params)
 
   try {
-    const getUserInfo = makeGetByIdUseCase()
+    const education = makeGetByIdUseCase()
 
-    const { educationRecord } = await getUserInfo.execute({
+    const { educationRecord } = await education.execute({
       id: educationId,
     })
 

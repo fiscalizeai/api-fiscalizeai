@@ -120,3 +120,17 @@ export const getEducationRecordByIdSchema: FastifySchema = {
     },
   },
 }
+
+export const deleteEducationRecordSchema: FastifySchema = {
+  description: 'Delete a education record',
+  tags: ['education'],
+  params: {
+    educationId: { type: 'string' },
+  },
+  response: {
+    204: {
+      description: 'Successful',
+      type: 'null',
+    },
+  },
+}

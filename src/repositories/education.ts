@@ -14,4 +14,5 @@ export interface EducationRecordsRepository {
     data: Prisma.EducationUncheckedUpdateInput,
   ): Promise<Education | null>
   findById(id: string): Promise<Education | null>
+  delete(id: string): Promise<void>
 }

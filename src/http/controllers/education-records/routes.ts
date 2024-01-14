@@ -5,12 +5,14 @@ import { verifyJwt } from '@/http/middlewares/verify-jwt'
 import {
   FetchEducationRecordsSchema,
   RegisterEducationRecordsSchema,
+  deleteEducationRecordSchema,
   editEducationRecordSchema,
   getEducationRecordByIdSchema,
 } from './schemas'
 import { fetch } from './fetch'
 import { edit } from './edit'
 import { getById } from './get-by-id'
+import { deleteEducationRecord } from './delete'
 
 export async function educationRecordsRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJwt)
@@ -36,5 +38,11 @@ export async function educationRecordsRoutes(app: FastifyInstance) {
     '/education/:educationId',
     { onRequest: verifyUserRole('ADMIN'), schema: editEducationRecordSchema },
     edit,
+  )
+
+  app.delete(
+    '/education/:educationId',
+    { schema: deleteEducationRecordSchema },
+    deleteEducationRecord,
   )
 }

@@ -1,21 +1,21 @@
 import { InMemoryEducationRecordsRepository } from '@/repositories/in-memory/in-memory-education-records-repository'
 import { expect, it, describe, beforeEach } from 'vitest'
-import { EditEducationRecordUseCase } from './edit'
-import { EducationRecordsAlreadyExistsError } from '../errors/education/education-record-already-exists'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
+import { DeleteEducationRecordUseCase } from './delete'
+import { EducationRecordsNotExistsError } from '../errors/education/education-not-exists'
 
 let educationRecordsRepository: InMemoryEducationRecordsRepository
 let usersRepository: InMemoryUsersRepository
 let chambersRepository: InMemoryChambersRepository
-let sut: EditEducationRecordUseCase
+let sut: DeleteEducationRecordUseCase
 
-describe('Edit Education Record Use Case', () => {
+describe('Delete Education Record Use Case', () => {
   beforeEach(async () => {
     educationRecordsRepository = new InMemoryEducationRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
     chambersRepository = new InMemoryChambersRepository()
-    sut = new EditEducationRecordUseCase(educationRecordsRepository)
+    sut = new DeleteEducationRecordUseCase(educationRecordsRepository)
 
     await chambersRepository.create({
       id: 'chamber-01',
@@ -57,27 +57,24 @@ describe('Edit Education Record Use Case', () => {
     })
   })
 
-  it('should be able edit education record', async () => {
-    const { educationRecordEdited } = await sut.execute({
+  it('should be able delete education record', async () => {
+    await sut.execute({
       id: 'education-01',
-      data: {
-        schools: 150,
-        updated_at: new Date('2024-01-14'),
-      },
     })
 
-    expect(educationRecordEdited).not.toEqual(null)
-    expect.objectContaining({ educationRecordEdited })
+    const educationRecords = await educationRecordsRepository.fetch(
+      1,
+      'chamber-01',
+    )
+
+    expect(educationRecords).toHaveLength(1)
   })
 
-  it('not should be able edit chamber with date exactly month', async () => {
+  it('not should be able delete education record with wrong id', async () => {
     await expect(() =>
       sut.execute({
-        id: 'education-02',
-        data: {
-          month: new Date('01/01/2024'),
-        },
+        id: 'wrong-id',
       }),
-    ).rejects.toBeInstanceOf(EducationRecordsAlreadyExistsError)
+    ).rejects.toBeInstanceOf(EducationRecordsNotExistsError)
   })
 })

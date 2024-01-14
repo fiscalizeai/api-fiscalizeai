@@ -14,6 +14,14 @@ export class PrismaEducationRecordsRepository
     return education_record
   }
 
+  async delete(id: string) {
+    await prisma.education.delete({
+      where: {
+        id,
+      },
+    })
+  }
+
   async edit(id: string, data: Education) {
     const education_record = await prisma.education.update({
       where: { id },

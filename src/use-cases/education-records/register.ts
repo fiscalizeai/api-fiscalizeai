@@ -2,7 +2,6 @@ import { Education } from '@prisma/client'
 import { EducationRecordsRepository } from '@/repositories/education'
 import { UsersRepository } from '@/repositories/users'
 import { ChambersRepository } from '@/repositories/chambers'
-import { ResouceNotFoundError } from '../errors/resource-not-found'
 import { EducationRecordsAlreadyExistsError } from '../errors/education/education-record-already-exists'
 import { InvalidUserOrChamberError } from '../errors/education/invalid-user-or-chamber'
 

@@ -92,4 +92,12 @@ export class InMemoryEducationRecordsRepository
 
     return educationRecord
   }
+
+  async delete(id: string) {
+    const educationRecordIndex = this.items.findIndex((item) => item.id === id)
+
+    if (educationRecordIndex > -1) {
+      this.items.splice(educationRecordIndex, 1)
+    }
+  }
 }
