@@ -60,7 +60,7 @@ export const FetchEducationRecordsSchema: FastifySchema = {
 
 export const editEducationRecordSchema: FastifySchema = {
   description: 'PUT edit a education record',
-  tags: ['user'],
+  tags: ['education'],
   params: {
     educationId: { type: 'string' },
   },
@@ -86,6 +86,37 @@ export const editEducationRecordSchema: FastifySchema = {
     204: {
       description: 'Successful no content',
       type: 'object',
+    },
+  },
+}
+
+export const getEducationRecordByIdSchema: FastifySchema = {
+  description: 'GET a education record by id',
+  tags: ['education'],
+  params: {
+    educationId: { type: 'string' },
+  },
+  response: {
+    200: {
+      description: 'Successful',
+      type: 'object',
+      properties: {
+        educationRecord: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            month: { type: 'string' },
+            schools: { type: 'number' },
+            teachers: { type: 'number' },
+            students: { type: 'number' },
+            total: { type: 'number' },
+            chamber_id: { type: 'string' },
+            user_id: { type: 'string' },
+            created_at: { type: 'string' },
+            updated_at: { type: 'string' },
+          },
+        },
+      },
     },
   },
 }

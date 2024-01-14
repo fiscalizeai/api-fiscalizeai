@@ -6,9 +6,11 @@ import {
   FetchEducationRecordsSchema,
   RegisterEducationRecordsSchema,
   editEducationRecordSchema,
+  getEducationRecordByIdSchema,
 } from './schemas'
 import { fetch } from './fetch'
 import { edit } from './edit'
+import { getById } from './get-by-id'
 
 export async function educationRecordsRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJwt)
@@ -23,6 +25,12 @@ export async function educationRecordsRoutes(app: FastifyInstance) {
   )
 
   app.get('/education', { schema: FetchEducationRecordsSchema }, fetch)
+
+  app.get(
+    '/education/:educationId',
+    { schema: getEducationRecordByIdSchema },
+    getById,
+  )
 
   app.put(
     '/education/:educationId',
