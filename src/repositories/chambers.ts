@@ -1,5 +1,5 @@
 import { ChamberFilters } from '@/utils/filters-type'
-import { Prisma, Chamber } from '@prisma/client'
+import { Prisma, Chamber, User } from '@prisma/client'
 
 export interface ChambersRepository {
   create(data: Prisma.ChamberCreateInput): Promise<Chamber>
@@ -22,4 +22,6 @@ export interface ChambersRepository {
   delete(id: string): Promise<void>
 
   countUsersByChamber(id: string): Promise<number>
+
+  fetchUserInChamber(id: string): Promise<User[]>
 }

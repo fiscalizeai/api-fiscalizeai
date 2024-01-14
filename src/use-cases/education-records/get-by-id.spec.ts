@@ -1,6 +1,6 @@
 import { expect, it, describe, beforeEach } from 'vitest'
 import { InMemoryEducationRecordsRepository } from '@/repositories/in-memory/in-memory-education-records-repository'
-import { EducationRecordsNotExistsError } from '../errors/education/education-not-exists'
+import { RecordsNotExistsError } from '../errors/records/records-not-exists'
 import { GetEducationRecordByIdUseCase } from './get-by-id'
 
 let educationRecordsRepository: InMemoryEducationRecordsRepository
@@ -36,6 +36,6 @@ describe('Get Education Record By Id Use Case', () => {
       sut.execute({
         id: 'wrong-id',
       }),
-    ).rejects.toBeInstanceOf(EducationRecordsNotExistsError)
+    ).rejects.toBeInstanceOf(RecordsNotExistsError)
   })
 })

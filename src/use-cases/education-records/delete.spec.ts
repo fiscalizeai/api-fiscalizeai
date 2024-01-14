@@ -3,7 +3,7 @@ import { expect, it, describe, beforeEach } from 'vitest'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
 import { DeleteEducationRecordUseCase } from './delete'
-import { EducationRecordsNotExistsError } from '../errors/education/education-not-exists'
+import { RecordsNotExistsError } from '../errors/records/records-not-exists'
 
 let educationRecordsRepository: InMemoryEducationRecordsRepository
 let usersRepository: InMemoryUsersRepository
@@ -75,6 +75,6 @@ describe('Delete Education Record Use Case', () => {
       sut.execute({
         id: 'wrong-id',
       }),
-    ).rejects.toBeInstanceOf(EducationRecordsNotExistsError)
+    ).rejects.toBeInstanceOf(RecordsNotExistsError)
   })
 })

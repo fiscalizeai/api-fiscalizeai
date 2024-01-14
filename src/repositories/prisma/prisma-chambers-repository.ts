@@ -65,16 +65,22 @@ export class PrismaChambersRepository implements ChambersRepository {
   }
 
   async countUsersByChamber(id: string) {
-    const count = await prisma.chamber.count({
+    const count = await prisma.user.count({
       where: {
-        users: {
-          every: {
-            chamber_id: id,
-          },
-        },
+        chamber_id: id,
       },
     })
 
     return count
+  }
+
+  async fetchUserInChamber(id: string) {
+    const users = await prisma.user.findMany({
+      where: {
+        chamber_id: id,
+      },
+    })
+
+    return users
   }
 }

@@ -10,6 +10,7 @@ import {
   deleteChamberSchema,
   editChamberSchema,
   fetchChamberSchema,
+  getChamberSchema,
 } from './schemas'
 import { getById } from './get-by-id'
 
@@ -40,5 +41,5 @@ export async function chambersRoutes(app: FastifyInstance) {
     fetch,
   )
 
-  app.get('/chambers/:chamberId', getById)
+  app.get('/chambers/:chamberId', { schema: getChamberSchema }, getById)
 }

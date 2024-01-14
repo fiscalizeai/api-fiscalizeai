@@ -1,4 +1,4 @@
-import { Prisma, Chamber, User } from '@prisma/client'
+import { Prisma, Chamber, User, $Enums } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { ChambersRepository } from '../chambers'
 import { ChamberFilters } from '@/utils/filters-type'
@@ -99,5 +99,11 @@ export class InMemoryChambersRepository implements ChambersRepository {
     })
 
     return count
+  }
+
+  async fetchUserInChamber(id: string) {
+    const users = this.users.filter((item) => item.chamber_id === id)
+
+    return users
   }
 }
