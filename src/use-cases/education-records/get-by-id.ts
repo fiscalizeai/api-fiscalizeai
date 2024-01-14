@@ -1,6 +1,6 @@
 import { Education } from '@prisma/client'
 import { EducationRecordsRepository } from '@/repositories/education'
-import { EducationRecordsNotExistsError } from '../errors/education/education-not-exists'
+import { RecordsNotExistsError } from '../errors/records/records-not-exists'
 
 interface GetEducationRecordByIdUseCaseRequest {
   id: string
@@ -19,7 +19,7 @@ export class GetEducationRecordByIdUseCase {
     const educationRecord = await this.educationRecordsRepository.findById(id)
 
     if (!educationRecord) {
-      throw new EducationRecordsNotExistsError()
+      throw new RecordsNotExistsError()
     }
 
     return {

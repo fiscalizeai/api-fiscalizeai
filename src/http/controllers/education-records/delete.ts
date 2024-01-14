@@ -1,4 +1,4 @@
-import { EducationRecordsNotExistsError } from '@/use-cases/errors/education/education-not-exists'
+import { RecordsNotExistsError } from '@/use-cases/errors/records/records-not-exists'
 import { makeDeleteUseCase } from '@/use-cases/factories/education-records/make-delete-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
@@ -20,7 +20,7 @@ export async function deleteEducationRecord(
       id: educationId,
     })
   } catch (error) {
-    if (error instanceof EducationRecordsNotExistsError) {
+    if (error instanceof RecordsNotExistsError) {
       return reply.status(409).send({ message: error.message })
     }
 

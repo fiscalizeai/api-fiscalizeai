@@ -1,4 +1,4 @@
-import { EducationRecordsNotExistsError } from '@/use-cases/errors/education/education-not-exists'
+import { RecordsNotExistsError } from '@/use-cases/errors/records/records-not-exists'
 import { makeGetByIdUseCase } from '@/use-cases/factories/education-records/make-get-by-id'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
@@ -21,7 +21,7 @@ export async function getById(request: FastifyRequest, reply: FastifyReply) {
       educationRecord,
     })
   } catch (error) {
-    if (error instanceof EducationRecordsNotExistsError) {
+    if (error instanceof RecordsNotExistsError) {
       return reply.status(404).send({ message: error.message })
     }
 
