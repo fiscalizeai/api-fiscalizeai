@@ -1,8 +1,7 @@
 import { EducationRecordsRepository } from '@/repositories/education'
 import { Education, Prisma } from '@prisma/client'
-import { parseISO } from 'date-fns'
-import { EducationRecordsNotExistsError } from '../errors/education/education-not-exists'
-import { EducationRecordsAlreadyExistsError } from '../errors/education/education-record-already-exists'
+import { RecordsNotExistsError } from '../errors/records/records-not-exists'
+import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 
 interface EditEducationRecordUseCaseRequest {
   id: string
@@ -23,7 +22,7 @@ export class EditEducationRecordUseCase {
     const educationRecord = await this.educationRecordRepository.findById(id)
 
     if (!educationRecord) {
-      throw new EducationRecordsNotExistsError()
+      throw new RecordsNotExistsError()
     }
 
     const { month } = data
@@ -43,7 +42,7 @@ export class EditEducationRecordUseCase {
       existingEducationRecordInMonth &&
       existingEducationRecordInMonth.id !== id
     ) {
-      throw new EducationRecordsAlreadyExistsError()
+      throw new RecordsAlreadyExistsError()
     }
 
     const educationRecordEdited = await this.educationRecordRepository.edit(

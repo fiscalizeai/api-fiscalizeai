@@ -2,8 +2,8 @@ import { Education } from '@prisma/client'
 import { EducationRecordsRepository } from '@/repositories/education'
 import { UsersRepository } from '@/repositories/users'
 import { ChambersRepository } from '@/repositories/chambers'
-import { EducationRecordsAlreadyExistsError } from '../errors/education/education-record-already-exists'
-import { InvalidUserOrChamberError } from '../errors/education/invalid-user-or-chamber'
+import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
+import { InvalidUserOrChamberError } from '../errors/records/invalid-user-or-chamber'
 
 interface RegisterEducationRecordsUseCaseRequest {
   month: Date
@@ -50,7 +50,7 @@ export class RegisterEducationRecordsUseCase {
       hasSameEducationRecord.chamber_id === chamberId
     ) {
       console.log(hasSameEducationRecord.chamber_id, chamberId, 'ids')
-      throw new EducationRecordsAlreadyExistsError()
+      throw new RecordsAlreadyExistsError()
     }
 
     const monthUTC = new Date(month)

@@ -3,8 +3,8 @@ import { expect, it, describe, beforeEach } from 'vitest'
 import { RegisterEducationRecordsUseCase } from './register'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
-import { InvalidUserOrChamberError } from '../errors/education/invalid-user-or-chamber'
-import { EducationRecordsAlreadyExistsError } from '../errors/education/education-record-already-exists'
+import { InvalidUserOrChamberError } from '../errors/records/invalid-user-or-chamber'
+import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 
 let educationRecordsRepository: InMemoryEducationRecordsRepository
 let usersRepository: InMemoryUsersRepository
@@ -101,6 +101,6 @@ describe('Register Education Records Use Case', () => {
         chamberId: user.chamber_id,
         userId: user.id,
       }),
-    ).rejects.toBeInstanceOf(EducationRecordsAlreadyExistsError)
+    ).rejects.toBeInstanceOf(RecordsAlreadyExistsError)
   })
 })

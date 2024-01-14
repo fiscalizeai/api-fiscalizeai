@@ -1,7 +1,7 @@
 import { InMemoryEducationRecordsRepository } from '@/repositories/in-memory/in-memory-education-records-repository'
 import { expect, it, describe, beforeEach } from 'vitest'
 import { EditEducationRecordUseCase } from './edit'
-import { EducationRecordsAlreadyExistsError } from '../errors/education/education-record-already-exists'
+import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
 
@@ -78,6 +78,6 @@ describe('Edit Education Record Use Case', () => {
           month: new Date('01/01/2024'),
         },
       }),
-    ).rejects.toBeInstanceOf(EducationRecordsAlreadyExistsError)
+    ).rejects.toBeInstanceOf(RecordsAlreadyExistsError)
   })
 })

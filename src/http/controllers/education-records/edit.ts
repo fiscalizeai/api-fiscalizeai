@@ -1,5 +1,5 @@
-import { EducationRecordsNotExistsError } from '@/use-cases/errors/education/education-not-exists'
-import { EducationRecordsAlreadyExistsError } from '@/use-cases/errors/education/education-record-already-exists'
+import { RecordsNotExistsError } from '@/use-cases/errors/records/records-not-exists'
+import { RecordsAlreadyExistsError } from '@/use-cases/errors/records/record-already-exists'
 import { makeEditUseCase } from '@/use-cases/factories/education-records/make-edit-use-case'
 import { error } from 'console'
 import { FastifyReply, FastifyRequest } from 'fastify'
@@ -33,10 +33,10 @@ export async function edit(request: FastifyRequest, reply: FastifyReply) {
 
     return reply.status(204).send()
   } catch (error) {
-    if (error instanceof EducationRecordsAlreadyExistsError) {
+    if (error instanceof RecordsAlreadyExistsError) {
       return reply.status(409).send({ message: error.message })
     }
-    if (error instanceof EducationRecordsNotExistsError) {
+    if (error instanceof RecordsNotExistsError) {
       return reply.status(404).send({ message: error.message })
     }
   }
