@@ -49,7 +49,6 @@ export class RegisterEducationRecordsUseCase {
       hasSameEducationRecord &&
       hasSameEducationRecord.chamber_id === chamberId
     ) {
-      console.log(hasSameEducationRecord.chamber_id, chamberId, 'ids')
       throw new RecordsAlreadyExistsError()
     }
 

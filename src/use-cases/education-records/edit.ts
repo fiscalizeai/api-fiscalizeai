@@ -36,8 +36,6 @@ export class EditEducationRecordUseCase {
         await this.educationRecordRepository.findByMonthAndYear(date)
     }
 
-    console.log(existingEducationRecordInMonth, 'dupli')
-
     if (
       existingEducationRecordInMonth &&
       existingEducationRecordInMonth.id !== id
