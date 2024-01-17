@@ -1,4 +1,4 @@
-export class ChamberNotFound extends Error {
+export class ChamberNotFoundError extends Error {
   constructor() {
     super('Chamber not found.')
   }

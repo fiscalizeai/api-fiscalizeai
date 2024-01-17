@@ -2,7 +2,8 @@ import { Education } from '@prisma/client'
 import { EducationRecordsRepository } from '@/repositories/education'
 import { UsersRepository } from '@/repositories/users'
 import { ChambersRepository } from '@/repositories/chambers'
-import { ResouceNotFoundError } from '../errors/resource-not-found'
+import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
+import { InvalidUserOrChamberError } from '../errors/records/invalid-user-or-chamber'
 
 interface RegisterEducationRecordsUseCaseRequest {
   month: Date
@@ -38,19 +39,20 @@ export class RegisterEducationRecordsUseCase {
     const user = await this.usersRepository.findById(userId)
 
     if (!chamber && !user) {
-      throw new ResouceNotFoundError() // TODO: Colocar o erro certo
+      throw new InvalidUserOrChamberError()
     }
 
     const hasSameEducationRecord =
       await this.educationRecordsRepository.findByMonthAndYear(month)
 
-    if (hasSameEducationRecord) {
-      throw new ResouceNotFoundError() // TODO: Colocar o erro certo
+    if (
+      hasSameEducationRecord &&
+      hasSameEducationRecord.chamber_id === chamberId
+    ) {
+      throw new RecordsAlreadyExistsError()
     }
 
     const monthUTC = new Date(month)
-
-    console.log(month)
 
     const education_record = await this.educationRecordsRepository.register({
       month: monthUTC,

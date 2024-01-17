@@ -1,8 +1,7 @@
 import { Prisma, Education, Chamber, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { EducationRecordsRepository } from '../education'
-import { EducationFilters } from '@/utils/filters-type'
-import { isSameMonth, isSameYear } from 'date-fns'
+import { isSameMonth, isSameYear, parseISO } from 'date-fns'
 
 export class InMemoryEducationRecordsRepository
   implements EducationRecordsRepository
@@ -32,9 +31,7 @@ export class InMemoryEducationRecordsRepository
 
   async findByMonthAndYear(date: Date) {
     const education_record = this.items.find(
-      (item) =>
-        item.month.getMonth() === date.getMonth() &&
-        item.month.getFullYear() === date.getFullYear(),
+      (item) => isSameMonth(item.month, date) && isSameYear(item.month, date),
     )
 
     if (!education_record) {
@@ -57,7 +54,7 @@ export class InMemoryEducationRecordsRepository
       filteredEducationRecords = filteredEducationRecords.filter(
         (educationRecord) =>
           isSameMonth(educationRecord.month, date) &&
-          isSameMonth(educationRecord.month, date),
+          isSameYear(educationRecord.month, date),
       )
     }
 
@@ -67,5 +64,40 @@ export class InMemoryEducationRecordsRepository
     )
 
     return paginatedEducationRecords
+  }
+
+  async edit(educationId: string, data: Education) {
+    const educationRecordIndex = this.items.findIndex(
+      (item) => item.id === educationId,
+    )
+
+    if (educationRecordIndex < 0) {
+      return null
+    }
+
+    const updatedEducationRecord = {
+      ...this.items[educationRecordIndex],
+      ...data,
+    }
+
+    return updatedEducationRecord
+  }
+
+  async findById(id: string) {
+    const educationRecord = this.items.find((item) => item.id === id)
+
+    if (!educationRecord) {
+      return null
+    }
+
+    return educationRecord
+  }
+
+  async delete(id: string) {
+    const educationRecordIndex = this.items.findIndex((item) => item.id === id)
+
+    if (educationRecordIndex > -1) {
+      this.items.splice(educationRecordIndex, 1)
+    }
   }
 }

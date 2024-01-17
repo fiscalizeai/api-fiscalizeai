@@ -1,7 +1,7 @@
 import { expect, it, describe, beforeEach } from 'vitest'
 import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
-import { ResouceNotFoundError } from '../errors/resource-not-found'
 import { GetChamberByIdUseCase } from './get-by-id'
+import { ChamberNotFoundError } from '../errors/chambers/chamber-not-found'
 
 let chamberRepository: InMemoryChambersRepository
 let sut: GetChamberByIdUseCase
@@ -31,6 +31,6 @@ describe('Get Chamber By Id Use Case', () => {
       sut.execute({
         id: 'wrong-id',
       }),
-    ).rejects.toBeInstanceOf(ResouceNotFoundError)
+    ).rejects.toBeInstanceOf(ChamberNotFoundError)
   })
 })

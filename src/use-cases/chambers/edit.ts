@@ -1,6 +1,6 @@
 import { Chamber, Prisma } from '@prisma/client'
 import { ChambersRepository } from '@/repositories/chambers'
-import { ChamberNotFound } from '../errors/chambers/chamber-not-found'
+import { ChamberNotFoundError } from '../errors/chambers/chamber-not-found'
 import { ChamberAlreadyExistsError } from '../errors/chambers/chamber-already-exists'
 
 interface EditChamberUseCaseRequest {
@@ -22,7 +22,7 @@ export class EditChamberUseCase {
     const chamber = await this.chamberRepository.findById(id)
 
     if (!chamber) {
-      throw new ChamberNotFound()
+      throw new ChamberNotFoundError()
     }
 
     const { name, state } = data

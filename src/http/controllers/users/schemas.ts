@@ -117,12 +117,12 @@ export const profileSchema: FastifySchema = {
 export const refreshTokenSchema: FastifySchema = {
   description: 'PATCH a refresh token user',
   tags: ['auth'],
-  body: {
-    type: 'object',
-    properties: {
-      refreshToken: { type: 'string' },
-    },
-  },
+  // body: {
+  //   type: 'object',
+  //   properties: {
+  //     refreshToken: { type: 'string' },
+  //   },
+  // },
   response: {
     200: {
       description: 'Successful',
@@ -245,73 +245,6 @@ export const fetchUsersSchema: FastifySchema = {
       city: { type: 'string' },
       state: { type: 'string' },
     },
-  },
-  response: {
-    200: {
-      description: 'Successful response result is array of users',
-      type: 'object',
-      properties: {
-        users: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'string' },
-              name: { type: 'string' },
-              email: { type: 'string' },
-              cpf: { type: 'string' },
-              permission: { type: 'string' },
-              role: { type: 'string' },
-              chamber_id: { type: 'string' },
-              created_at: { type: 'string' },
-            },
-          },
-        },
-      },
-    },
-  },
-}
-
-export const fetchUserByNameSchema: FastifySchema = {
-  description: 'GET a fetch all users by name',
-  tags: ['user'],
-  params: {
-    query: { type: 'string' },
-    page: { type: 'number' },
-  },
-  response: {
-    200: {
-      description: 'Successful response result is array of users',
-      type: 'object',
-      properties: {
-        users: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'string' },
-              name: { type: 'string' },
-              email: { type: 'string' },
-              cpf: { type: 'string' },
-              permission: { type: 'string' },
-              role: { type: 'string' },
-              chamber_id: { type: 'string' },
-              created_at: { type: 'string' },
-            },
-          },
-        },
-      },
-    },
-  },
-}
-
-export const fetchUsersByChamberSchema: FastifySchema = {
-  description: 'GET a fetch all users by chamber',
-  tags: ['user'],
-  params: {
-    city: { type: 'string' },
-    state: { type: 'string' },
-    page: { type: 'number' },
   },
   response: {
     200: {

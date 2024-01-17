@@ -1,7 +1,7 @@
 import { ChambersRepository } from '@/repositories/chambers'
 import { UsersRepository } from '@/repositories/users'
 import { ChamberAssociatedUsers } from '../errors/chambers/chamber-associated-users'
-import { ChamberNotFound } from '../errors/chambers/chamber-not-found'
+import { ChamberNotFoundError } from '../errors/chambers/chamber-not-found'
 
 interface DeleteChamberUseCaseRequest {
   id: string
@@ -17,7 +17,7 @@ export class DeleteChamberUseCase {
     const chamber = await this.chamberRepository.findById(id)
 
     if (!chamber) {
-      throw new ChamberNotFound()
+      throw new ChamberNotFoundError()
     }
 
     const usersCount = await this.chamberRepository.countUsersByChamber(id)

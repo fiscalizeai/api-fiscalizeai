@@ -6,7 +6,7 @@ export async function fetch(request: FastifyRequest, reply: FastifyReply) {
   const fetchQuerySchema = z.object({
     page: z.coerce.number().min(1).default(1),
     items: z.coerce.number().default(20),
-    date: z.date().optional(),
+    date: z.coerce.date().optional(),
   })
 
   const { page, items, date } = fetchQuerySchema.parse(request.query)

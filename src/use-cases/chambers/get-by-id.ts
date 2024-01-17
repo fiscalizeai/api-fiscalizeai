@@ -1,6 +1,6 @@
-import { Chamber } from '@prisma/client'
-import { ResouceNotFoundError } from '../errors/resource-not-found'
+import { Chamber, User } from '@prisma/client'
 import { ChambersRepository } from '@/repositories/chambers'
+import { ChamberNotFoundError } from '../errors/chambers/chamber-not-found'
 
 interface GetChamberByIdUseCaseRequest {
   id: string
@@ -8,6 +8,8 @@ interface GetChamberByIdUseCaseRequest {
 
 interface GetChamberByIdCaseResponse {
   chamber: Chamber | null
+  users: User[]
+  usersCount: number
 }
 
 export class GetChamberByIdUseCase {
@@ -17,13 +19,17 @@ export class GetChamberByIdUseCase {
     id,
   }: GetChamberByIdUseCaseRequest): Promise<GetChamberByIdCaseResponse> {
     const chamber = await this.chamberRepository.findById(id)
+    const usersCount = await this.chamberRepository.countUsersByChamber(id)
+    const users = await this.chamberRepository.fetchUserInChamber(id)
 
     if (!chamber) {
-      throw new ResouceNotFoundError() // TODO: Switch this error for correctly error.
+      throw new ChamberNotFoundError()
     }
 
     return {
       chamber,
+      usersCount,
+      users,
     }
   }
 }

@@ -3,7 +3,8 @@ import { expect, it, describe, beforeEach } from 'vitest'
 import { RegisterEducationRecordsUseCase } from './register'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
-import { ResouceNotFoundError } from '../errors/resource-not-found'
+import { InvalidUserOrChamberError } from '../errors/records/invalid-user-or-chamber'
+import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 
 let educationRecordsRepository: InMemoryEducationRecordsRepository
 let usersRepository: InMemoryUsersRepository
@@ -54,7 +55,7 @@ describe('Register Education Records Use Case', () => {
   it('not should be able register education record', async () => {
     await expect(() =>
       sut.execute({
-        month: new Date('09/01/2024'),
+        month: new Date('01/01/2024'),
         schools: 10,
         students: 24789,
         teachers: 256,
@@ -62,7 +63,7 @@ describe('Register Education Records Use Case', () => {
         chamberId: 'wrong-id',
         userId: 'wrong-id',
       }),
-    ).rejects.toBeInstanceOf(ResouceNotFoundError)
+    ).rejects.toBeInstanceOf(InvalidUserOrChamberError)
   })
 
   it('not should be able register education record with same month in', async () => {
@@ -81,7 +82,7 @@ describe('Register Education Records Use Case', () => {
     })
 
     await sut.execute({
-      month: new Date('09/01/2024'),
+      month: new Date('01/01/2024'),
       schools: 10,
       students: 24789,
       teachers: 256,
@@ -92,7 +93,7 @@ describe('Register Education Records Use Case', () => {
 
     await expect(() =>
       sut.execute({
-        month: new Date('09/01/2024'),
+        month: new Date('01/01/2024'),
         schools: 10,
         students: 24789,
         teachers: 256,
@@ -100,6 +101,6 @@ describe('Register Education Records Use Case', () => {
         chamberId: user.chamber_id,
         userId: user.id,
       }),
-    ).rejects.toBeInstanceOf(ResouceNotFoundError)
+    ).rejects.toBeInstanceOf(RecordsAlreadyExistsError)
   })
 })

@@ -56,6 +56,8 @@ export async function authenticate(
         sameSite: true,
         httpOnly: true,
       })
+      .header('Access-Control-Allow-Origin', 'http://localhost:3000')
+      .header('Access-Control-Allow-Credentials', 'true')
       .status(200)
       .send({
         authMetadata: {
@@ -69,15 +71,15 @@ export async function authenticate(
           password: undefined,
         },
       })
-  } catch (err) {
-    if (err instanceof InvalidCredentialsError) {
-      return reply.status(400).send({ message: err.message })
+  } catch (error) {
+    if (error instanceof InvalidCredentialsError) {
+      return reply.status(400).send({ message: error.message })
     }
 
-    if (err instanceof ResouceNotFoundError) {
-      return reply.status(400).send({ message: err.message })
+    if (error instanceof ResouceNotFoundError) {
+      return reply.status(400).send({ message: error.message })
     } // TODO: Erro de acesso negado a plataforma
 
-    throw err
+    throw error
   }
 }

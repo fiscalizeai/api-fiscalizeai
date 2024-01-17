@@ -96,27 +96,35 @@ export const fetchChamberSchema: FastifySchema = {
   },
 }
 
-export const fetchChamberByStateSchema: FastifySchema = {
-  description: 'GET fetch all chambers',
+export const getChamberSchema: FastifySchema = {
+  description: 'GET chamber by id',
   tags: ['chamber'],
   params: {
-    state: { type: 'string' },
-    page: { type: 'number' },
+    chamberId: { type: 'string' },
   },
   response: {
     200: {
-      description: 'Successful response result is array of chambers',
+      description: 'Successful',
       type: 'object',
       properties: {
-        chambers: {
+        chamber: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            name: { type: 'string' },
+            state: { type: 'string' },
+            created_at: { type: 'string' },
+          },
+        },
+        usersCount: { type: 'number' },
+        users: {
           type: 'array',
           items: {
             type: 'object',
             properties: {
               id: { type: 'string' },
+              email: { type: 'string' },
               name: { type: 'string' },
-              state: { type: 'string' },
-              created_at: { type: 'string' },
             },
           },
         },

@@ -10,7 +10,9 @@ import {
   deleteChamberSchema,
   editChamberSchema,
   fetchChamberSchema,
+  getChamberSchema,
 } from './schemas'
+import { getById } from './get-by-id'
 
 export async function chambersRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJwt)
@@ -38,4 +40,6 @@ export async function chambersRoutes(app: FastifyInstance) {
     { onRequest: [verifyUserRole('ADMIN')], schema: fetchChamberSchema },
     fetch,
   )
+
+  app.get('/chambers/:chamberId', { schema: getChamberSchema }, getById)
 }

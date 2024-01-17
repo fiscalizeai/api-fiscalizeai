@@ -9,4 +9,10 @@ export interface EducationRecordsRepository {
     items?: number,
     date?: Date,
   ): Promise<Education[] | null>
+  edit(
+    educationId: string,
+    data: Prisma.EducationUncheckedUpdateInput,
+  ): Promise<Education | null>
+  findById(id: string): Promise<Education | null>
+  delete(id: string): Promise<void>
 }

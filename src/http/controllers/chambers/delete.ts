@@ -1,5 +1,5 @@
 import { ChamberAssociatedUsers } from '@/use-cases/errors/chambers/chamber-associated-users'
-import { ChamberNotFound } from '@/use-cases/errors/chambers/chamber-not-found'
+import { ChamberNotFoundError } from '@/use-cases/errors/chambers/chamber-not-found'
 import { makeDeleteUseCase } from '@/use-cases/factories/chambers/make-delete-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
@@ -21,7 +21,7 @@ export async function deleteChamber(
       id: chamberId,
     })
   } catch (error) {
-    if (error instanceof ChamberNotFound) {
+    if (error instanceof ChamberNotFoundError) {
       return reply.status(409).send({ message: error.message })
     }
 
