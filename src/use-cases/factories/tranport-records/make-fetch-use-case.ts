@@ -1,5 +1,5 @@
 import { PrismaTransportRecordsRepository } from '@/repositories/prisma/prisma-transport-records-repository'
-import { FetchTransportRecordsUseCase } from '@/use-cases/education-records/fetch'
+import { FetchTransportRecordsUseCase } from '@/use-cases/transport-records/fetch'
 
 export function makeFetchUseCase() {
   const transportRecordsRepository = new PrismaTransportRecordsRepository()

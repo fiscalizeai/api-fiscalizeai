@@ -2,20 +2,21 @@ import { expect, it, describe, beforeEach } from 'vitest'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
 import { RecordsNotExistsError } from '../errors/records/records-not-exists'
-import { InMemoryTransportRecordsRepository } from '@/repositories/in-memory/in-memory-transport-records-repository'
 import { DeleteTransportRecordUseCase } from '../transport-records/delete'
+import { InMemoryEducationRecordsRepository } from '@/repositories/in-memory/in-memory-education-records-repository'
+import { DeleteEducationRecordUseCase } from './delete'
 
-let transportRecordsRepository: InMemoryTransportRecordsRepository
+let educationRecordsRepository: InMemoryEducationRecordsRepository
 let usersRepository: InMemoryUsersRepository
 let chambersRepository: InMemoryChambersRepository
-let sut: DeleteTransportRecordUseCase
+let sut: DeleteEducationRecordUseCase
 
-describe('Delete Transport Record Use Case', () => {
+describe('Delete Education Record Use Case', () => {
   beforeEach(async () => {
-    transportRecordsRepository = new InMemoryTransportRecordsRepository()
+    educationRecordsRepository = new InMemoryEducationRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
     chambersRepository = new InMemoryChambersRepository()
-    sut = new DeleteTransportRecordUseCase(transportRecordsRepository)
+    sut = new DeleteEducationRecordUseCase(educationRecordsRepository)
 
     await chambersRepository.create({
       id: 'chamber-01',
@@ -32,37 +33,37 @@ describe('Delete Transport Record Use Case', () => {
       chamber_id: 'chamber-01',
     })
 
-    await transportRecordsRepository.register({
-      id: 'transport-01',
+    await educationRecordsRepository.register({
+      id: 'education-01',
       chamber_id: 'chamber-01',
       month: new Date('01/01/2024'),
-      cars: 100,
-      bus: 1000,
-      machines: 500,
+      schools: 100,
+      students: 1000,
+      teachers: 500,
       total: 50000000,
       user_id: 'user-01',
       created_at: '2024-01-13T00:00:00.000Z',
     })
 
-    await transportRecordsRepository.register({
-      id: 'transport-02',
+    await educationRecordsRepository.register({
+      id: 'education-02',
       chamber_id: 'chamber-01',
       month: new Date('01/02/2024'),
-      cars: 200,
-      bus: 1000,
-      machines: 500,
+      schools: 200,
+      students: 1000,
+      teachers: 500,
       total: 50000000,
       user_id: 'user-01',
       created_at: '2024-02-13T00:00:00.000Z',
     })
   })
 
-  it('should be able delete transport record', async () => {
+  it('should be able delete education record', async () => {
     await sut.execute({
-      id: 'transport-01',
+      id: 'education-01',
     })
 
-    const transportRecords = await transportRecordsRepository.fetch(
+    const transportRecords = await educationRecordsRepository.fetch(
       1,
       'chamber-01',
     )
@@ -70,7 +71,7 @@ describe('Delete Transport Record Use Case', () => {
     expect(transportRecords).toHaveLength(1)
   })
 
-  it('not should be able delete transport record with wrong id', async () => {
+  it('not should be able delete education record with wrong id', async () => {
     await expect(() =>
       sut.execute({
         id: 'wrong-id',

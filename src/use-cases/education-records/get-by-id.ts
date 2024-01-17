@@ -1,29 +1,29 @@
-import { Transport } from '@prisma/client'
+import { Education } from '@prisma/client'
+import { EducationRecordsRepository } from '@/repositories/education'
 import { RecordsNotExistsError } from '../errors/records/records-not-exists'
-import { TransportRecordsRepository } from '@/repositories/transport'
 
-interface GetTransportRecordByIdUseCaseRequest {
+interface GetEducationRecordByIdUseCaseRequest {
   id: string
 }
 
-interface GetTransportRecordByIdCaseResponse {
-  transportRecord: Transport | null
+interface GetEducationRecordByIdCaseResponse {
+  educationRecord: Education | null
 }
 
-export class GetTransportRecordByIdUseCase {
-  constructor(private transportRecordsRepository: TransportRecordsRepository) {}
+export class GetEducationRecordByIdUseCase {
+  constructor(private educationRecordsRepository: EducationRecordsRepository) {}
 
   async execute({
     id,
-  }: GetTransportRecordByIdUseCaseRequest): Promise<GetTransportRecordByIdCaseResponse> {
-    const transportRecord = await this.transportRecordsRepository.findById(id)
+  }: GetEducationRecordByIdUseCaseRequest): Promise<GetEducationRecordByIdCaseResponse> {
+    const educationRecord = await this.educationRecordsRepository.findById(id)
 
-    if (!transportRecord) {
+    if (!educationRecord) {
       throw new RecordsNotExistsError()
     }
 
     return {
-      transportRecord,
+      educationRecord,
     }
   }
 }

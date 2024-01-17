@@ -1,24 +1,24 @@
-import { InMemoryEducationRecordsRepository } from '@/repositories/in-memory/in-memory-education-records-repository'
 import { expect, it, describe, beforeEach } from 'vitest'
-import { RegisterEducationRecordsUseCase } from './register'
+import { RegisterTransportRecordsUseCase } from './register'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
 import { InvalidUserOrChamberError } from '../errors/records/invalid-user-or-chamber'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
+import { InMemoryTransportRecordsRepository } from '@/repositories/in-memory/in-memory-transport-records-repository'
 
-let educationRecordsRepository: InMemoryEducationRecordsRepository
+let transportRecordsRepository: InMemoryTransportRecordsRepository
 let usersRepository: InMemoryUsersRepository
 let chambersRepository: InMemoryChambersRepository
-let sut: RegisterEducationRecordsUseCase
+let sut: RegisterTransportRecordsUseCase
 
-describe('Register Education Records Use Case', () => {
+describe('Register Transport Records Use Case', () => {
   beforeEach(async () => {
-    educationRecordsRepository = new InMemoryEducationRecordsRepository()
+    transportRecordsRepository = new InMemoryTransportRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
     chambersRepository = new InMemoryChambersRepository()
 
-    sut = new RegisterEducationRecordsUseCase(
-      educationRecordsRepository,
+    sut = new RegisterTransportRecordsUseCase(
+      transportRecordsRepository,
       usersRepository,
       chambersRepository,
     )
@@ -39,26 +39,26 @@ describe('Register Education Records Use Case', () => {
       chamber_id: chamber.id,
     })
 
-    const { education_record } = await sut.execute({
+    const { transport_record } = await sut.execute({
       month: new Date('2024-02'),
-      schools: 10,
-      students: 24789,
-      teachers: 256,
+      cars: 10,
+      bus: 24789,
+      machines: 256,
       total: 563.0 * 100,
       chamberId: user.chamber_id,
       userId: user.id,
     })
 
-    expect(education_record.id).toEqual(expect.any(String))
+    expect(transport_record.id).toEqual(expect.any(String))
   })
 
   it('not should be able register education record', async () => {
     await expect(() =>
       sut.execute({
         month: new Date('01/01/2024'),
-        schools: 10,
-        students: 24789,
-        teachers: 256,
+        cars: 10,
+        bus: 24789,
+        machines: 256,
         total: 563.0 * 100,
         chamberId: 'wrong-id',
         userId: 'wrong-id',
@@ -83,9 +83,9 @@ describe('Register Education Records Use Case', () => {
 
     await sut.execute({
       month: new Date('01/01/2024'),
-      schools: 10,
-      students: 24789,
-      teachers: 256,
+      cars: 10,
+      bus: 24789,
+      machines: 256,
       total: 563.0 * 100,
       chamberId: user.chamber_id,
       userId: user.id,
@@ -94,9 +94,9 @@ describe('Register Education Records Use Case', () => {
     await expect(() =>
       sut.execute({
         month: new Date('01/01/2024'),
-        schools: 10,
-        students: 24789,
-        teachers: 256,
+        cars: 10,
+        bus: 24789,
+        machines: 256,
         total: 563.0 * 100,
         chamberId: user.chamber_id,
         userId: user.id,

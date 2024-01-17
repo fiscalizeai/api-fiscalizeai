@@ -1,34 +1,34 @@
 import { expect, it, describe, beforeEach } from 'vitest'
-import { InMemoryEducationRecordsRepository } from '@/repositories/in-memory/in-memory-education-records-repository'
 import { RecordsNotExistsError } from '../errors/records/records-not-exists'
-import { GetEducationRecordByIdUseCase } from './get-by-id'
+import { GetTransportRecordByIdUseCase } from './get-by-id'
+import { InMemoryTransportRecordsRepository } from '@/repositories/in-memory/in-memory-transport-records-repository'
 
-let educationRecordsRepository: InMemoryEducationRecordsRepository
-let sut: GetEducationRecordByIdUseCase
+let transportRecordsRepository: InMemoryTransportRecordsRepository
+let sut: GetTransportRecordByIdUseCase
 
-describe('Get Education Record By Id Use Case', () => {
+describe('Get Transport Record By Id Use Case', () => {
   beforeEach(async () => {
-    educationRecordsRepository = new InMemoryEducationRecordsRepository()
-    sut = new GetEducationRecordByIdUseCase(educationRecordsRepository)
+    transportRecordsRepository = new InMemoryTransportRecordsRepository()
+    sut = new GetTransportRecordByIdUseCase(transportRecordsRepository)
 
-    await educationRecordsRepository.register({
-      id: 'education-01',
+    await transportRecordsRepository.register({
+      id: 'transport-01',
       chamber_id: 'chamber-01',
       user_id: 'user-01',
       month: '2024/01',
-      schools: 1,
-      students: 1,
-      teachers: 1,
+      cars: 1,
+      bus: 1,
+      machines: 1,
       total: 1,
     })
   })
 
-  it('should be able get education record by id', async () => {
-    const { educationRecord } = await sut.execute({
-      id: 'education-01',
+  it('should be able get transport record by id', async () => {
+    const { transportRecord } = await sut.execute({
+      id: 'transport-01',
     })
 
-    expect(educationRecord?.id).toEqual(expect.any(String))
+    expect(transportRecord?.id).toEqual(expect.any(String))
   })
 
   it('not should be able get chamber with wrong id', async () => {

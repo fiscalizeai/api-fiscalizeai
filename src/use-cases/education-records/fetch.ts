@@ -1,40 +1,40 @@
-import { Transport } from '@prisma/client'
+import { EducationRecordsRepository } from '@/repositories/education'
+import { Education } from '@prisma/client'
 import { ResouceNotFoundError } from '../errors/resource-not-found'
-import { TransportRecordsRepository } from '@/repositories/transport'
 
-interface FetchTransportRecordsUseCaseRequest {
+interface FetchEducationRecordsUseCaseRequest {
   page: number
   chamberId: string
   items: number
   date?: Date
 }
 
-interface FetchTransportRecordsUseCaseResponse {
-  transportRecords: Transport[]
+interface FetchEducationRecordsUseCaseResponse {
+  educationRecords: Education[]
 }
 
-export class FetchTransportRecordsUseCase {
-  constructor(private transportRecords: TransportRecordsRepository) {}
+export class FetchEducationRecordsUseCase {
+  constructor(private educationRepository: EducationRecordsRepository) {}
 
   async execute({
     page,
     chamberId,
     items,
     date,
-  }: FetchTransportRecordsUseCaseRequest): Promise<FetchTransportRecordsUseCaseResponse> {
-    const transportRecords = await this.transportRecords.fetch(
+  }: FetchEducationRecordsUseCaseRequest): Promise<FetchEducationRecordsUseCaseResponse> {
+    const educationRecords = await this.educationRepository.fetch(
       page,
       chamberId,
       items,
       date,
     )
 
-    if (!transportRecords) {
+    if (!educationRecords) {
       throw new ResouceNotFoundError()
     }
 
     return {
-      transportRecords,
+      educationRecords,
     }
   }
 }

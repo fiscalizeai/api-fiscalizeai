@@ -1,40 +1,40 @@
-import { Education } from '@prisma/client'
-import { EducationRecordsRepository } from '@/repositories/education'
+import { Transport } from '@prisma/client'
 import { UsersRepository } from '@/repositories/users'
 import { ChambersRepository } from '@/repositories/chambers'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InvalidUserOrChamberError } from '../errors/records/invalid-user-or-chamber'
+import { TransportRecordsRepository } from '@/repositories/transport'
 
-interface RegisterEducationRecordsUseCaseRequest {
+interface RegisterTransportRecordsUseCaseRequest {
   month: Date
-  schools: number
-  students: number
-  teachers: number
+  cars: number
+  bus: number
+  machines: number
   total: number
   userId: string
   chamberId: string
 }
 
-interface RegisterEducationRecordsUserCaseResponse {
-  education_record: Education
+interface RegisterTransportRecordsUserCaseResponse {
+  transport_record: Transport
 }
 
-export class RegisterEducationRecordsUseCase {
+export class RegisterTransportRecordsUseCase {
   constructor(
-    private educationRecordsRepository: EducationRecordsRepository,
+    private transportRecordsRepository: TransportRecordsRepository,
     private usersRepository: UsersRepository,
     private chambersRepository: ChambersRepository,
   ) {}
 
   async execute({
     month,
-    schools,
-    students,
-    teachers,
+    cars,
+    bus,
+    machines,
     total,
     chamberId,
     userId,
-  }: RegisterEducationRecordsUseCaseRequest): Promise<RegisterEducationRecordsUserCaseResponse> {
+  }: RegisterTransportRecordsUseCaseRequest): Promise<RegisterTransportRecordsUserCaseResponse> {
     const chamber = await this.chambersRepository.findById(chamberId)
     const user = await this.usersRepository.findById(userId)
 
@@ -42,30 +42,30 @@ export class RegisterEducationRecordsUseCase {
       throw new InvalidUserOrChamberError()
     }
 
-    const hasSameEducationRecord =
-      await this.educationRecordsRepository.findByMonthAndYear(month)
+    const hasSameTransportRecord =
+      await this.transportRecordsRepository.findByMonthAndYear(month)
 
     if (
-      hasSameEducationRecord &&
-      hasSameEducationRecord.chamber_id === chamberId
+      hasSameTransportRecord &&
+      hasSameTransportRecord.chamber_id === chamberId
     ) {
       throw new RecordsAlreadyExistsError()
     }
 
     const monthUTC = new Date(month)
 
-    const education_record = await this.educationRecordsRepository.register({
+    const transport_record = await this.transportRecordsRepository.register({
       month: monthUTC,
-      schools,
-      students,
-      teachers,
+      cars,
+      bus,
+      machines,
       total,
       chamber_id: chamberId,
       user_id: userId,
     })
 
     return {
-      education_record,
+      transport_record,
     }
   }
 }
