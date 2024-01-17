@@ -1,21 +1,21 @@
 import { expect, it, describe, beforeEach } from 'vitest'
+import { EditTransportRecordUseCase } from './edit'
+import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
-import { RecordsNotExistsError } from '../errors/records/records-not-exists'
 import { InMemoryTransportRecordsRepository } from '@/repositories/in-memory/in-memory-transport-records-repository'
-import { DeleteTransportRecordUseCase } from '../transport-records/delete'
 
 let transportRecordsRepository: InMemoryTransportRecordsRepository
 let usersRepository: InMemoryUsersRepository
 let chambersRepository: InMemoryChambersRepository
-let sut: DeleteTransportRecordUseCase
+let sut: EditTransportRecordUseCase
 
-describe('Delete Transport Record Use Case', () => {
+describe('Edit Transport Record Use Case', () => {
   beforeEach(async () => {
     transportRecordsRepository = new InMemoryTransportRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
     chambersRepository = new InMemoryChambersRepository()
-    sut = new DeleteTransportRecordUseCase(transportRecordsRepository)
+    sut = new EditTransportRecordUseCase(transportRecordsRepository)
 
     await chambersRepository.create({
       id: 'chamber-01',
@@ -45,7 +45,7 @@ describe('Delete Transport Record Use Case', () => {
     })
 
     await transportRecordsRepository.register({
-      id: 'transport-02',
+      id: 'education-02',
       chamber_id: 'chamber-01',
       month: new Date('01/02/2024'),
       cars: 200,
@@ -57,24 +57,27 @@ describe('Delete Transport Record Use Case', () => {
     })
   })
 
-  it('should be able delete transport record', async () => {
-    await sut.execute({
+  it('should be able edit education record', async () => {
+    const { transportRecordEdited } = await sut.execute({
       id: 'transport-01',
+      data: {
+        cars: 150,
+        updated_at: new Date('2024-01-14'),
+      },
     })
 
-    const transportRecords = await transportRecordsRepository.fetch(
-      1,
-      'chamber-01',
-    )
-
-    expect(transportRecords).toHaveLength(1)
+    expect(transportRecordEdited).not.toEqual(null)
+    expect.objectContaining({ transportRecordEdited })
   })
 
-  it('not should be able delete transport record with wrong id', async () => {
+  it('not should be able edit chamber with date exactly month', async () => {
     await expect(() =>
       sut.execute({
-        id: 'wrong-id',
+        id: 'education-02',
+        data: {
+          month: new Date('01/01/2024'),
+        },
       }),
-    ).rejects.toBeInstanceOf(RecordsNotExistsError)
+    ).rejects.toBeInstanceOf(RecordsAlreadyExistsError)
   })
 })

@@ -3,7 +3,7 @@ import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-user
 import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
 import { RecordsNotExistsError } from '../errors/records/records-not-exists'
 import { InMemoryTransportRecordsRepository } from '@/repositories/in-memory/in-memory-transport-records-repository'
-import { DeleteTransportRecordUseCase } from '../transport-records/delete'
+import { DeleteTransportRecordUseCase } from './delete'
 
 let transportRecordsRepository: InMemoryTransportRecordsRepository
 let usersRepository: InMemoryUsersRepository
@@ -45,7 +45,7 @@ describe('Delete Transport Record Use Case', () => {
     })
 
     await transportRecordsRepository.register({
-      id: 'transport-02',
+      id: 'education-02',
       chamber_id: 'chamber-01',
       month: new Date('01/02/2024'),
       cars: 200,
@@ -62,12 +62,12 @@ describe('Delete Transport Record Use Case', () => {
       id: 'transport-01',
     })
 
-    const transportRecords = await transportRecordsRepository.fetch(
+    const educationRecords = await transportRecordsRepository.fetch(
       1,
       'chamber-01',
     )
 
-    expect(transportRecords).toHaveLength(1)
+    expect(educationRecords).toHaveLength(1)
   })
 
   it('not should be able delete transport record with wrong id', async () => {
