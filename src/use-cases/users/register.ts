@@ -8,7 +8,7 @@ interface RegisterUseCaseRequest {
   email: string
   cpf: string
   role: Role
-  chamberId: string
+  chamberId?: string
 }
 
 interface RegisterUserCaseResponse {
@@ -35,14 +35,27 @@ export class RegisterUseCase {
       throw new UserAlreadyExistsError()
     }
 
-    const user = await this.userRepository.create({
-      name,
-      email,
-      cpf,
-      password: password_hash,
-      role,
-      chamber_id: chamberId,
-    })
+    let user
+
+    if (chamberId) {
+      user = await this.userRepository.create({
+        name,
+        email,
+        cpf,
+        password: password_hash,
+        role,
+        chamber_id: chamberId,
+      })
+    } else {
+      user = await this.userRepository.create({
+        name,
+        email,
+        cpf,
+        password: password_hash,
+        role,
+        chamber_id: '',
+      })
+    }
 
     return {
       user,
