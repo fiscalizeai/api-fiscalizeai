@@ -12,6 +12,7 @@ import swaggerFile from './swagger.json'
 import { educationRecordsRoutes } from './http/controllers/education-records/routes'
 import { transportRecordsRoutes } from './http/controllers/transport-records/routes'
 import { personRecordsRoutes } from './http/controllers/person-records/routes'
+import { healthRecordsRoutes } from './http/controllers/health-records/routes'
 
 export const app = fastify()
 
@@ -47,6 +48,7 @@ app.register(chambersRoutes)
 app.register(educationRecordsRoutes)
 app.register(transportRecordsRoutes)
 app.register(personRecordsRoutes)
+app.register(healthRecordsRoutes)
 
 app.setErrorHandler((error, _request, reply) => {
   if (error instanceof ZodError) {
