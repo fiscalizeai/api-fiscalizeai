@@ -33,28 +33,24 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
     },
   )
 
-  return (
-    reply
-      .setCookie('refreshToken', refreshToken, {
-        path: '/',
-        secure: true,
-        sameSite: true,
-        httpOnly: true,
-      })
-      // .header('Access-Control-Allow-Origin', 'http://localhost:3000')
-      // .header('Access-Control-Allow-Credentials', 'true')
-      .status(200)
-      .send({
-        authMetadata: {
-          token,
-          expireIn: 600,
-          refreshToken,
-        },
-        user: {
-          ...user,
-          cpf: undefined,
-          password: undefined,
-        },
-      })
-  )
+  return reply
+    .setCookie('refreshToken', refreshToken, {
+      path: '/',
+      secure: true,
+      sameSite: true,
+      httpOnly: true,
+    })
+    .status(200)
+    .send({
+      authMetadata: {
+        token,
+        expireIn: 600,
+        refreshToken,
+      },
+      user: {
+        ...user,
+        cpf: undefined,
+        password: undefined,
+      },
+    })
 }

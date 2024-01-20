@@ -19,6 +19,7 @@ export const app = fastify()
 app.register(cors, {
   origin: true,
   credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['set-cookie'],
 })
 
@@ -29,7 +30,7 @@ app.register(fastifyJwt, {
     signed: false,
   },
   sign: {
-    expiresIn: '10m',
+    expiresIn: '1d', // 10M
   },
 })
 

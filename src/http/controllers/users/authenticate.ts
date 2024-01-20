@@ -31,7 +31,7 @@ export async function authenticate(
       {
         sign: {
           sub: user.id,
-          expiresIn: '10m',
+          expiresIn: '1d',
         },
       },
     )
@@ -56,8 +56,6 @@ export async function authenticate(
         sameSite: true,
         httpOnly: true,
       })
-      .header('Access-Control-Allow-Origin', 'http://localhost:3000')
-      .header('Access-Control-Allow-Credentials', 'true')
       .status(200)
       .send({
         authMetadata: {
