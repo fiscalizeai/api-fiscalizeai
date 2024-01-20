@@ -1,5 +1,7 @@
+import { edit } from '@/http/controllers/users/edit'
 import { UserFilters } from '@/utils/filters-type'
 import { Prisma, User } from '@prisma/client'
+import { number, string } from 'zod'
 
 export interface UsersRepository {
   create(data: Prisma.UserUncheckedCreateInput): Promise<User>
@@ -10,7 +12,15 @@ export interface UsersRepository {
     page: number,
     items?: number,
     filters?: UserFilters,
-  ): Promise<User[] | null>
+  ): Promise<{
+    users: User[]
+    pagination: {
+      totalItems: number
+      pageSize: number
+      pageNumber: number
+      pageItems: number
+    }
+  } | null>
   edit(id: string, data: Prisma.UserUncheckedUpdateInput): Promise<User | null>
   delete(id: string): Promise<void>
 }

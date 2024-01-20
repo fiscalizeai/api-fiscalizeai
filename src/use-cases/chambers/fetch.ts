@@ -11,6 +11,12 @@ interface FetchUseCaseRequest {
 
 interface FetchUseCaseResponse {
   chambers: Chamber[]
+  pagination: {
+    totalItems: number
+    pageSize: number
+    pageNumber: number
+    pageItems: number
+  }
 }
 
 export class FetchUseCase {
@@ -33,14 +39,21 @@ export class FetchUseCase {
       (key) => params[key] === undefined && delete params[key],
     )
 
-    const chambers = await this.chamberRepository.fetch(page, items, params)
+    const chambersReturn = await this.chamberRepository.fetch(
+      page,
+      items,
+      params,
+    )
 
-    if (!chambers) {
+    if (!chambersReturn) {
       throw new ResouceNotFoundError() // TODO: Switch this error for correctly error.
     }
 
+    const { chambers, pagination } = chambersReturn
+
     return {
       chambers,
+      pagination,
     }
   }
 }

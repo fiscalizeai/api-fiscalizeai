@@ -62,8 +62,19 @@ export class InMemoryEducationRecordsRepository
       (page - 1) * items,
       page * items,
     )
+    const totalItems = filteredEducationRecords.length
+    const totalPages = Math.ceil(totalItems / items)
+    const pageItems = page === totalPages ? totalPages % items : items
 
-    return paginatedEducationRecords
+    return {
+      education: paginatedEducationRecords,
+      pagination: {
+        totalItems,
+        pageSize: items,
+        pageNumber: page,
+        pageItems,
+      },
+    }
   }
 
   async edit(educationId: string, data: Education) {

@@ -63,9 +63,19 @@ export class InMemoryUsersRepository implements UsersRepository {
       )
     }
 
+    const totalItems = filteredUsers.length
     const paginatedUsers = filteredUsers.slice((page - 1) * items, page * items)
-
-    return paginatedUsers
+    const totalPages = Math.ceil(totalItems / items)
+    const pageItems = page === totalPages ? totalPages % items : items
+    return {
+      users: paginatedUsers,
+      pagination: {
+        totalItems,
+        pageSize: items,
+        pageNumber: page,
+        pageItems,
+      },
+    }
   }
 
   async delete(id: string) {

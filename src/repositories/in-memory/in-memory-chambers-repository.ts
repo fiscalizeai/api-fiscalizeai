@@ -1,4 +1,4 @@
-import { Prisma, Chamber, User, $Enums } from '@prisma/client'
+import { Prisma, Chamber, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { ChambersRepository } from '../chambers'
 import { ChamberFilters } from '@/utils/filters-type'
@@ -33,13 +33,23 @@ export class InMemoryChambersRepository implements ChambersRepository {
         chamber.name.toLocaleLowerCase().includes(name.toLocaleLowerCase()),
       )
     }
-
+    const totalItems = filteredChambers.length
     const paginatedChambers = filteredChambers.slice(
       (page - 1) * items,
       page * items,
     )
+    const totalPages = Math.ceil(totalItems / items)
+    const pageItems = page === totalPages ? totalPages % items : items
 
-    return paginatedChambers
+    return {
+      chambers: paginatedChambers,
+      pagination: {
+        totalItems,
+        pageSize: items,
+        pageNumber: page,
+        pageItems,
+      },
+    }
   }
 
   async findByName(name: string, state: string) {

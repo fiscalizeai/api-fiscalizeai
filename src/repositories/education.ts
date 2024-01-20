@@ -8,7 +8,15 @@ export interface EducationRecordsRepository {
     chamberId: string,
     items?: number,
     date?: Date,
-  ): Promise<Education[] | null>
+  ): Promise<{
+    education: Education[]
+    pagination: {
+      totalItems: number
+      pageSize: number
+      pageNumber: number
+      pageItems: number
+    }
+  } | null>
   edit(
     educationId: string,
     data: Prisma.EducationUncheckedUpdateInput,

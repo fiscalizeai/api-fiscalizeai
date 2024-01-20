@@ -15,6 +15,12 @@ interface FetchUserUseCaseRequest {
 
 interface FetchUserUseCaseResponse {
   users: User[]
+  pagination: {
+    totalItems: number
+    pageSize: number
+    pageNumber: number
+    pageItems: number
+  }
 }
 
 export class FetchUserUseCase {
@@ -45,14 +51,17 @@ export class FetchUserUseCase {
       (key) => params[key] === undefined && delete params[key],
     )
 
-    const users = await this.userRepository.fetch(page, items, params)
+    const usersReturn = await this.userRepository.fetch(page, items, params)
 
-    if (!users) {
+    if (!usersReturn) {
       throw new ResouceNotFoundError()
     }
 
+    const { users, pagination } = usersReturn
+
     return {
       users,
+      pagination,
     }
   }
 }

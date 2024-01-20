@@ -63,7 +63,21 @@ export class PrismaEducationRecordsRepository
     items: number,
     date?: Date | undefined,
   ) {
-    const education_records = await prisma.education.findMany({
+    const totalItems = await prisma.education.count({
+      where: {
+        chamber_id: chamberId,
+        AND: [
+          {
+            month: {
+              gte: date && startOfMonth(date),
+              lte: date && endOfMonth(date),
+            },
+          },
+        ],
+      },
+    })
+
+    const education = await prisma.education.findMany({
       where: {
         chamber_id: chamberId,
         AND: [
@@ -79,6 +93,17 @@ export class PrismaEducationRecordsRepository
       skip: (page - 1) * items,
     })
 
-    return education_records
+    const totalPages = Math.ceil(totalItems / items)
+    const pageItems = page === totalPages ? totalItems % items : items
+
+    return {
+      education,
+      pagination: {
+        totalItems,
+        pageSize: items,
+        pageNumber: page,
+        pageItems,
+      },
+    }
   }
 }

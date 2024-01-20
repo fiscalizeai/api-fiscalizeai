@@ -10,7 +10,12 @@ interface FetchEducationRecordsUseCaseRequest {
 }
 
 interface FetchEducationRecordsUseCaseResponse {
-  educationRecords: Education[]
+  education: Education[]
+  pagination: {
+    totalItems: number
+    pageSize: number
+    pageNumber: number
+  }
 }
 
 export class FetchEducationRecordsUseCase {
@@ -33,8 +38,11 @@ export class FetchEducationRecordsUseCase {
       throw new ResouceNotFoundError()
     }
 
+    const { education, pagination } = educationRecords
+
     return {
-      educationRecords,
+      education,
+      pagination,
     }
   }
 }

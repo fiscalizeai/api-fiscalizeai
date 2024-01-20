@@ -22,7 +22,7 @@ export async function fetch(request: FastifyRequest, reply: FastifyReply) {
 
   const fetchUsersUseCase = makeFetchUseCase()
 
-  const { users } = await fetchUsersUseCase.execute({
+  const { users, pagination } = await fetchUsersUseCase.execute({
     page,
     items,
     city,
@@ -34,5 +34,6 @@ export async function fetch(request: FastifyRequest, reply: FastifyReply) {
 
   return reply.status(200).send({
     users,
+    pagination,
   })
 }

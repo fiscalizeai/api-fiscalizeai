@@ -10,7 +10,15 @@ export interface ChambersRepository {
     page: number,
     items?: number,
     filters?: ChamberFilters,
-  ): Promise<Chamber[]>
+  ): Promise<{
+    chambers: Chamber[]
+    pagination: {
+      totalItems: number
+      pageSize: number
+      pageNumber: number
+      pageItems: number
+    }
+  } | null>
 
   findByName(name: string, state: string): Promise<Chamber | null>
 

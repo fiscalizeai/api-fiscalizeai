@@ -32,6 +32,13 @@ export class PrismaChambersRepository implements ChambersRepository {
   async fetch(page: number, items: number, filters?: ChamberFilters) {
     const { name, state } = filters || {}
 
+    const totalItems = await prisma.chamber.count({
+      where: {
+        name: name ? { contains: name, mode: 'insensitive' } : undefined,
+        state: state ? { contains: state, mode: 'insensitive' } : undefined,
+      },
+    })
+
     const chambers = await prisma.chamber.findMany({
       where: {
         name: name ? { contains: name, mode: 'insensitive' } : undefined,
@@ -40,8 +47,18 @@ export class PrismaChambersRepository implements ChambersRepository {
       take: items,
       skip: (page - 1) * items,
     })
+    const totalPages = Math.ceil(totalItems / items)
+    const pageItems = page === totalPages ? totalItems % items : items
 
-    return chambers
+    return {
+      chambers,
+      pagination: {
+        totalItems,
+        pageSize: items,
+        pageNumber: page,
+        pageItems,
+      },
+    }
   }
 
   async findByName(name: string, state: string) {

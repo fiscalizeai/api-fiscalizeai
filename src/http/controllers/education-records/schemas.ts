@@ -22,7 +22,7 @@ export const RegisterEducationRecordsSchema: FastifySchema = {
 }
 
 export const FetchEducationRecordsSchema: FastifySchema = {
-  description: 'GET a fetch education record',
+  description: 'GET a fetch all education record',
   tags: ['education'],
   querystring: {
     type: 'object',
@@ -38,7 +38,7 @@ export const FetchEducationRecordsSchema: FastifySchema = {
       description: 'Successful',
       type: 'object',
       properties: {
-        educationRecords: {
+        education: {
           type: 'array',
           items: {
             type: 'object',
@@ -51,6 +51,15 @@ export const FetchEducationRecordsSchema: FastifySchema = {
               month: { type: 'string' },
               user_id: { type: 'string' },
             },
+          },
+        },
+        pagination: {
+          type: 'object',
+          properties: {
+            totalItems: { type: 'number' },
+            pageSize: { type: 'number' },
+            pageNumber: { type: 'number' },
+            pageItems: { type: 'number' },
           },
         },
       },

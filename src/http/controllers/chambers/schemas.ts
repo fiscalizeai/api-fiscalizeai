@@ -22,7 +22,7 @@ export const chamberCreateSchema: FastifySchema = {
 }
 
 export const editChamberSchema: FastifySchema = {
-  description: 'GET fetch all chambers',
+  description: 'PUT edit a chamber',
   tags: ['chamber'],
   params: {
     chamberId: { type: 'string' },
@@ -89,6 +89,15 @@ export const fetchChamberSchema: FastifySchema = {
               state: { type: 'string' },
               created_at: { type: 'string' },
             },
+          },
+        },
+        pagination: {
+          type: 'object',
+          properties: {
+            totalItems: { type: 'number' },
+            pageSize: { type: 'number' },
+            pageNumber: { type: 'number' },
+            pageItems: { type: 'number' },
           },
         },
       },

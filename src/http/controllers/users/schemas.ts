@@ -267,6 +267,15 @@ export const fetchUsersSchema: FastifySchema = {
             },
           },
         },
+        pagination: {
+          type: 'object',
+          properties: {
+            totalItems: { type: 'number' },
+            pageSize: { type: 'number' },
+            pageNumber: { type: 'number' },
+            pageItems: { type: 'number' },
+          },
+        },
       },
     },
   },
