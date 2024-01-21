@@ -18,7 +18,7 @@ describe('Edit Users Use Case', () => {
       email: 'johndoe@example.com',
       password: await hash('123.456.789-10', 6),
       role: 'MEMBER',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
     })
   })
 

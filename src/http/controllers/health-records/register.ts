@@ -1,5 +1,5 @@
 import { RecordsAlreadyExistsError } from '@/use-cases/errors/records/record-already-exists'
-import { InvalidUserOrChamberError } from '@/use-cases/errors/records/invalid-user-or-chamber'
+import { InvalidUserOrCityError } from '@/use-cases/errors/records/invalid-user-or-city'
 import { makeRegisterUseCase } from '@/use-cases/factories/health-records/make-register-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
@@ -18,7 +18,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     request.body,
   )
 
-  const { sub, chamber } = request.user
+  const { sub, city } = request.user
 
   try {
     const registerUseCase = makeRegisterUseCase()
@@ -28,7 +28,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       doctors,
       services,
       total,
-      chamberId: chamber,
+      cityId: city,
       userId: sub,
     })
 
@@ -37,7 +37,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     if (error instanceof RecordsAlreadyExistsError) {
       return reply.status(409).send({ message: error.message })
     }
-    if (error instanceof InvalidUserOrChamberError) {
+    if (error instanceof InvalidUserOrCityError) {
       return reply.status(404).send({ message: error.message })
     }
 

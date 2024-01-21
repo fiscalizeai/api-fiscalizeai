@@ -2,7 +2,7 @@ import { makeEditUseCase } from '@/use-cases/factories/users/make-edit-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-const Permission = ['ACCEPTED', 'DENIED'] as const
+const Status = ['ACCEPTED', 'DENIED'] as const
 const Role = ['ADMIN', 'MEMBER', 'SECRETARY'] as const
 
 export async function edit(request: FastifyRequest, reply: FastifyReply) {
@@ -16,7 +16,7 @@ export async function edit(request: FastifyRequest, reply: FastifyReply) {
       cpf: z.string().optional(),
       email: z.string().optional(),
       password: z.string().optional(),
-      permission: z.enum(Permission).optional(),
+      status: z.enum(Status).optional(),
       role: z.enum(Role).optional(),
     }),
   })

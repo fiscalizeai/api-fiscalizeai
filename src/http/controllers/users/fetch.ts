@@ -3,7 +3,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 const roleEnum = ['ADMIN', 'SECRETARY', 'MEMBER'] as const
-const permissionEnum = ['ACCEPTED', 'DENIED'] as const
+const statusEnum = ['ACCEPTED', 'DENIED'] as const
 
 export async function fetch(request: FastifyRequest, reply: FastifyReply) {
   const fetchQuerySchema = z.object({
@@ -14,10 +14,10 @@ export async function fetch(request: FastifyRequest, reply: FastifyReply) {
     name: z.string().optional(),
     cpf: z.string().optional(),
     role: z.enum(roleEnum).optional(),
-    permission: z.enum(permissionEnum).optional(),
+    status: z.enum(statusEnum).optional(),
   })
 
-  const { page, items, city, name, permission, role, state } =
+  const { page, items, city, name, status, role, state } =
     fetchQuerySchema.parse(request.query)
 
   const fetchUsersUseCase = makeFetchUseCase()
@@ -27,7 +27,7 @@ export async function fetch(request: FastifyRequest, reply: FastifyReply) {
     items,
     city,
     name,
-    permission,
+    status,
     role,
     state,
   })

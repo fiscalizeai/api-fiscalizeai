@@ -1,5 +1,5 @@
 type Role = 'ADMIN' | 'MEMBER' | 'SECRETARY'
-type Permission = 'ACCEPTED' | 'DENIED'
+type Status = 'ACCEPTED' | 'DENIED'
 
 export interface UserFilters {
   name?: string
@@ -7,10 +7,10 @@ export interface UserFilters {
   city?: string
   state?: string
   role?: Role
-  permission?: Permission
+  status?: Status
 }
 
-export interface ChamberFilters {
+export interface CityFilters {
   name?: string
   state?: string
 }

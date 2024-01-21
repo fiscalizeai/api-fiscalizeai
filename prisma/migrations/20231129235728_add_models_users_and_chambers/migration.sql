@@ -2,7 +2,7 @@
 CREATE TYPE "Role" AS ENUM ('ADMIN', 'MEMBER', 'SECRETARY');
 
 -- CreateEnum
-CREATE TYPE "Permission" AS ENUM ('ACCEPTED', 'DENIED');
+CREATE TYPE "Status" AS ENUM ('ACCEPTED', 'DENIED');
 
 -- CreateTable
 CREATE TABLE "users" (
@@ -11,7 +11,7 @@ CREATE TABLE "users" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "created_At" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "permission" "Permission" NOT NULL DEFAULT 'ACCEPTED',
+    "status" "Status" NOT NULL DEFAULT 'ACCEPTED',
     "role" "Role" NOT NULL DEFAULT 'MEMBER',
     "chamberId" TEXT,
 

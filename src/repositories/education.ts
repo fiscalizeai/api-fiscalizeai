@@ -5,7 +5,7 @@ export interface EducationRecordsRepository {
   findByMonthAndYear(date: Date): Promise<Education | null>
   fetch(
     page: number,
-    chamberId: string,
+    cityId: string,
     items?: number,
     date?: Date,
   ): Promise<{

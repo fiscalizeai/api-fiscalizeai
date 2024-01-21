@@ -13,9 +13,9 @@
 - [X] Deve ser possivel buscar usuario pelo cpf como administrador;
 - [X] Deve ser possivel buscar informacoes de um usuario como administrador;
 - [X] Deve ser possivel visualizar demonstrativos como vereador(a);
-- [ ] Deve ser possivel cadastrar demonstrativos como secreatario(a);
-- [ ] Deve ser possivel editar demonstrativos como secreatario(a);
-- [ ] Deve ser possivel apagar demonstrativos como secreatario(a);
+- [X] Deve ser possivel cadastrar demonstrativos como secreatario(a);
+- [X] Deve ser possivel editar demonstrativos como secreatario(a);
+- [X] Deve ser possivel apagar demonstrativos como secreatario(a);
 - [ ] Deve ser possivel comparar demonstrativos
 - [ ] Deve ser possivel buscar informações do BB
 - [ ] Deve ser possivel comparar informações do mes no banco BB
@@ -43,3 +43,4 @@
 - [X] /sessions para /auth/login
 - [X] /token/refresh para /auth/refresh
 - [X] Na rota get users colocar query no params
+- [X] Mudar persmission para status

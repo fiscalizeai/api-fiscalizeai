@@ -58,13 +58,13 @@ export class PrismaHealthRecordsRepository implements HealthRecordsRepository {
 
   async fetch(
     page: number,
-    chamberId: string,
+    cityId: string,
     items: number,
     date?: Date | undefined,
   ) {
     const health_records = await prisma.health.findMany({
       where: {
-        chamber_id: chamberId,
+        city_id: cityId,
         AND: [
           {
             month: {

@@ -5,7 +5,7 @@ export interface HealthRecordsRepository {
   findByMonthAndYear(date: Date): Promise<Health | null>
   fetch(
     page: number,
-    chamberId: string,
+    cityId: string,
     items?: number,
     date?: Date,
   ): Promise<Health[] | null>

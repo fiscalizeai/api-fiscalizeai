@@ -5,7 +5,7 @@ declare module '@fastify/jwt' {
     user: {
       sub: string
       role: 'ADMIN' | 'MEMBER' | 'SECRETARY'
-      chamber: string
+      city: string
     } // user type is return type of 'request.user' object
   }
 }

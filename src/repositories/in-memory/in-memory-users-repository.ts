@@ -37,7 +37,7 @@ export class InMemoryUsersRepository implements UsersRepository {
   }
 
   async fetch(page: number, items = 20, filters?: UserFilters) {
-    const { name, cpf, permission, role } = filters || {}
+    const { name, cpf, status, role } = filters || {}
 
     let filteredUsers = this.items
 
@@ -57,10 +57,8 @@ export class InMemoryUsersRepository implements UsersRepository {
       filteredUsers = filteredUsers.filter((user) => user.role === role)
     }
 
-    if (permission) {
-      filteredUsers = filteredUsers.filter(
-        (user) => user.permission === permission,
-      )
+    if (status) {
+      filteredUsers = filteredUsers.filter((user) => user.status === status)
     }
 
     const totalItems = filteredUsers.length
@@ -79,10 +77,10 @@ export class InMemoryUsersRepository implements UsersRepository {
   }
 
   async delete(id: string) {
-    const chamberIndex = this.items.findIndex((item) => item.id === id)
+    const cityIndex = this.items.findIndex((item) => item.id === id)
 
-    if (chamberIndex > -1) {
-      this.items.splice(chamberIndex, 1)
+    if (cityIndex > -1) {
+      this.items.splice(cityIndex, 1)
     }
   }
 
@@ -105,8 +103,8 @@ export class InMemoryUsersRepository implements UsersRepository {
       email: data.email,
       password: data.password,
       cpf: data.cpf,
-      chamber_id: data.chamber_id,
-      permission: data.permission ?? 'ACCEPTED',
+      city_id: data.city_id,
+      status: data.status ?? 'ACCEPTED',
       role: 'ADMIN',
       created_at: new Date(),
     }

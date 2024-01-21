@@ -1,4 +1,4 @@
-import { Prisma, Transport, Chamber, User } from '@prisma/client'
+import { Prisma, Transport, City, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { isSameMonth, isSameYear } from 'date-fns'
 import { TransportRecordsRepository } from '../transport'
@@ -7,7 +7,7 @@ export class InMemoryTransportRecordsRepository
   implements TransportRecordsRepository
 {
   public items: Transport[] = []
-  public chambers: Chamber[] = []
+  public citys: City[] = []
   public users: User[] = []
 
   async register(data: Prisma.TransportUncheckedCreateInput) {
@@ -18,7 +18,7 @@ export class InMemoryTransportRecordsRepository
       bus: data.bus,
       machines: data.machines,
       total: data.total,
-      chamber_id: data.chamber_id,
+      city_id: data.city_id,
       user_id: data.user_id,
       created_at: new Date(),
       updated_at: new Date(),
@@ -41,9 +41,9 @@ export class InMemoryTransportRecordsRepository
     return transport_record
   }
 
-  async fetch(page: number, chamberId: string, items = 20, date?: Date) {
+  async fetch(page: number, cityId: string, items = 20, date?: Date) {
     let filteredTransportRecords = this.items.filter(
-      (transportRecord) => transportRecord.chamber_id === chamberId,
+      (transportRecord) => transportRecord.city_id === cityId,
     )
 
     if (!filteredTransportRecords) {

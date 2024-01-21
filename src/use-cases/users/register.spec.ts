@@ -19,7 +19,7 @@ describe('Register Users Use Case', () => {
       email: 'edurodrigues@example.com',
       cpf: '123.456.789-10',
       role: 'MEMBER',
-      chamberId: 'chamber-1',
+      cityId: 'city-1',
     })
 
     const isPasswordCorrectlyHashed = await compare(
@@ -38,7 +38,7 @@ describe('Register Users Use Case', () => {
       email: 'edurodrigues@example.com',
       cpf,
       role: 'MEMBER',
-      chamberId: 'chamber-1',
+      cityId: 'city-1',
     })
 
     await expect(() =>
@@ -47,7 +47,7 @@ describe('Register Users Use Case', () => {
         email: 'edurodrigues@example.com',
         cpf,
         role: 'MEMBER',
-        chamberId: 'chamber-1',
+        cityId: 'city-1',
       }),
     ).rejects.toBeInstanceOf(UserAlreadyExistsError)
   })
@@ -60,7 +60,7 @@ describe('Register Users Use Case', () => {
       email,
       cpf: '08636379652',
       role: 'MEMBER',
-      chamberId: 'chamber-1',
+      cityId: 'city-1',
     })
 
     await expect(() =>
@@ -69,7 +69,7 @@ describe('Register Users Use Case', () => {
         email,
         cpf: '08636379652',
         role: 'MEMBER',
-        chamberId: 'chamber-1',
+        cityId: 'city-1',
       }),
     ).rejects.toBeInstanceOf(UserAlreadyExistsError)
   })
@@ -80,7 +80,7 @@ describe('Register Users Use Case', () => {
       email: 'edurodrigues@example.com',
       cpf: '08636379652',
       role: 'MEMBER',
-      chamberId: 'chamber-1',
+      cityId: 'city-1',
     })
 
     expect(user.id).toEqual(expect.any(String))

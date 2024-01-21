@@ -106,7 +106,7 @@ export const getHealthRecordByIdSchema: FastifySchema = {
             doctors: { type: 'number' },
             services: { type: 'number' },
             total: { type: 'number' },
-            chamber_id: { type: 'string' },
+            city_id: { type: 'string' },
             user_id: { type: 'string' },
             created_at: { type: 'string' },
             updated_at: { type: 'string' },

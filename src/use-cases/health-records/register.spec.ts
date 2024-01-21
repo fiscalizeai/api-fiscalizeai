@@ -2,13 +2,13 @@ import { InMemoryHealthRecordsRepository } from '@/repositories/in-memory/in-mem
 import { expect, it, describe, beforeEach } from 'vitest'
 import { RegisterHealthRecordsUseCase } from './register' // Troquei de "education" para "health"
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
-import { InvalidUserOrChamberError } from '../errors/records/invalid-user-or-chamber'
+import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-citys-repository'
+import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 
 let healthRecordsRepository: InMemoryHealthRecordsRepository // Troquei de "education" para "health"
 let usersRepository: InMemoryUsersRepository
-let chambersRepository: InMemoryChambersRepository
+let citysRepository: InMemoryCitysRepository
 let sut: RegisterHealthRecordsUseCase // Troquei de "education" para "health"
 
 describe('Register Health Records Use Case', () => {
@@ -16,19 +16,19 @@ describe('Register Health Records Use Case', () => {
   beforeEach(async () => {
     healthRecordsRepository = new InMemoryHealthRecordsRepository() // Troquei de "education" para "health"
     usersRepository = new InMemoryUsersRepository()
-    chambersRepository = new InMemoryChambersRepository()
+    citysRepository = new InMemoryCitysRepository()
 
     sut = new RegisterHealthRecordsUseCase( // Troquei de "education" para "health"
       healthRecordsRepository, // Troquei de "education" para "health"
       usersRepository,
-      chambersRepository,
+      citysRepository,
     )
   })
 
   it('should be able register health record', async () => {
     // Troquei de "education" para "health"
-    const chamber = await chambersRepository.create({
-      id: 'chamber-01',
+    const city = await citysRepository.create({
+      id: 'city-01',
       name: 'Sacramento',
       state: 'MG',
     })
@@ -38,7 +38,7 @@ describe('Register Health Records Use Case', () => {
       email: 'johndoe@example.com',
       cpf: '12345678910',
       password: '12345678910',
-      chamber_id: chamber.id,
+      city_id: city.id,
     })
 
     const { health_record } = await sut.execute({
@@ -47,7 +47,7 @@ describe('Register Health Records Use Case', () => {
       doctors: 10,
       services: 24789,
       total: 563.0 * 100,
-      chamberId: user.chamber_id,
+      cityId: user.city_id,
       userId: user.id,
     })
 
@@ -62,16 +62,16 @@ describe('Register Health Records Use Case', () => {
         doctors: 10,
         services: 24789,
         total: 563.0 * 100,
-        chamberId: 'wrong-id',
+        cityId: 'wrong-id',
         userId: 'wrong-id',
       }),
-    ).rejects.toBeInstanceOf(InvalidUserOrChamberError)
+    ).rejects.toBeInstanceOf(InvalidUserOrCityError)
   })
 
   it('not should be able register health record with same month in', async () => {
     // Troquei de "education" para "health"
-    const chamber = await chambersRepository.create({
-      id: 'chamber-01',
+    const city = await citysRepository.create({
+      id: 'city-01',
       name: 'Sacramento',
       state: 'MG',
     })
@@ -81,7 +81,7 @@ describe('Register Health Records Use Case', () => {
       email: 'johndoe@example.com',
       cpf: '12345678910',
       password: '12345678910',
-      chamber_id: chamber.id,
+      city_id: city.id,
     })
 
     await sut.execute({
@@ -90,7 +90,7 @@ describe('Register Health Records Use Case', () => {
       doctors: 10,
       services: 24789,
       total: 563.0 * 100,
-      chamberId: user.chamber_id,
+      cityId: user.city_id,
       userId: user.id,
     })
 
@@ -100,7 +100,7 @@ describe('Register Health Records Use Case', () => {
         doctors: 10,
         services: 24789,
         total: 563.0 * 100,
-        chamberId: user.chamber_id,
+        cityId: user.city_id,
         userId: user.id,
       }),
     ).rejects.toBeInstanceOf(RecordsAlreadyExistsError)

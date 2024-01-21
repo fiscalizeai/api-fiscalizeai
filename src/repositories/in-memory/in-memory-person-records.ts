@@ -1,4 +1,4 @@
-import { Prisma, Person, Chamber, User } from '@prisma/client'
+import { Prisma, Person, City, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { PersonRecordsRepository } from '../person'
 import { isSameMonth, isSameYear } from 'date-fns'
@@ -7,7 +7,7 @@ export class InMemoryPersonRecordsRepository
   implements PersonRecordsRepository
 {
   public items: Person[] = []
-  public chambers: Chamber[] = []
+  public citys: City[] = []
   public users: User[] = []
 
   async register(data: Prisma.PersonUncheckedCreateInput) {
@@ -18,7 +18,7 @@ export class InMemoryPersonRecordsRepository
       headcounts: data.headcounts,
       staffs: data.staffs,
       total: data.total,
-      chamber_id: data.chamber_id,
+      city_id: data.city_id,
       user_id: data.user_id,
       created_at: new Date(),
       updated_at: new Date(),
@@ -41,9 +41,9 @@ export class InMemoryPersonRecordsRepository
     return person_record
   }
 
-  async fetch(page: number, chamberId: string, items = 20, date?: Date) {
+  async fetch(page: number, cityId: string, items = 20, date?: Date) {
     let filteredPersonRecords = this.items.filter(
-      (personRecord) => personRecord.chamber_id === chamberId,
+      (personRecord) => personRecord.city_id === cityId,
     )
 
     if (!filteredPersonRecords) {

@@ -26,6 +26,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.post('/auth/login', { schema: authenticateSchema }, authenticate)
 
   app.patch('/auth/refresh', { schema: refreshTokenSchema }, refresh)
+
   app.get(
     '/profile',
     { onRequest: [verifyJwt], schema: profileSchema },

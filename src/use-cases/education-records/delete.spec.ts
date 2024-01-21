@@ -1,24 +1,24 @@
 import { expect, it, describe, beforeEach } from 'vitest'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
+import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-citys-repository'
 import { RecordsNotExistsError } from '../errors/records/records-not-exists'
 import { InMemoryEducationRecordsRepository } from '@/repositories/in-memory/in-memory-education-records-repository'
 import { DeleteEducationRecordUseCase } from './delete'
 
 let educationRecordsRepository: InMemoryEducationRecordsRepository
 let usersRepository: InMemoryUsersRepository
-let chambersRepository: InMemoryChambersRepository
+let citysRepository: InMemoryCitysRepository
 let sut: DeleteEducationRecordUseCase
 
 describe('Delete Education Record Use Case', () => {
   beforeEach(async () => {
     educationRecordsRepository = new InMemoryEducationRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
-    chambersRepository = new InMemoryChambersRepository()
+    citysRepository = new InMemoryCitysRepository()
     sut = new DeleteEducationRecordUseCase(educationRecordsRepository)
 
-    await chambersRepository.create({
-      id: 'chamber-01',
+    await citysRepository.create({
+      id: 'city-01',
       name: 'Sacramento',
       state: 'MG',
     })
@@ -29,12 +29,12 @@ describe('Delete Education Record Use Case', () => {
       email: 'johndoe@example.com',
       cpf: '12345678910',
       password: '12345678910',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
     })
 
     await educationRecordsRepository.register({
       id: 'education-01',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
       month: new Date('01/01/2024'),
       schools: 100,
       students: 1000,
@@ -46,7 +46,7 @@ describe('Delete Education Record Use Case', () => {
 
     await educationRecordsRepository.register({
       id: 'education-02',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
       month: new Date('01/02/2024'),
       schools: 200,
       students: 1000,
@@ -64,7 +64,7 @@ describe('Delete Education Record Use Case', () => {
 
     const transportRecords = await educationRecordsRepository.fetch(
       1,
-      'chamber-01',
+      'city-01',
     )
 
     expect(transportRecords).toHaveLength(1)

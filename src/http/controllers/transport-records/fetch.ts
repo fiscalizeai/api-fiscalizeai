@@ -11,13 +11,13 @@ export async function fetch(request: FastifyRequest, reply: FastifyReply) {
 
   const { page, items, date } = fetchQuerySchema.parse(request.query)
 
-  const { chamber } = request.user
+  const { city } = request.user
 
   const fetchUseCase = makeFetchUseCase()
 
   const { transportRecords } = await fetchUseCase.execute({
     page,
-    chamberId: chamber,
+    cityId: city,
     items,
     date,
   })

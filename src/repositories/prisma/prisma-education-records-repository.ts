@@ -59,13 +59,13 @@ export class PrismaEducationRecordsRepository
 
   async fetch(
     page: number,
-    chamberId: string,
+    cityId: string,
     items: number,
     date?: Date | undefined,
   ) {
     const totalItems = await prisma.education.count({
       where: {
-        chamber_id: chamberId,
+        city_id: cityId,
         AND: [
           {
             month: {
@@ -79,7 +79,7 @@ export class PrismaEducationRecordsRepository
 
     const education = await prisma.education.findMany({
       where: {
-        chamber_id: chamberId,
+        city_id: cityId,
         AND: [
           {
             month: {

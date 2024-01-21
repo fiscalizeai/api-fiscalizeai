@@ -16,33 +16,33 @@ enum Role {
   SECRETARY
 }
 
-enum Permission {
+enum Status {
   ACCEPTED
   DENIED
 }
 
 model User {
-  id         String     @id() @default(uuid())
+  id         String   @id() @default(uuid())
   name       String
-  email      String     @unique
+  email      String   @unique
   password   String
-  cpf        String     @unique
-  created_at DateTime   @default(now())
-  permission Permission @default(ACCEPTED)
-  role       Role       @default(MEMBER)
+  cpf        String   @unique
+  created_at DateTime @default(now())
+  status     Status   @default(ACCEPTED)
+  role       Role     @default(MEMBER)
 
   education_records Education[]
   health_records    Health[]
   transport_records Transport[]
   person_records    Person[]
 
-  chamber    Chamber @relation(fields: [chamber_id], references: [id])
-  chamber_id String
+  city    City   @relation(fields: [city_id], references: [id])
+  city_id String
 
   @@map("users")
 }
 
-model Chamber {
+model City {
   id         String   @id() @default(cuid())
   name       String
   state      String
@@ -54,7 +54,7 @@ model Chamber {
   health_records    Health[]
   transport_records Transport[]
 
-  @@map("chambers")
+  @@map("citys")
 }
 
 model Education {
@@ -71,8 +71,8 @@ model Education {
   user    User   @relation(fields: [user_id], references: [id])
   user_id String
 
-  chamber    Chamber @relation(fields: [chamber_id], references: [id])
-  chamber_id String
+  city    City   @relation(fields: [city_id], references: [id])
+  city_id String
 
   @@map("education_data")
 }
@@ -91,8 +91,8 @@ model Person {
   user    User   @relation(fields: [user_id], references: [id])
   user_id String
 
-  chamber    Chamber @relation(fields: [chamber_id], references: [id])
-  chamber_id String
+  city    City   @relation(fields: [city_id], references: [id])
+  city_id String
 
   @@map("person_data")
 }
@@ -111,8 +111,8 @@ model Health {
   user    User   @relation(fields: [user_id], references: [id])
   user_id String
 
-  chamber    Chamber @relation(fields: [chamber_id], references: [id])
-  chamber_id String
+  city    City   @relation(fields: [city_id], references: [id])
+  city_id String
 
   @@map("health_data")
 }
@@ -132,6 +132,6 @@ model Transport {
   user    User   @relation(fields: [user_id], references: [id])
   user_id String
 
-  chamber    Chamber @relation(fields: [chamber_id], references: [id])
-  chamber_id String
+  city    City   @relation(fields: [city_id], references: [id])
+  city_id String
 }

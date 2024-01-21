@@ -19,7 +19,7 @@ describe('Fetch Users Use Case', () => {
         password: 'password',
         email: `vereador${i}@example.com`,
         role: 'MEMBER',
-        chamber_id: 'chamber-01',
+        city_id: 'city-01',
       })
     }
 
@@ -38,7 +38,7 @@ describe('Fetch Users Use Case', () => {
       password: 'password',
       email: 'johndoe@example.com',
       role: 'MEMBER',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
     })
 
     await usersRepository.create({
@@ -47,7 +47,7 @@ describe('Fetch Users Use Case', () => {
       password: 'password',
       email: 'joaosilva@example.com',
       role: 'SECRETARY',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
     })
 
     await usersRepository.create({
@@ -56,7 +56,7 @@ describe('Fetch Users Use Case', () => {
       password: 'password',
       email: 'mariosilva@example.com',
       role: 'SECRETARY',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
     })
 
     const { users } = await sut.execute({

@@ -1,9 +1,9 @@
 import { Person } from '@prisma/client'
 import { PersonRecordsRepository } from '@/repositories/person'
 import { UsersRepository } from '@/repositories/users'
-import { ChambersRepository } from '@/repositories/chambers'
+import { CitysRepository } from '@/repositories/citys'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
-import { InvalidUserOrChamberError } from '../errors/records/invalid-user-or-chamber'
+import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 
 interface RegisterPersonRecordsUseCaseRequest {
   month: Date
@@ -12,7 +12,7 @@ interface RegisterPersonRecordsUseCaseRequest {
   staffs: number
   total: number
   userId: string
-  chamberId: string
+  cityId: string
 }
 
 interface RegisterPersonRecordsUserCaseResponse {
@@ -23,7 +23,7 @@ export class RegisterPersonRecordsUseCase {
   constructor(
     private personRecordsRepository: PersonRecordsRepository,
     private usersRepository: UsersRepository,
-    private chambersRepository: ChambersRepository,
+    private citysRepository: CitysRepository,
   ) {}
 
   async execute({
@@ -32,20 +32,20 @@ export class RegisterPersonRecordsUseCase {
     headcounts,
     staffs,
     total,
-    chamberId,
+    cityId,
     userId,
   }: RegisterPersonRecordsUseCaseRequest): Promise<RegisterPersonRecordsUserCaseResponse> {
-    const chamber = await this.chambersRepository.findById(chamberId)
+    const city = await this.citysRepository.findById(cityId)
     const user = await this.usersRepository.findById(userId)
 
-    if (!chamber && !user) {
-      throw new InvalidUserOrChamberError()
+    if (!city && !user) {
+      throw new InvalidUserOrCityError()
     }
 
     const hasSamePersonRecord =
       await this.personRecordsRepository.findByMonthAndYear(month)
 
-    if (hasSamePersonRecord && hasSamePersonRecord.chamber_id === chamberId) {
+    if (hasSamePersonRecord && hasSamePersonRecord.city_id === cityId) {
       throw new RecordsAlreadyExistsError()
     }
 
@@ -57,7 +57,7 @@ export class RegisterPersonRecordsUseCase {
       headcounts,
       staffs,
       total,
-      chamber_id: chamberId,
+      city_id: cityId,
       user_id: userId,
     })
 

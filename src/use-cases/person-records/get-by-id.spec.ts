@@ -13,7 +13,7 @@ describe('Get Person Record By Id Use Case', () => {
 
     await personRecordsRepository.register({
       id: 'person-01',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
       user_id: 'user-01',
       month: '2024/01',
       contractors: 1,

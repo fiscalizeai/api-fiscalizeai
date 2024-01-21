@@ -1,11 +1,11 @@
 import { expect, it, describe, beforeEach } from 'vitest'
 import { FetchPersonRecordsUseCase } from './fetch'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
+import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-citys-repository'
 import { InMemoryPersonRecordsRepository } from '@/repositories/in-memory/in-memory-person-records'
 
 let usersRepository: InMemoryUsersRepository
-let chambersRepository: InMemoryChambersRepository
+let citysRepository: InMemoryCitysRepository
 let personRecordsRepository: InMemoryPersonRecordsRepository
 let sut: FetchPersonRecordsUseCase
 
@@ -13,11 +13,11 @@ describe('Fetch Person Records Use Case', () => {
   beforeEach(async () => {
     personRecordsRepository = new InMemoryPersonRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
-    chambersRepository = new InMemoryChambersRepository()
+    citysRepository = new InMemoryCitysRepository()
     sut = new FetchPersonRecordsUseCase(personRecordsRepository)
 
-    await chambersRepository.create({
-      id: 'chamber-01',
+    await citysRepository.create({
+      id: 'city-01',
       name: 'Sacramento',
       state: 'MG',
     })
@@ -28,14 +28,14 @@ describe('Fetch Person Records Use Case', () => {
       name: 'John Doe',
       cpf: 'cpf-user',
       password: 'cpf-user',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
     })
   })
 
   it('should be able fetch person records', async () => {
     for (let i = 1; i <= 22; i++) {
       await personRecordsRepository.register({
-        chamber_id: 'chamber-01',
+        city_id: 'city-01',
         user_id: 'user-01',
         month: '2024-01',
         contractors: parseInt(`${i}`),
@@ -48,7 +48,7 @@ describe('Fetch Person Records Use Case', () => {
 
     for (let i = 1; i <= 5; i++) {
       await personRecordsRepository.register({
-        chamber_id: 'chamber-01',
+        city_id: 'city-01',
         user_id: 'user-01',
         month: '2023-02',
         contractors: parseInt(`${i}`),
@@ -61,7 +61,7 @@ describe('Fetch Person Records Use Case', () => {
 
     const { personRecords } = await sut.execute({
       page: 2,
-      chamberId: 'chamber-01',
+      cityId: 'city-01',
       items: 20,
       date: new Date('2024-01'),
     })

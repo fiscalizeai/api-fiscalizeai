@@ -119,7 +119,7 @@ export const getEducationRecordByIdSchema: FastifySchema = {
             teachers: { type: 'number' },
             students: { type: 'number' },
             total: { type: 'number' },
-            chamber_id: { type: 'string' },
+            city_id: { type: 'string' },
             user_id: { type: 'string' },
             created_at: { type: 'string' },
             updated_at: { type: 'string' },

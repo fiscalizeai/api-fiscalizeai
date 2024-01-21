@@ -3,22 +3,22 @@ import { expect, it, describe, beforeEach } from 'vitest'
 import { EditHealthRecordUseCase } from './edit'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
+import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-citys-repository'
 
 let healthRecordsRepository: InMemoryHealthRecordsRepository
 let usersRepository: InMemoryUsersRepository
-let chambersRepository: InMemoryChambersRepository
+let citysRepository: InMemoryCitysRepository
 let sut: EditHealthRecordUseCase
 
 describe('Edit Health Record Use Case', () => {
   beforeEach(async () => {
     healthRecordsRepository = new InMemoryHealthRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
-    chambersRepository = new InMemoryChambersRepository()
+    citysRepository = new InMemoryCitysRepository()
     sut = new EditHealthRecordUseCase(healthRecordsRepository)
 
-    await chambersRepository.create({
-      id: 'chamber-01',
+    await citysRepository.create({
+      id: 'city-01',
       name: 'Sacramento',
       state: 'MG',
     })
@@ -29,12 +29,12 @@ describe('Edit Health Record Use Case', () => {
       email: 'johndoe@example.com',
       cpf: '12345678910',
       password: '12345678910',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
     })
 
     await healthRecordsRepository.register({
       id: 'health-01',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
       month: new Date('01/01/2024'),
       doctors: 100,
       services: 1000,
@@ -45,7 +45,7 @@ describe('Edit Health Record Use Case', () => {
 
     await healthRecordsRepository.register({
       id: 'health-02',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
       month: new Date('01/02/2024'),
       doctors: 200,
       services: 1000,
@@ -68,7 +68,7 @@ describe('Edit Health Record Use Case', () => {
     expect.objectContaining({ healthRecordEdited })
   })
 
-  it('not should be able edit chamber with date exactly month', async () => {
+  it('not should be able edit city with date exactly month', async () => {
     await expect(() =>
       sut.execute({
         id: 'health-02',

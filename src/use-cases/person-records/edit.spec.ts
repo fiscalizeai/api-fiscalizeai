@@ -2,23 +2,23 @@ import { expect, it, describe, beforeEach } from 'vitest'
 import { EditPersonRecordUseCase } from './edit'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
+import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-citys-repository'
 import { InMemoryPersonRecordsRepository } from '@/repositories/in-memory/in-memory-person-records'
 
 let personRecordsRepository: InMemoryPersonRecordsRepository
 let usersRepository: InMemoryUsersRepository
-let chambersRepository: InMemoryChambersRepository
+let citysRepository: InMemoryCitysRepository
 let sut: EditPersonRecordUseCase
 
 describe('Edit Person Record Use Case', () => {
   beforeEach(async () => {
     personRecordsRepository = new InMemoryPersonRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
-    chambersRepository = new InMemoryChambersRepository()
+    citysRepository = new InMemoryCitysRepository()
     sut = new EditPersonRecordUseCase(personRecordsRepository)
 
-    await chambersRepository.create({
-      id: 'chamber-01',
+    await citysRepository.create({
+      id: 'city-01',
       name: 'Sacramento',
       state: 'MG',
     })
@@ -29,12 +29,12 @@ describe('Edit Person Record Use Case', () => {
       email: 'johndoe@example.com',
       cpf: '12345678910',
       password: '12345678910',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
     })
 
     await personRecordsRepository.register({
       id: 'person-01',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
       month: new Date('01/01/2024'),
       contractors: 100,
       headcounts: 1000,
@@ -46,7 +46,7 @@ describe('Edit Person Record Use Case', () => {
 
     await personRecordsRepository.register({
       id: 'person-02',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
       month: new Date('01/02/2024'),
       contractors: 200,
       headcounts: 1000,
@@ -70,7 +70,7 @@ describe('Edit Person Record Use Case', () => {
     expect.objectContaining({ personRecordEdited })
   })
 
-  it('not should be able edit chamber with date exactly month', async () => {
+  it('not should be able edit city with date exactly month', async () => {
     await expect(() =>
       sut.execute({
         id: 'person-02',

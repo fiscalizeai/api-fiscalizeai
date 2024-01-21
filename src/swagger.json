@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Vereador App Documentation",
-    "description": "This is an API Vereador",
+    "title": "Fiscalizeai App Documentation",
+    "description": "This is an API Fiscalizeai",
     "version": "1.0.0",
     "contact": {
       "email": "edusacramento9@gmail.com"

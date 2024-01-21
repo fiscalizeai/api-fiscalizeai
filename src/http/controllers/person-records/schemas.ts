@@ -110,7 +110,7 @@ export const getPersonRecordByIdSchema: FastifySchema = {
             staffs: { type: 'number' },
             headcounts: { type: 'number' },
             total: { type: 'number' },
-            chamber_id: { type: 'string' },
+            city_id: { type: 'string' },
             user_id: { type: 'string' },
             created_at: { type: 'string' },
             updated_at: { type: 'string' },

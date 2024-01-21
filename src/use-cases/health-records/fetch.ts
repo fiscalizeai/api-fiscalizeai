@@ -4,7 +4,7 @@ import { ResouceNotFoundError } from '../errors/resource-not-found'
 
 interface FetchHealthRecordsUseCaseRequest {
   page: number
-  chamberId: string
+  cityId: string
   items: number
   date?: Date
 }
@@ -18,13 +18,13 @@ export class FetchHealthRecordsUseCase {
 
   async execute({
     page,
-    chamberId,
+    cityId,
     items,
     date,
   }: FetchHealthRecordsUseCaseRequest): Promise<FetchHealthRecordsUseCaseResponse> {
     const healthRecords = await this.healthRepository.fetch(
       page,
-      chamberId,
+      cityId,
       items,
       date,
     )

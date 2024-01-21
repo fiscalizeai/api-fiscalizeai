@@ -1,9 +1,9 @@
 import { Education } from '@prisma/client'
 import { EducationRecordsRepository } from '@/repositories/education'
 import { UsersRepository } from '@/repositories/users'
-import { ChambersRepository } from '@/repositories/chambers'
+import { CitysRepository } from '@/repositories/citys'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
-import { InvalidUserOrChamberError } from '../errors/records/invalid-user-or-chamber'
+import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 
 interface RegisterEducationRecordsUseCaseRequest {
   month: Date
@@ -12,7 +12,7 @@ interface RegisterEducationRecordsUseCaseRequest {
   teachers: number
   total: number
   userId: string
-  chamberId: string
+  cityId: string
 }
 
 interface RegisterEducationRecordsUserCaseResponse {
@@ -23,7 +23,7 @@ export class RegisterEducationRecordsUseCase {
   constructor(
     private educationRecordsRepository: EducationRecordsRepository,
     private usersRepository: UsersRepository,
-    private chambersRepository: ChambersRepository,
+    private citysRepository: CitysRepository,
   ) {}
 
   async execute({
@@ -32,14 +32,14 @@ export class RegisterEducationRecordsUseCase {
     students,
     teachers,
     total,
-    chamberId,
+    cityId,
     userId,
   }: RegisterEducationRecordsUseCaseRequest): Promise<RegisterEducationRecordsUserCaseResponse> {
-    const chamber = await this.chambersRepository.findById(chamberId)
+    const city = await this.citysRepository.findById(cityId)
     const user = await this.usersRepository.findById(userId)
 
-    if (!chamber && !user) {
-      throw new InvalidUserOrChamberError()
+    if (!city && !user) {
+      throw new InvalidUserOrCityError()
     }
 
     const hasSameEducationRecord =
@@ -47,7 +47,7 @@ export class RegisterEducationRecordsUseCase {
 
     if (
       hasSameEducationRecord &&
-      hasSameEducationRecord.chamber_id === chamberId
+      hasSameEducationRecord.city_id === cityId
     ) {
       throw new RecordsAlreadyExistsError()
     }
@@ -60,7 +60,7 @@ export class RegisterEducationRecordsUseCase {
       students,
       teachers,
       total,
-      chamber_id: chamberId,
+      city_id: cityId,
       user_id: userId,
     })
 

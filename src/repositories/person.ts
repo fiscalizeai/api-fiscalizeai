@@ -5,7 +5,7 @@ export interface PersonRecordsRepository {
   findByMonthAndYear(date: Date): Promise<Person | null>
   fetch(
     page: number,
-    chamberId: string,
+    cityId: string,
     items?: number,
     date?: Date,
   ): Promise<Person[] | null>

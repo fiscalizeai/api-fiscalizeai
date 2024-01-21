@@ -1,9 +1,9 @@
 import { Health } from '@prisma/client'
 import { HealthRecordsRepository } from '@/repositories/health'
 import { UsersRepository } from '@/repositories/users'
-import { ChambersRepository } from '@/repositories/chambers'
+import { CitysRepository } from '@/repositories/citys'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
-import { InvalidUserOrChamberError } from '../errors/records/invalid-user-or-chamber'
+import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 
 interface RegisterHealthRecordsUseCaseRequest {
   month: Date
@@ -11,7 +11,7 @@ interface RegisterHealthRecordsUseCaseRequest {
   services: number
   total: number
   userId: string
-  chamberId: string
+  cityId: string
 }
 
 interface RegisterHealthRecordsUserCaseResponse {
@@ -22,7 +22,7 @@ export class RegisterHealthRecordsUseCase {
   constructor(
     private healthRecordsRepository: HealthRecordsRepository,
     private usersRepository: UsersRepository,
-    private chambersRepository: ChambersRepository,
+    private citysRepository: CitysRepository,
   ) {}
 
   async execute({
@@ -30,20 +30,20 @@ export class RegisterHealthRecordsUseCase {
     doctors,
     services,
     total,
-    chamberId,
+    cityId,
     userId,
   }: RegisterHealthRecordsUseCaseRequest): Promise<RegisterHealthRecordsUserCaseResponse> {
-    const chamber = await this.chambersRepository.findById(chamberId)
+    const city = await this.citysRepository.findById(cityId)
     const user = await this.usersRepository.findById(userId)
 
-    if (!chamber && !user) {
-      throw new InvalidUserOrChamberError()
+    if (!city && !user) {
+      throw new InvalidUserOrCityError()
     }
 
     const hasSameHealthRecord =
       await this.healthRecordsRepository.findByMonthAndYear(month)
 
-    if (hasSameHealthRecord && hasSameHealthRecord.chamber_id === chamberId) {
+    if (hasSameHealthRecord && hasSameHealthRecord.city_id === cityId) {
       throw new RecordsAlreadyExistsError()
     }
 
@@ -54,7 +54,7 @@ export class RegisterHealthRecordsUseCase {
       doctors,
       services,
       total,
-      chamber_id: chamberId,
+      city_id: cityId,
       user_id: userId,
     })
 

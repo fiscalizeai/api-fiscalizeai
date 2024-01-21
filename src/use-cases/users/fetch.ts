@@ -1,5 +1,5 @@
 import { UsersRepository } from '@/repositories/users'
-import { Permission, Role, User } from '@prisma/client'
+import { Status, Role, User } from '@prisma/client'
 import { ResouceNotFoundError } from '../errors/resource-not-found'
 
 interface FetchUserUseCaseRequest {
@@ -10,7 +10,7 @@ interface FetchUserUseCaseRequest {
   state?: string
   name?: string
   role?: Role
-  permission?: Permission
+  status?: Status
 }
 
 interface FetchUserUseCaseResponse {
@@ -32,12 +32,12 @@ export class FetchUserUseCase {
     name,
     cpf,
     role,
-    permission,
+    status,
     city,
     state,
   }: FetchUserUseCaseRequest): Promise<FetchUserUseCaseResponse> {
     const params: { [key: string]: string | undefined } = {
-      permission,
+      status,
       role,
       city,
       cpf,

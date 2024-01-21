@@ -1,4 +1,4 @@
-import { Prisma, Health, Chamber, User } from '@prisma/client'
+import { Prisma, Health, City, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { HealthRecordsRepository } from '../health' // Troquei de "education" para "health"
 import { isSameMonth, isSameYear } from 'date-fns'
@@ -7,7 +7,7 @@ export class InMemoryHealthRecordsRepository
   implements HealthRecordsRepository
 {
   public items: Health[] = []
-  public chambers: Chamber[] = []
+  public citys: City[] = []
   public users: User[] = []
 
   async register(data: Prisma.HealthUncheckedCreateInput) {
@@ -17,7 +17,7 @@ export class InMemoryHealthRecordsRepository
       doctors: data.doctors,
       services: data.services,
       total: data.total,
-      chamber_id: data.chamber_id,
+      city_id: data.city_id,
       user_id: data.user_id,
       created_at: new Date(),
       updated_at: new Date(),
@@ -40,9 +40,9 @@ export class InMemoryHealthRecordsRepository
     return health_record
   }
 
-  async fetch(page: number, chamberId: string, items = 20, date?: Date) {
+  async fetch(page: number, cityId: string, items = 20, date?: Date) {
     let filteredHealthRecords = this.items.filter(
-      (healthRecord) => healthRecord.chamber_id === chamberId,
+      (healthRecord) => healthRecord.city_id === cityId,
     )
 
     if (!filteredHealthRecords) {

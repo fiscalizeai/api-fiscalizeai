@@ -20,7 +20,7 @@ describe('Get User Info Use Case', () => {
       cpf: '08636379652',
       password: await hash('08636379652', 6),
       role: 'MEMBER',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
     })
 
     const { user } = await sut.execute({

@@ -6,7 +6,7 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
   await request.jwtVerify({ onlyCookie: true })
   const getUserProfile = makeGetUserInfoUseCase()
 
-  const { role, chamber } = request.user
+  const { role, city } = request.user
 
   const { user } = await getUserProfile.execute({ userId: request.user.sub })
 
@@ -15,7 +15,7 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
   }
 
   const token = await reply.jwtSign(
-    { role, chamber },
+    { role, city },
     {
       sign: {
         sub: request.user.sub,
@@ -24,7 +24,7 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
   )
 
   const refreshToken = await reply.jwtSign(
-    { role, chamber },
+    { role, city },
     {
       sign: {
         sub: request.user.sub,

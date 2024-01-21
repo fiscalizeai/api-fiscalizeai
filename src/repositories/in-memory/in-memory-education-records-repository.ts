@@ -1,4 +1,4 @@
-import { Prisma, Education, Chamber, User } from '@prisma/client'
+import { Prisma, Education, City, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { EducationRecordsRepository } from '../education'
 import { isSameMonth, isSameYear } from 'date-fns'
@@ -7,7 +7,7 @@ export class InMemoryEducationRecordsRepository
   implements EducationRecordsRepository
 {
   public items: Education[] = []
-  public chambers: Chamber[] = []
+  public citys: City[] = []
   public users: User[] = []
 
   async register(data: Prisma.EducationUncheckedCreateInput) {
@@ -18,7 +18,7 @@ export class InMemoryEducationRecordsRepository
       students: data.schools,
       teachers: data.teachers,
       total: data.total,
-      chamber_id: data.chamber_id,
+      city_id: data.city_id,
       user_id: data.user_id,
       created_at: new Date(),
       updated_at: new Date(),
@@ -41,9 +41,9 @@ export class InMemoryEducationRecordsRepository
     return education_record
   }
 
-  async fetch(page: number, chamberId: string, items = 20, date?: Date) {
+  async fetch(page: number, cityId: string, items = 20, date?: Date) {
     let filteredEducationRecords = this.items.filter(
-      (educationRecord) => educationRecord.chamber_id === chamberId,
+      (educationRecord) => educationRecord.city_id === cityId,
     )
 
     if (!filteredEducationRecords) {

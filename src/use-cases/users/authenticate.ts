@@ -32,7 +32,7 @@ export class AuthenticateUseCase {
       throw new InvalidCredentialsError()
     }
 
-    if (user.permission === 'DENIED') {
+    if (user.status === 'DENIED') {
       throw new ResouceNotFoundError()
     }
 

@@ -19,7 +19,7 @@ describe('Register Users Use Case', () => {
         password: 'password',
         email: `vereador${i}@example.com`,
         role: 'MEMBER',
-        chamber_id: 'chamber-01',
+        city_id: 'city-01',
       })
     }
 

@@ -8,7 +8,7 @@ interface RegisterUseCaseRequest {
   email: string
   cpf: string
   role: Role
-  chamberId?: string
+  cityId?: string
 }
 
 interface RegisterUserCaseResponse {
@@ -23,7 +23,7 @@ export class RegisterUseCase {
     email,
     cpf,
     role,
-    chamberId,
+    cityId,
   }: RegisterUseCaseRequest): Promise<RegisterUserCaseResponse> {
     const password_hash = await hash(cpf, 6)
 
@@ -37,14 +37,14 @@ export class RegisterUseCase {
 
     let user
 
-    if (chamberId) {
+    if (cityId) {
       user = await this.userRepository.create({
         name,
         email,
         cpf,
         password: password_hash,
         role,
-        chamber_id: chamberId,
+        city_id: cityId,
       })
     } else {
       user = await this.userRepository.create({
@@ -53,7 +53,7 @@ export class RegisterUseCase {
         cpf,
         password: password_hash,
         role,
-        chamber_id: '',
+        city_id: '',
       })
     }
 

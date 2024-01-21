@@ -1,24 +1,24 @@
 import { expect, it, describe, beforeEach } from 'vitest'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
+import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-citys-repository'
 import { RecordsNotExistsError } from '../errors/records/records-not-exists'
 import { DeletePersonRecordUseCase } from './delete'
 import { InMemoryPersonRecordsRepository } from '@/repositories/in-memory/in-memory-person-records'
 
 let personRecordsRepository: InMemoryPersonRecordsRepository
 let usersRepository: InMemoryUsersRepository
-let chambersRepository: InMemoryChambersRepository
+let citysRepository: InMemoryCitysRepository
 let sut: DeletePersonRecordUseCase
 
 describe('Delete Person Record Use Case', () => {
   beforeEach(async () => {
     personRecordsRepository = new InMemoryPersonRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
-    chambersRepository = new InMemoryChambersRepository()
+    citysRepository = new InMemoryCitysRepository()
     sut = new DeletePersonRecordUseCase(personRecordsRepository)
 
-    await chambersRepository.create({
-      id: 'chamber-01',
+    await citysRepository.create({
+      id: 'city-01',
       name: 'Sacramento',
       state: 'MG',
     })
@@ -29,12 +29,12 @@ describe('Delete Person Record Use Case', () => {
       email: 'johndoe@example.com',
       cpf: '12345678910',
       password: '12345678910',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
     })
 
     await personRecordsRepository.register({
       id: 'person-01',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
       month: new Date('01/01/2024'),
       contractors: 100,
       headcounts: 1000,
@@ -46,7 +46,7 @@ describe('Delete Person Record Use Case', () => {
 
     await personRecordsRepository.register({
       id: 'person-02',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
       month: new Date('01/02/2024'),
       contractors: 200,
       headcounts: 1000,
@@ -62,7 +62,7 @@ describe('Delete Person Record Use Case', () => {
       id: 'person-01',
     })
 
-    const personRecords = await personRecordsRepository.fetch(1, 'chamber-01')
+    const personRecords = await personRecordsRepository.fetch(1, 'city-01')
 
     expect(personRecords).toHaveLength(1)
   })

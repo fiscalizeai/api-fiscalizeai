@@ -59,13 +59,13 @@ export class PrismaTransportRecordsRepository
 
   async fetch(
     page: number,
-    chamberId: string,
+    cityId: string,
     items: number,
     date?: Date | undefined,
   ) {
     const transport_records = await prisma.transport.findMany({
       where: {
-        chamber_id: chamberId,
+        city_id: cityId,
         AND: [
           {
             month: {

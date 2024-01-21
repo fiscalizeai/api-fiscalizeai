@@ -4,7 +4,7 @@ import { TransportRecordsRepository } from '@/repositories/transport'
 
 interface FetchTransportRecordsUseCaseRequest {
   page: number
-  chamberId: string
+  cityId: string
   items: number
   date?: Date
 }
@@ -18,13 +18,13 @@ export class FetchTransportRecordsUseCase {
 
   async execute({
     page,
-    chamberId,
+    cityId,
     items,
     date,
   }: FetchTransportRecordsUseCaseRequest): Promise<FetchTransportRecordsUseCaseResponse> {
     const transportRecords = await this.transportRecords.fetch(
       page,
-      chamberId,
+      cityId,
       items,
       date,
     )

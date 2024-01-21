@@ -1,32 +1,32 @@
 import { expect, it, describe, beforeEach } from 'vitest'
 import { RegisterTransportRecordsUseCase } from './register'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryChambersRepository } from '@/repositories/in-memory/in-memory-chambers-repository'
-import { InvalidUserOrChamberError } from '../errors/records/invalid-user-or-chamber'
+import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-citys-repository'
+import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InMemoryTransportRecordsRepository } from '@/repositories/in-memory/in-memory-transport-records-repository'
 
 let transportRecordsRepository: InMemoryTransportRecordsRepository
 let usersRepository: InMemoryUsersRepository
-let chambersRepository: InMemoryChambersRepository
+let citysRepository: InMemoryCitysRepository
 let sut: RegisterTransportRecordsUseCase
 
 describe('Register Transport Records Use Case', () => {
   beforeEach(async () => {
     transportRecordsRepository = new InMemoryTransportRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
-    chambersRepository = new InMemoryChambersRepository()
+    citysRepository = new InMemoryCitysRepository()
 
     sut = new RegisterTransportRecordsUseCase(
       transportRecordsRepository,
       usersRepository,
-      chambersRepository,
+      citysRepository,
     )
   })
 
   it('should be able register education record', async () => {
-    const chamber = await chambersRepository.create({
-      id: 'chamber-01',
+    const city = await citysRepository.create({
+      id: 'city-01',
       name: 'Sacramento',
       state: 'MG',
     })
@@ -36,7 +36,7 @@ describe('Register Transport Records Use Case', () => {
       email: 'johndoe@example.com',
       cpf: '12345678910',
       password: '12345678910',
-      chamber_id: chamber.id,
+      city_id: city.id,
     })
 
     const { transport_record } = await sut.execute({
@@ -45,7 +45,7 @@ describe('Register Transport Records Use Case', () => {
       bus: 24789,
       machines: 256,
       total: 563.0 * 100,
-      chamberId: user.chamber_id,
+      cityId: user.city_id,
       userId: user.id,
     })
 
@@ -60,15 +60,15 @@ describe('Register Transport Records Use Case', () => {
         bus: 24789,
         machines: 256,
         total: 563.0 * 100,
-        chamberId: 'wrong-id',
+        cityId: 'wrong-id',
         userId: 'wrong-id',
       }),
-    ).rejects.toBeInstanceOf(InvalidUserOrChamberError)
+    ).rejects.toBeInstanceOf(InvalidUserOrCityError)
   })
 
   it('not should be able register education record with same month in', async () => {
-    const chamber = await chambersRepository.create({
-      id: 'chamber-01',
+    const city = await citysRepository.create({
+      id: 'city-01',
       name: 'Sacramento',
       state: 'MG',
     })
@@ -78,7 +78,7 @@ describe('Register Transport Records Use Case', () => {
       email: 'johndoe@example.com',
       cpf: '12345678910',
       password: '12345678910',
-      chamber_id: chamber.id,
+      city_id: city.id,
     })
 
     await sut.execute({
@@ -87,7 +87,7 @@ describe('Register Transport Records Use Case', () => {
       bus: 24789,
       machines: 256,
       total: 563.0 * 100,
-      chamberId: user.chamber_id,
+      cityId: user.city_id,
       userId: user.id,
     })
 
@@ -98,7 +98,7 @@ describe('Register Transport Records Use Case', () => {
         bus: 24789,
         machines: 256,
         total: 563.0 * 100,
-        chamberId: user.chamber_id,
+        cityId: user.city_id,
         userId: user.id,
       }),
     ).rejects.toBeInstanceOf(RecordsAlreadyExistsError)

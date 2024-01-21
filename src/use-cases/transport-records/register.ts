@@ -1,8 +1,8 @@
 import { Transport } from '@prisma/client'
 import { UsersRepository } from '@/repositories/users'
-import { ChambersRepository } from '@/repositories/chambers'
+import { CitysRepository } from '@/repositories/citys'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
-import { InvalidUserOrChamberError } from '../errors/records/invalid-user-or-chamber'
+import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 import { TransportRecordsRepository } from '@/repositories/transport'
 
 interface RegisterTransportRecordsUseCaseRequest {
@@ -12,7 +12,7 @@ interface RegisterTransportRecordsUseCaseRequest {
   machines: number
   total: number
   userId: string
-  chamberId: string
+  cityId: string
 }
 
 interface RegisterTransportRecordsUserCaseResponse {
@@ -23,7 +23,7 @@ export class RegisterTransportRecordsUseCase {
   constructor(
     private transportRecordsRepository: TransportRecordsRepository,
     private usersRepository: UsersRepository,
-    private chambersRepository: ChambersRepository,
+    private citysRepository: CitysRepository,
   ) {}
 
   async execute({
@@ -32,14 +32,14 @@ export class RegisterTransportRecordsUseCase {
     bus,
     machines,
     total,
-    chamberId,
+    cityId,
     userId,
   }: RegisterTransportRecordsUseCaseRequest): Promise<RegisterTransportRecordsUserCaseResponse> {
-    const chamber = await this.chambersRepository.findById(chamberId)
+    const city = await this.citysRepository.findById(cityId)
     const user = await this.usersRepository.findById(userId)
 
-    if (!chamber && !user) {
-      throw new InvalidUserOrChamberError()
+    if (!city && !user) {
+      throw new InvalidUserOrCityError()
     }
 
     const hasSameTransportRecord =
@@ -47,7 +47,7 @@ export class RegisterTransportRecordsUseCase {
 
     if (
       hasSameTransportRecord &&
-      hasSameTransportRecord.chamber_id === chamberId
+      hasSameTransportRecord.city_id === cityId
     ) {
       throw new RecordsAlreadyExistsError()
     }
@@ -60,7 +60,7 @@ export class RegisterTransportRecordsUseCase {
       bus,
       machines,
       total,
-      chamber_id: chamberId,
+      city_id: cityId,
       user_id: userId,
     })
 

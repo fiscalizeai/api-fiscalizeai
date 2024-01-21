@@ -19,7 +19,7 @@ describe('Authenticate Use Case', () => {
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: await hash('exact-password', 6),
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
       role: 'MEMBER',
       cpf: '12345678910',
     })
@@ -46,7 +46,7 @@ describe('Authenticate Use Case', () => {
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: await hash('exact-password', 6),
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
       role: 'MEMBER',
       cpf: '12345678910',
     })
@@ -59,15 +59,15 @@ describe('Authenticate Use Case', () => {
     ).rejects.toBeInstanceOf(InvalidCredentialsError)
   })
 
-  it('should not be able to athenticate with denied permission', async () => {
+  it('should not be able to athenticate with denied status', async () => {
     await usersRepository.create({
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: await hash('12345678910', 6),
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
       cpf: '12345678910',
       role: 'MEMBER',
-      permission: 'DENIED',
+      status: 'DENIED',
     })
 
     expect(() =>

@@ -13,7 +13,7 @@ describe('Get Education Record By Id Use Case', () => {
 
     await educationRecordsRepository.register({
       id: 'education-01',
-      chamber_id: 'chamber-01',
+      city_id: 'city-01',
       user_id: 'user-01',
       month: '2024/01',
       schools: 1,
@@ -31,7 +31,7 @@ describe('Get Education Record By Id Use Case', () => {
     expect(educationRecord?.id).toEqual(expect.any(String))
   })
 
-  it('not should be able get chamber with wrong id', async () => {
+  it('not should be able get city with wrong id', async () => {
     await expect(() =>
       sut.execute({
         id: 'wrong-id',

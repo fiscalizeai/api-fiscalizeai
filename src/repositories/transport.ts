@@ -5,7 +5,7 @@ export interface TransportRecordsRepository {
   findByMonthAndYear(date: Date): Promise<Transport | null>
   fetch(
     page: number,
-    chamberId: string,
+    cityId: string,
     items?: number,
     date?: Date,
   ): Promise<Transport[] | null>

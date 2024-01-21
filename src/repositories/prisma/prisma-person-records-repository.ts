@@ -57,13 +57,13 @@ export class PrismaPersonRecordsRepository implements PersonRecordsRepository {
 
   async fetch(
     page: number,
-    chamberId: string,
+    cityId: string,
     items: number,
     date?: Date | undefined,
   ) {
     const person_records = await prisma.person.findMany({
       where: {
-        chamber_id: chamberId,
+        city_id: cityId,
         AND: [
           {
             month: {

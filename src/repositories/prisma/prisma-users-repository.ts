@@ -30,16 +30,16 @@ export class PrismaUsersRepository implements UsersRepository {
   }
 
   async fetch(page: number, items: number, filters?: UserFilters) {
-    const { city, name, permission, role, state } = filters || {}
+    const { city, name, status, role, state } = filters || {}
 
     const totalItems = await prisma.user.count({
       where: {
         name: name ? { contains: name, mode: 'insensitive' } : undefined,
-        chamber: {
+        city: {
           name: city ? { contains: city, mode: 'insensitive' } : undefined,
           state: state ? { contains: state, mode: 'insensitive' } : undefined,
         },
-        permission,
+        status,
         role,
       },
     })
@@ -47,11 +47,11 @@ export class PrismaUsersRepository implements UsersRepository {
     const users = await prisma.user.findMany({
       where: {
         name: name ? { contains: name, mode: 'insensitive' } : undefined,
-        chamber: {
+        city: {
           name: city ? { contains: city, mode: 'insensitive' } : undefined,
           state: state ? { contains: state, mode: 'insensitive' } : undefined,
         },
-        permission,
+        status,
         role,
       },
       take: items,
