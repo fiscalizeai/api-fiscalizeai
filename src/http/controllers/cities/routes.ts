@@ -7,10 +7,10 @@ import { deleteCity } from './delete'
 import { fetch } from './fetch'
 import {
   cityCreateSchema,
-  deleteCitySchema,
-  editCitySchema,
-  fetchCitySchema,
-  getCitySchema,
+  deleteCitieschema,
+  editCitieschema,
+  fetchCitieschema,
+  getCitieschema,
 } from './schemas'
 import { getById } from './get-by-id'
 
@@ -30,7 +30,7 @@ export async function citiesRoutes(app: FastifyInstance) {
     '/cities/:cityId',
     {
       // onRequest: [verifyUserRole('ADMIN')],
-      schema: editCitySchema,
+      schema: editCitieschema,
     },
     edit,
   )
@@ -39,7 +39,7 @@ export async function citiesRoutes(app: FastifyInstance) {
     '/cities/:cityId',
     {
       // onRequest: [verifyUserRole('ADMIN')],
-      schema: deleteCitySchema,
+      schema: deleteCitieschema,
     },
     deleteCity,
   )
@@ -48,10 +48,10 @@ export async function citiesRoutes(app: FastifyInstance) {
     '/cities',
     {
       // onRequest: [verifyUserRole('ADMIN')],
-      schema: fetchCitySchema,
+      schema: fetchCitieschema,
     },
     fetch,
   )
 
-  app.get('/cities/:cityId', { schema: getCitySchema }, getById)
+  app.get('/cities/:cityId', { schema: getCitieschema }, getById)
 }

@@ -21,7 +21,7 @@ export const cityCreateSchema: FastifySchema = {
   },
 }
 
-export const editCitySchema: FastifySchema = {
+export const editCitieschema: FastifySchema = {
   description: 'PUT edit a city',
   tags: ['city'],
   params: {
@@ -47,7 +47,7 @@ export const editCitySchema: FastifySchema = {
   },
 }
 
-export const deleteCitySchema: FastifySchema = {
+export const deleteCitieschema: FastifySchema = {
   description: 'DELETE a city',
   tags: ['city'],
   params: {
@@ -61,7 +61,7 @@ export const deleteCitySchema: FastifySchema = {
   },
 }
 
-export const fetchCitySchema: FastifySchema = {
+export const fetchCitieschema: FastifySchema = {
   description: 'GET fetch all cities',
   tags: ['city'],
   querystring: {
@@ -105,7 +105,7 @@ export const fetchCitySchema: FastifySchema = {
   },
 }
 
-export const getCitySchema: FastifySchema = {
+export const getCitieschema: FastifySchema = {
   description: 'GET city by id',
   tags: ['city'],
   params: {

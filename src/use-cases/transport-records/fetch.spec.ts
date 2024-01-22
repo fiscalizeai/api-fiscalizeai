@@ -1,11 +1,11 @@
 import { expect, it, describe, beforeEach } from 'vitest'
 import { FetchTransportRecordsUseCase } from './fetch'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-cities-repository'
+import { InMemoryCitiesRepository } from '@/repositories/in-memory/in-memory-cities-repository'
 import { InMemoryTransportRecordsRepository } from '@/repositories/in-memory/in-memory-transport-records-repository'
 
 let usersRepository: InMemoryUsersRepository
-let citiesRepository: InMemoryCitysRepository
+let citiesRepository: InMemoryCitiesRepository
 let transportRecordsRepository: InMemoryTransportRecordsRepository
 let sut: FetchTransportRecordsUseCase
 
@@ -13,7 +13,7 @@ describe('Fetch Transport Records Use Case', () => {
   beforeEach(async () => {
     transportRecordsRepository = new InMemoryTransportRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
-    citiesRepository = new InMemoryCitysRepository()
+    citiesRepository = new InMemoryCitiesRepository()
     sut = new FetchTransportRecordsUseCase(transportRecordsRepository)
 
     await citiesRepository.create({

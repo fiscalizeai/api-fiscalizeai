@@ -1,15 +1,15 @@
 import { expect, it, describe, beforeEach } from 'vitest'
-import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-cities-repository'
+import { InMemoryCitiesRepository } from '@/repositories/in-memory/in-memory-cities-repository'
 import { DeleteCityUseCase } from './delete'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 
 let usersRepository: InMemoryUsersRepository
-let citiesRepository: InMemoryCitysRepository
+let citiesRepository: InMemoryCitiesRepository
 let sut: DeleteCityUseCase
 
 describe('Delete City Users Use Case', () => {
   beforeEach(async () => {
-    citiesRepository = new InMemoryCitysRepository()
+    citiesRepository = new InMemoryCitiesRepository()
     usersRepository = new InMemoryUsersRepository()
     sut = new DeleteCityUseCase(citiesRepository, usersRepository)
 

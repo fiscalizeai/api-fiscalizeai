@@ -1,14 +1,14 @@
 import { expect, it, describe, beforeEach } from 'vitest'
-import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-cities-repository'
+import { InMemoryCitiesRepository } from '@/repositories/in-memory/in-memory-cities-repository'
 import { EditCityUseCase } from './edit'
 import { CityNotFoundError } from '../errors/cities/city-not-found'
 
-let cityRepository: InMemoryCitysRepository
+let cityRepository: InMemoryCitiesRepository
 let sut: EditCityUseCase
 
 describe('Edit City Users Use Case', () => {
   beforeEach(async () => {
-    cityRepository = new InMemoryCitysRepository()
+    cityRepository = new InMemoryCitiesRepository()
     sut = new EditCityUseCase(cityRepository)
 
     await cityRepository.create({

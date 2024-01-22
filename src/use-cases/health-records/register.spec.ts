@@ -2,13 +2,13 @@ import { InMemoryHealthRecordsRepository } from '@/repositories/in-memory/in-mem
 import { expect, it, describe, beforeEach } from 'vitest'
 import { RegisterHealthRecordsUseCase } from './register' // Troquei de "education" para "health"
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-cities-repository'
+import { InMemoryCitiesRepository } from '@/repositories/in-memory/in-memory-cities-repository'
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 
 let healthRecordsRepository: InMemoryHealthRecordsRepository // Troquei de "education" para "health"
 let usersRepository: InMemoryUsersRepository
-let citiesRepository: InMemoryCitysRepository
+let citiesRepository: InMemoryCitiesRepository
 let sut: RegisterHealthRecordsUseCase // Troquei de "education" para "health"
 
 describe('Register Health Records Use Case', () => {
@@ -16,7 +16,7 @@ describe('Register Health Records Use Case', () => {
   beforeEach(async () => {
     healthRecordsRepository = new InMemoryHealthRecordsRepository() // Troquei de "education" para "health"
     usersRepository = new InMemoryUsersRepository()
-    citiesRepository = new InMemoryCitysRepository()
+    citiesRepository = new InMemoryCitiesRepository()
 
     sut = new RegisterHealthRecordsUseCase( // Troquei de "education" para "health"
       healthRecordsRepository, // Troquei de "education" para "health"

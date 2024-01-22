@@ -1,4 +1,4 @@
-import { PrismaCitysRepository } from '@/repositories/prisma/prisma-cities-repository'
+import { PrismaCitiesRepository } from '@/repositories/prisma/prisma-cities-repository'
 import { PrismaTransportRecordsRepository } from '@/repositories/prisma/prisma-transport-records-repository'
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
 import { RegisterTransportRecordsUseCase } from '@/use-cases/transport-records/register'
@@ -6,7 +6,7 @@ import { RegisterTransportRecordsUseCase } from '@/use-cases/transport-records/r
 export function makeRegisterUseCase() {
   const transportRecordsRepository = new PrismaTransportRecordsRepository()
   const usersRepository = new PrismaUsersRepository()
-  const citiesRepository = new PrismaCitysRepository()
+  const citiesRepository = new PrismaCitiesRepository()
   const useCase = new RegisterTransportRecordsUseCase(
     transportRecordsRepository,
     usersRepository,

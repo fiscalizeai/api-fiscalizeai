@@ -1,4 +1,4 @@
-import { CitysRepository } from '@/repositories/cities'
+import { CitiesRepository } from '@/repositories/cities'
 import { UsersRepository } from '@/repositories/users'
 import { CityAssociatedUsers } from '../errors/cities/city-associated-users'
 import { CityNotFoundError } from '../errors/cities/city-not-found'
@@ -9,7 +9,7 @@ interface DeleteCityUseCaseRequest {
 
 export class DeleteCityUseCase {
   constructor(
-    private cityRepository: CitysRepository,
+    private cityRepository: CitiesRepository,
     private usersRepository: UsersRepository,
   ) {}
 

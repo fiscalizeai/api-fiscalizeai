@@ -1,21 +1,21 @@
 import { expect, it, describe, beforeEach } from 'vitest'
 import { RegisterPersonRecordsUseCase } from './register'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-cities-repository'
+import { InMemoryCitiesRepository } from '@/repositories/in-memory/in-memory-cities-repository'
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InMemoryPersonRecordsRepository } from '@/repositories/in-memory/in-memory-person-records'
 
 let personRecordsRepository: InMemoryPersonRecordsRepository
 let usersRepository: InMemoryUsersRepository
-let citiesRepository: InMemoryCitysRepository
+let citiesRepository: InMemoryCitiesRepository
 let sut: RegisterPersonRecordsUseCase
 
 describe('Register Person Records Use Case', () => {
   beforeEach(async () => {
     personRecordsRepository = new InMemoryPersonRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
-    citiesRepository = new InMemoryCitysRepository()
+    citiesRepository = new InMemoryCitiesRepository()
 
     sut = new RegisterPersonRecordsUseCase(
       personRecordsRepository,

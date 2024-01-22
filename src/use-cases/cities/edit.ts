@@ -1,5 +1,5 @@
 import { City, Prisma } from '@prisma/client'
-import { CitysRepository } from '@/repositories/cities'
+import { CitiesRepository } from '@/repositories/cities'
 import { CityNotFoundError } from '../errors/cities/city-not-found'
 import { CityAlreadyExistsError } from '../errors/cities/city-already-exists'
 
@@ -13,7 +13,7 @@ interface EditCityUseCaseResponse {
 }
 
 export class EditCityUseCase {
-  constructor(private cityRepository: CitysRepository) {}
+  constructor(private cityRepository: CitiesRepository) {}
 
   async execute({
     id,

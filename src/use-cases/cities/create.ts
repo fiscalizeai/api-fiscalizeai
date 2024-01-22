@@ -1,5 +1,5 @@
 import { City } from '@prisma/client'
-import { CitysRepository } from '@/repositories/cities'
+import { CitiesRepository } from '@/repositories/cities'
 import { CityAlreadyExistsError } from '../errors/cities/city-already-exists'
 
 interface CreateCityUseCaseRequest {
@@ -12,7 +12,7 @@ interface CreateCityUserCaseResponse {
 }
 
 export class CreateCityUseCase {
-  constructor(private cityRepository: CitysRepository) {}
+  constructor(private cityRepository: CitiesRepository) {}
 
   async execute({
     name,

@@ -4,7 +4,7 @@ import { randomUUID } from 'node:crypto'
 import { CityFilters } from '@/utils/filters-type'
 import { CitiesRepository } from '../cities'
 
-export class InMemoryCitysRepository implements CitiesRepository {
+export class InMemoryCitiesRepository implements CitiesRepository {
   public items: City[] = []
   public users: User[] = []
 
@@ -21,26 +21,29 @@ export class InMemoryCitysRepository implements CitiesRepository {
   async fetch(page: number, items = 20, filters?: CityFilters) {
     const { name, state } = filters || {}
 
-    let filteredCitys = this.items
+    let filteredCities = this.items
 
     if (state) {
-      filteredCitys = filteredCitys.filter((city) =>
+      filteredCities = filteredCities.filter((city) =>
         city.state.toLocaleLowerCase().includes(state.toLocaleLowerCase()),
       )
     }
 
     if (name) {
-      filteredCitys = filteredCitys.filter((city) =>
+      filteredCities = filteredCities.filter((city) =>
         city.name.toLocaleLowerCase().includes(name.toLocaleLowerCase()),
       )
     }
-    const totalItems = filteredCitys.length
-    const paginatedCitys = filteredCitys.slice((page - 1) * items, page * items)
+    const totalItems = filteredCities.length
+    const paginatedCities = filteredCities.slice(
+      (page - 1) * items,
+      page * items,
+    )
     const totalPages = Math.ceil(totalItems / items)
     const pageItems = page === totalPages ? totalPages % items : items
 
     return {
-      cities: paginatedCitys,
+      cities: paginatedCities,
       pagination: {
         totalItems,
         pageSize: items,

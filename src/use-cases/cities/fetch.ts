@@ -1,6 +1,6 @@
 import { City } from '@prisma/client'
 import { ResouceNotFoundError } from '../errors/resource-not-found'
-import { CitysRepository } from '@/repositories/cities'
+import { CitiesRepository } from '@/repositories/cities'
 
 interface FetchUseCaseRequest {
   page: number
@@ -20,7 +20,7 @@ interface FetchUseCaseResponse {
 }
 
 export class FetchUseCase {
-  constructor(private cityRepository: CitysRepository) {}
+  constructor(private cityRepository: CitiesRepository) {}
 
   async execute({
     page,

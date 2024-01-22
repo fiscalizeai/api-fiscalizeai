@@ -1,20 +1,20 @@
 import { expect, it, describe, beforeEach } from 'vitest'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-cities-repository'
+import { InMemoryCitiesRepository } from '@/repositories/in-memory/in-memory-cities-repository'
 import { RecordsNotExistsError } from '../errors/records/records-not-exists'
 import { InMemoryHealthRecordsRepository } from '@/repositories/in-memory/in-memory-health-records-repository'
 import { DeleteHealthRecordUseCase } from './delete'
 
 let healthRecordsRepository: InMemoryHealthRecordsRepository
 let usersRepository: InMemoryUsersRepository
-let citiesRepository: InMemoryCitysRepository
+let citiesRepository: InMemoryCitiesRepository
 let sut: DeleteHealthRecordUseCase
 
 describe('Delete Health Record Use Case', () => {
   beforeEach(async () => {
     healthRecordsRepository = new InMemoryHealthRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
-    citiesRepository = new InMemoryCitysRepository()
+    citiesRepository = new InMemoryCitiesRepository()
     sut = new DeleteHealthRecordUseCase(healthRecordsRepository)
 
     await citiesRepository.create({

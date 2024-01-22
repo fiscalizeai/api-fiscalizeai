@@ -1,13 +1,13 @@
 import { expect, it, describe, beforeEach } from 'vitest'
-import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-cities-repository'
+import { InMemoryCitiesRepository } from '@/repositories/in-memory/in-memory-cities-repository'
 import { FetchUseCase } from './fetch'
 
-let cityRepository: InMemoryCitysRepository
+let cityRepository: InMemoryCitiesRepository
 let sut: FetchUseCase
 
-describe('Fetch Citys Use Case', () => {
+describe('Fetch Cities Use Case', () => {
   beforeEach(async () => {
-    cityRepository = new InMemoryCitysRepository()
+    cityRepository = new InMemoryCitiesRepository()
     sut = new FetchUseCase(cityRepository)
   })
 
