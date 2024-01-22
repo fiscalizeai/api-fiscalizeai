@@ -1,7 +1,7 @@
 import { Education } from '@prisma/client'
 import { EducationRecordsRepository } from '@/repositories/education'
 import { UsersRepository } from '@/repositories/users'
-import { CitysRepository } from '@/repositories/citys'
+import { CitysRepository } from '@/repositories/cities'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 
@@ -23,7 +23,7 @@ export class RegisterEducationRecordsUseCase {
   constructor(
     private educationRecordsRepository: EducationRecordsRepository,
     private usersRepository: UsersRepository,
-    private citysRepository: CitysRepository,
+    private citiesRepository: CitysRepository,
   ) {}
 
   async execute({
@@ -35,7 +35,7 @@ export class RegisterEducationRecordsUseCase {
     cityId,
     userId,
   }: RegisterEducationRecordsUseCaseRequest): Promise<RegisterEducationRecordsUserCaseResponse> {
-    const city = await this.citysRepository.findById(cityId)
+    const city = await this.citiesRepository.findById(cityId)
     const user = await this.usersRepository.findById(userId)
 
     if (!city && !user) {
@@ -45,10 +45,7 @@ export class RegisterEducationRecordsUseCase {
     const hasSameEducationRecord =
       await this.educationRecordsRepository.findByMonthAndYear(month)
 
-    if (
-      hasSameEducationRecord &&
-      hasSameEducationRecord.city_id === cityId
-    ) {
+    if (hasSameEducationRecord && hasSameEducationRecord.city_id === cityId) {
       throw new RecordsAlreadyExistsError()
     }
 

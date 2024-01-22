@@ -3,21 +3,21 @@ import { expect, it, describe, beforeEach } from 'vitest'
 import { EditEducationRecordUseCase } from './edit'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-citys-repository'
+import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-cities-repository'
 
 let educationRecordsRepository: InMemoryEducationRecordsRepository
 let usersRepository: InMemoryUsersRepository
-let citysRepository: InMemoryCitysRepository
+let citiesRepository: InMemoryCitysRepository
 let sut: EditEducationRecordUseCase
 
 describe('Edit Education Record Use Case', () => {
   beforeEach(async () => {
     educationRecordsRepository = new InMemoryEducationRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
-    citysRepository = new InMemoryCitysRepository()
+    citiesRepository = new InMemoryCitysRepository()
     sut = new EditEducationRecordUseCase(educationRecordsRepository)
 
-    await citysRepository.create({
+    await citiesRepository.create({
       id: 'city-01',
       name: 'Sacramento',
       state: 'MG',

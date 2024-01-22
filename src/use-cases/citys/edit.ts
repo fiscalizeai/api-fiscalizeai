@@ -1,7 +1,7 @@
 import { City, Prisma } from '@prisma/client'
-import { CitysRepository } from '@/repositories/citys'
-import { CityNotFoundError } from '../errors/citys/city-not-found'
-import { CityAlreadyExistsError } from '../errors/citys/city-already-exists'
+import { CitysRepository } from '@/repositories/cities'
+import { CityNotFoundError } from '../errors/cities/city-not-found'
+import { CityAlreadyExistsError } from '../errors/cities/city-already-exists'
 
 interface EditCityUseCaseRequest {
   id: string

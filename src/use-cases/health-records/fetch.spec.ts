@@ -2,10 +2,10 @@ import { expect, it, describe, beforeEach } from 'vitest'
 import { FetchHealthRecordsUseCase } from './fetch'
 import { InMemoryHealthRecordsRepository } from '@/repositories/in-memory/in-memory-health-records-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-citys-repository'
+import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-cities-repository'
 
 let usersRepository: InMemoryUsersRepository
-let citysRepository: InMemoryCitysRepository
+let citiesRepository: InMemoryCitysRepository
 let healthRecordsRepository: InMemoryHealthRecordsRepository
 let sut: FetchHealthRecordsUseCase
 
@@ -13,10 +13,10 @@ describe('Fetch Health Records Use Case', () => {
   beforeEach(async () => {
     healthRecordsRepository = new InMemoryHealthRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
-    citysRepository = new InMemoryCitysRepository()
+    citiesRepository = new InMemoryCitysRepository()
     sut = new FetchHealthRecordsUseCase(healthRecordsRepository)
 
-    await citysRepository.create({
+    await citiesRepository.create({
       id: 'city-01',
       name: 'Sacramento',
       state: 'MG',

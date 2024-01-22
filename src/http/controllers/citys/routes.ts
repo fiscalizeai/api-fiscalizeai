@@ -14,11 +14,11 @@ import {
 } from './schemas'
 import { getById } from './get-by-id'
 
-export async function citysRoutes(app: FastifyInstance) {
+export async function citiesRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJwt)
 
   app.post(
-    '/citys',
+    '/cities',
     {
       // onRequest: [verifyUserRole('ADMIN')],
       schema: cityCreateSchema,
@@ -27,7 +27,7 @@ export async function citysRoutes(app: FastifyInstance) {
   )
 
   app.put(
-    '/citys/:cityId',
+    '/cities/:cityId',
     {
       // onRequest: [verifyUserRole('ADMIN')],
       schema: editCitySchema,
@@ -36,7 +36,7 @@ export async function citysRoutes(app: FastifyInstance) {
   )
 
   app.delete(
-    '/citys/:cityId',
+    '/cities/:cityId',
     {
       // onRequest: [verifyUserRole('ADMIN')],
       schema: deleteCitySchema,
@@ -45,7 +45,7 @@ export async function citysRoutes(app: FastifyInstance) {
   )
 
   app.get(
-    '/citys',
+    '/cities',
     {
       // onRequest: [verifyUserRole('ADMIN')],
       schema: fetchCitySchema,
@@ -53,5 +53,5 @@ export async function citysRoutes(app: FastifyInstance) {
     fetch,
   )
 
-  app.get('/citys/:cityId', { schema: getCitySchema }, getById)
+  app.get('/cities/:cityId', { schema: getCitySchema }, getById)
 }

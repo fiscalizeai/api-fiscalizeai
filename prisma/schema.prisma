@@ -54,7 +54,7 @@ model City {
   health_records    Health[]
   transport_records Transport[]
 
-  @@map("citys")
+  @@map("cities")
 }
 
 model Education {

@@ -7,7 +7,7 @@ export class InMemoryHealthRecordsRepository
   implements HealthRecordsRepository
 {
   public items: Health[] = []
-  public citys: City[] = []
+  public cities: City[] = []
   public users: User[] = []
 
   async register(data: Prisma.HealthUncheckedCreateInput) {

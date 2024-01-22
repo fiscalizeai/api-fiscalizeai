@@ -1,31 +1,31 @@
 import { expect, it, describe, beforeEach } from 'vitest'
 import { RegisterPersonRecordsUseCase } from './register'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-citys-repository'
+import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-cities-repository'
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InMemoryPersonRecordsRepository } from '@/repositories/in-memory/in-memory-person-records'
 
 let personRecordsRepository: InMemoryPersonRecordsRepository
 let usersRepository: InMemoryUsersRepository
-let citysRepository: InMemoryCitysRepository
+let citiesRepository: InMemoryCitysRepository
 let sut: RegisterPersonRecordsUseCase
 
 describe('Register Person Records Use Case', () => {
   beforeEach(async () => {
     personRecordsRepository = new InMemoryPersonRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
-    citysRepository = new InMemoryCitysRepository()
+    citiesRepository = new InMemoryCitysRepository()
 
     sut = new RegisterPersonRecordsUseCase(
       personRecordsRepository,
       usersRepository,
-      citysRepository,
+      citiesRepository,
     )
   })
 
   it('should be able register person record', async () => {
-    const city = await citysRepository.create({
+    const city = await citiesRepository.create({
       id: 'city-01',
       name: 'Sacramento',
       state: 'MG',
@@ -67,7 +67,7 @@ describe('Register Person Records Use Case', () => {
   })
 
   it('not should be able register person record with same month in', async () => {
-    const city = await citysRepository.create({
+    const city = await citiesRepository.create({
       id: 'city-01',
       name: 'Sacramento',
       state: 'MG',

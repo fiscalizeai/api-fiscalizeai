@@ -1,9 +1,9 @@
-import { PrismaCitysRepository } from '@/repositories/prisma/prisma-citys-repository'
-import { DeleteCityUseCase } from '@/use-cases/citys/delete'
+import { PrismaCitysRepository } from '@/repositories/prisma/prisma-cities-repository'
+import { DeleteCityUseCase } from '@/use-cases/cities/delete'
 
 export function makeDeleteUseCase() {
-  const citysRepository = new PrismaCitysRepository()
-  const useCase = new DeleteCityUseCase(citysRepository)
+  const citiesRepository = new PrismaCitysRepository()
+  const useCase = new DeleteCityUseCase(citiesRepository)
 
   return useCase
 }

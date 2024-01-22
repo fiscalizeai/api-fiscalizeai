@@ -1,7 +1,7 @@
 import { Health } from '@prisma/client'
 import { HealthRecordsRepository } from '@/repositories/health'
 import { UsersRepository } from '@/repositories/users'
-import { CitysRepository } from '@/repositories/citys'
+import { CitysRepository } from '@/repositories/cities'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 
@@ -22,7 +22,7 @@ export class RegisterHealthRecordsUseCase {
   constructor(
     private healthRecordsRepository: HealthRecordsRepository,
     private usersRepository: UsersRepository,
-    private citysRepository: CitysRepository,
+    private citiesRepository: CitysRepository,
   ) {}
 
   async execute({
@@ -33,7 +33,7 @@ export class RegisterHealthRecordsUseCase {
     cityId,
     userId,
   }: RegisterHealthRecordsUseCaseRequest): Promise<RegisterHealthRecordsUserCaseResponse> {
-    const city = await this.citysRepository.findById(cityId)
+    const city = await this.citiesRepository.findById(cityId)
     const user = await this.usersRepository.findById(userId)
 
     if (!city && !user) {

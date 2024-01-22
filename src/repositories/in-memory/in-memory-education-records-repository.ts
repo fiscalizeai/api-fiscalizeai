@@ -7,7 +7,7 @@ export class InMemoryEducationRecordsRepository
   implements EducationRecordsRepository
 {
   public items: Education[] = []
-  public citys: City[] = []
+  public cities: City[] = []
   public users: User[] = []
 
   async register(data: Prisma.EducationUncheckedCreateInput) {

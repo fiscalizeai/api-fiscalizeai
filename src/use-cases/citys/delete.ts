@@ -1,7 +1,7 @@
-import { CitysRepository } from '@/repositories/citys'
+import { CitysRepository } from '@/repositories/cities'
 import { UsersRepository } from '@/repositories/users'
-import { CityAssociatedUsers } from '../errors/citys/city-associated-users'
-import { CityNotFoundError } from '../errors/citys/city-not-found'
+import { CityAssociatedUsers } from '../errors/cities/city-associated-users'
+import { CityNotFoundError } from '../errors/cities/city-not-found'
 
 interface DeleteCityUseCaseRequest {
   id: string

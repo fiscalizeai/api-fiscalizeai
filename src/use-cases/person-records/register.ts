@@ -1,7 +1,7 @@
 import { Person } from '@prisma/client'
 import { PersonRecordsRepository } from '@/repositories/person'
 import { UsersRepository } from '@/repositories/users'
-import { CitysRepository } from '@/repositories/citys'
+import { CitysRepository } from '@/repositories/cities'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 
@@ -23,7 +23,7 @@ export class RegisterPersonRecordsUseCase {
   constructor(
     private personRecordsRepository: PersonRecordsRepository,
     private usersRepository: UsersRepository,
-    private citysRepository: CitysRepository,
+    private citiesRepository: CitysRepository,
   ) {}
 
   async execute({
@@ -35,7 +35,7 @@ export class RegisterPersonRecordsUseCase {
     cityId,
     userId,
   }: RegisterPersonRecordsUseCaseRequest): Promise<RegisterPersonRecordsUserCaseResponse> {
-    const city = await this.citysRepository.findById(cityId)
+    const city = await this.citiesRepository.findById(cityId)
     const user = await this.usersRepository.findById(userId)
 
     if (!city && !user) {

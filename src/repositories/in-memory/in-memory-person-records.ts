@@ -7,7 +7,7 @@ export class InMemoryPersonRecordsRepository
   implements PersonRecordsRepository
 {
   public items: Person[] = []
-  public citys: City[] = []
+  public cities: City[] = []
   public users: User[] = []
 
   async register(data: Prisma.PersonUncheckedCreateInput) {

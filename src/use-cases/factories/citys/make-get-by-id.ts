@@ -1,9 +1,9 @@
-import { PrismaCitysRepository } from '@/repositories/prisma/prisma-citys-repository'
-import { GetCityByIdUseCase } from '@/use-cases/citys/get-by-id'
+import { PrismaCitysRepository } from '@/repositories/prisma/prisma-cities-repository'
+import { GetCityByIdUseCase } from '@/use-cases/cities/get-by-id'
 
 export function makeGetByIdUseCase() {
-  const citysRepository = new PrismaCitysRepository()
-  const useCase = new GetCityByIdUseCase(citysRepository)
+  const citiesRepository = new PrismaCitysRepository()
+  const useCase = new GetCityByIdUseCase(citiesRepository)
 
   return useCase
 }

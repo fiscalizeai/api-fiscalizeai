@@ -1,6 +1,6 @@
 import { Prisma, City, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
-import { CitysRepository } from '../citys'
+import { CitysRepository } from '../cities'
 import { CityFilters } from '@/utils/filters-type'
 
 export class InMemoryCitysRepository implements CitysRepository {
@@ -34,15 +34,12 @@ export class InMemoryCitysRepository implements CitysRepository {
       )
     }
     const totalItems = filteredCitys.length
-    const paginatedCitys = filteredCitys.slice(
-      (page - 1) * items,
-      page * items,
-    )
+    const paginatedCitys = filteredCitys.slice((page - 1) * items, page * items)
     const totalPages = Math.ceil(totalItems / items)
     const pageItems = page === totalPages ? totalPages % items : items
 
     return {
-      citys: paginatedCitys,
+      cities: paginatedCitys,
       pagination: {
         totalItems,
         pageSize: items,

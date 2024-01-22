@@ -1,4 +1,4 @@
-import { makeFetchUseCase } from '@/use-cases/factories/citys/make-fetch-use-case'
+import { makeFetchUseCase } from '@/use-cases/factories/cities/make-fetch-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -14,7 +14,7 @@ export async function fetch(request: FastifyRequest, reply: FastifyReply) {
 
   const fetchUseCase = makeFetchUseCase()
 
-  const { citys, pagination } = await fetchUseCase.execute({
+  const { cities, pagination } = await fetchUseCase.execute({
     page,
     items,
     name,
@@ -22,7 +22,7 @@ export async function fetch(request: FastifyRequest, reply: FastifyReply) {
   })
 
   return reply.status(200).send({
-    citys,
+    cities,
     pagination,
   })
 }

@@ -1,6 +1,6 @@
 import { City } from '@prisma/client'
-import { CitysRepository } from '@/repositories/citys'
-import { CityAlreadyExistsError } from '../errors/citys/city-already-exists'
+import { CitysRepository } from '@/repositories/cities'
+import { CityAlreadyExistsError } from '../errors/cities/city-already-exists'
 
 interface CreateCityUseCaseRequest {
   name: string
@@ -18,10 +18,7 @@ export class CreateCityUseCase {
     name,
     state,
   }: CreateCityUseCaseRequest): Promise<CreateCityUserCaseResponse> {
-    const cityWithSameName = await this.cityRepository.findByName(
-      name,
-      state,
-    )
+    const cityWithSameName = await this.cityRepository.findByName(name, state)
 
     if (cityWithSameName) {
       throw new CityAlreadyExistsError()

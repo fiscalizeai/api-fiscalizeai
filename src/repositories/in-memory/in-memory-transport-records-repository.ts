@@ -7,7 +7,7 @@ export class InMemoryTransportRecordsRepository
   implements TransportRecordsRepository
 {
   public items: Transport[] = []
-  public citys: City[] = []
+  public cities: City[] = []
   public users: User[] = []
 
   async register(data: Prisma.TransportUncheckedCreateInput) {

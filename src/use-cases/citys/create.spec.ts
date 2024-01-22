@@ -1,7 +1,7 @@
 import { expect, it, describe, beforeEach } from 'vitest'
 import { CreateCityUseCase } from './create'
-import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-citys-repository'
-import { CityAlreadyExistsError } from '../errors/citys/city-already-exists'
+import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-cities-repository'
+import { CityAlreadyExistsError } from '../errors/cities/city-already-exists'
 
 let cityRepository: InMemoryCitysRepository
 let sut: CreateCityUseCase

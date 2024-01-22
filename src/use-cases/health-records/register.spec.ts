@@ -2,13 +2,13 @@ import { InMemoryHealthRecordsRepository } from '@/repositories/in-memory/in-mem
 import { expect, it, describe, beforeEach } from 'vitest'
 import { RegisterHealthRecordsUseCase } from './register' // Troquei de "education" para "health"
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-citys-repository'
+import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-cities-repository'
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 
 let healthRecordsRepository: InMemoryHealthRecordsRepository // Troquei de "education" para "health"
 let usersRepository: InMemoryUsersRepository
-let citysRepository: InMemoryCitysRepository
+let citiesRepository: InMemoryCitysRepository
 let sut: RegisterHealthRecordsUseCase // Troquei de "education" para "health"
 
 describe('Register Health Records Use Case', () => {
@@ -16,18 +16,18 @@ describe('Register Health Records Use Case', () => {
   beforeEach(async () => {
     healthRecordsRepository = new InMemoryHealthRecordsRepository() // Troquei de "education" para "health"
     usersRepository = new InMemoryUsersRepository()
-    citysRepository = new InMemoryCitysRepository()
+    citiesRepository = new InMemoryCitysRepository()
 
     sut = new RegisterHealthRecordsUseCase( // Troquei de "education" para "health"
       healthRecordsRepository, // Troquei de "education" para "health"
       usersRepository,
-      citysRepository,
+      citiesRepository,
     )
   })
 
   it('should be able register health record', async () => {
     // Troquei de "education" para "health"
-    const city = await citysRepository.create({
+    const city = await citiesRepository.create({
       id: 'city-01',
       name: 'Sacramento',
       state: 'MG',
@@ -70,7 +70,7 @@ describe('Register Health Records Use Case', () => {
 
   it('not should be able register health record with same month in', async () => {
     // Troquei de "education" para "health"
-    const city = await citysRepository.create({
+    const city = await citiesRepository.create({
       id: 'city-01',
       name: 'Sacramento',
       state: 'MG',

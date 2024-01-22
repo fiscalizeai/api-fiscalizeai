@@ -1,6 +1,6 @@
 import { Transport } from '@prisma/client'
 import { UsersRepository } from '@/repositories/users'
-import { CitysRepository } from '@/repositories/citys'
+import { CitysRepository } from '@/repositories/cities'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 import { TransportRecordsRepository } from '@/repositories/transport'
@@ -23,7 +23,7 @@ export class RegisterTransportRecordsUseCase {
   constructor(
     private transportRecordsRepository: TransportRecordsRepository,
     private usersRepository: UsersRepository,
-    private citysRepository: CitysRepository,
+    private citiesRepository: CitysRepository,
   ) {}
 
   async execute({
@@ -35,7 +35,7 @@ export class RegisterTransportRecordsUseCase {
     cityId,
     userId,
   }: RegisterTransportRecordsUseCaseRequest): Promise<RegisterTransportRecordsUserCaseResponse> {
-    const city = await this.citysRepository.findById(cityId)
+    const city = await this.citiesRepository.findById(cityId)
     const user = await this.usersRepository.findById(userId)
 
     if (!city && !user) {
@@ -45,10 +45,7 @@ export class RegisterTransportRecordsUseCase {
     const hasSameTransportRecord =
       await this.transportRecordsRepository.findByMonthAndYear(month)
 
-    if (
-      hasSameTransportRecord &&
-      hasSameTransportRecord.city_id === cityId
-    ) {
+    if (hasSameTransportRecord && hasSameTransportRecord.city_id === cityId) {
       throw new RecordsAlreadyExistsError()
     }
 

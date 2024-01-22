@@ -1,23 +1,23 @@
 import { expect, it, describe, beforeEach } from 'vitest'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-citys-repository'
+import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-cities-repository'
 import { RecordsNotExistsError } from '../errors/records/records-not-exists'
 import { InMemoryHealthRecordsRepository } from '@/repositories/in-memory/in-memory-health-records-repository'
 import { DeleteHealthRecordUseCase } from './delete'
 
 let healthRecordsRepository: InMemoryHealthRecordsRepository
 let usersRepository: InMemoryUsersRepository
-let citysRepository: InMemoryCitysRepository
+let citiesRepository: InMemoryCitysRepository
 let sut: DeleteHealthRecordUseCase
 
 describe('Delete Health Record Use Case', () => {
   beforeEach(async () => {
     healthRecordsRepository = new InMemoryHealthRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
-    citysRepository = new InMemoryCitysRepository()
+    citiesRepository = new InMemoryCitysRepository()
     sut = new DeleteHealthRecordUseCase(healthRecordsRepository)
 
-    await citysRepository.create({
+    await citiesRepository.create({
       id: 'city-01',
       name: 'Sacramento',
       state: 'MG',
@@ -60,10 +60,7 @@ describe('Delete Health Record Use Case', () => {
       id: 'health-01',
     })
 
-    const transportRecords = await healthRecordsRepository.fetch(
-      1,
-      'city-01',
-    )
+    const transportRecords = await healthRecordsRepository.fetch(1, 'city-01')
 
     expect(transportRecords).toHaveLength(1)
   })

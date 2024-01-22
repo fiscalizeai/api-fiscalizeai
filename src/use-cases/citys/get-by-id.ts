@@ -1,6 +1,6 @@
 import { City, User } from '@prisma/client'
-import { CitysRepository } from '@/repositories/citys'
-import { CityNotFoundError } from '../errors/citys/city-not-found'
+import { CitysRepository } from '@/repositories/cities'
+import { CityNotFoundError } from '../errors/cities/city-not-found'
 
 interface GetCityByIdUseCaseRequest {
   id: string

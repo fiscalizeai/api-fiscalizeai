@@ -1,7 +1,7 @@
 import { expect, it, describe, beforeEach } from 'vitest'
-import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-citys-repository'
+import { InMemoryCitysRepository } from '@/repositories/in-memory/in-memory-cities-repository'
 import { GetCityByIdUseCase } from './get-by-id'
-import { CityNotFoundError } from '../errors/citys/city-not-found'
+import { CityNotFoundError } from '../errors/cities/city-not-found'
 
 let cityRepository: InMemoryCitysRepository
 let sut: GetCityByIdUseCase

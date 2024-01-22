@@ -5,7 +5,7 @@ import { env } from './env'
 import cors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
 import fastifyCookie from '@fastify/cookie'
-import { citysRoutes } from './http/controllers/citys/routes'
+import { citiesRoutes } from './http/controllers/cities/routes'
 import swaggerUi from '@fastify/swagger-ui'
 import swagger from '@fastify/swagger'
 import swaggerFile from './swagger.json'
@@ -45,7 +45,7 @@ app.register(swaggerUi, {
 })
 
 app.register(usersRoutes)
-app.register(citysRoutes)
+app.register(citiesRoutes)
 app.register(educationRecordsRoutes)
 app.register(transportRecordsRoutes)
 app.register(personRecordsRoutes)

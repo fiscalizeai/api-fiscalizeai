@@ -1,7 +1,7 @@
 import { CityFilters } from '@/utils/filters-type'
 import { Prisma, City, User } from '@prisma/client'
 
-export interface CitysRepository {
+export interface CitiesRepository {
   create(data: Prisma.CityCreateInput): Promise<City>
 
   findById(id: string): Promise<City | null>
@@ -11,7 +11,7 @@ export interface CitysRepository {
     items?: number,
     filters?: CityFilters,
   ): Promise<{
-    citys: City[]
+    cities: City[]
     pagination: {
       totalItems: number
       pageSize: number

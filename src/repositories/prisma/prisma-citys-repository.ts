@@ -1,9 +1,9 @@
 import { City, Prisma } from '@prisma/client'
-import { CitysRepository } from '../citys'
+import { CitiesRepository } from '../cities'
 import { prisma } from '@/lib/prisma'
 import { CityFilters } from '@/utils/filters-type'
 
-export class PrismaCitysRepository implements CitysRepository {
+export class PrismaCitiesRepository implements CitiesRepository {
   async create(data: Prisma.CityCreateInput) {
     const city = await prisma.city.create({
       data,
@@ -39,7 +39,7 @@ export class PrismaCitysRepository implements CitysRepository {
       },
     })
 
-    const citys = await prisma.city.findMany({
+    const cities = await prisma.city.findMany({
       where: {
         name: name ? { contains: name, mode: 'insensitive' } : undefined,
         state: state ? { contains: state, mode: 'insensitive' } : undefined,
@@ -51,7 +51,7 @@ export class PrismaCitysRepository implements CitysRepository {
     const pageItems = page === totalPages ? totalItems % items : items
 
     return {
-      citys,
+      cities,
       pagination: {
         totalItems,
         pageSize: items,

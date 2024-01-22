@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
-  const citysToCreate = [
+  const citiesToCreate = [
     { id: 'clrpi8rah000008l70mmo3uay', name: 'sacramento', state: 'mg' },
     { name: 'uberaba', state: 'mg' },
     { name: 'uberlandia', state: 'mg' },
@@ -18,7 +18,7 @@ async function main() {
     { name: 'araguari', state: 'mg' },
   ]
 
-  for (const cityData of citysToCreate) {
+  for (const cityData of citiesToCreate) {
     await prisma.city.create({
       data: cityData,
     })

@@ -1,9 +1,9 @@
-import { PrismaCitysRepository } from '@/repositories/prisma/prisma-citys-repository'
-import { FetchUseCase } from '@/use-cases/citys/fetch'
+import { PrismaCitysRepository } from '@/repositories/prisma/prisma-cities-repository'
+import { FetchUseCase } from '@/use-cases/cities/fetch'
 
 export function makeFetchUseCase() {
-  const citysRepository = new PrismaCitysRepository()
-  const useCase = new FetchUseCase(citysRepository)
+  const citiesRepository = new PrismaCitysRepository()
+  const useCase = new FetchUseCase(citiesRepository)
 
   return useCase
 }

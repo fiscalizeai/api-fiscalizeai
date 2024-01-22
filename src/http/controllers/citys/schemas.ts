@@ -62,7 +62,7 @@ export const deleteCitySchema: FastifySchema = {
 }
 
 export const fetchCitySchema: FastifySchema = {
-  description: 'GET fetch all citys',
+  description: 'GET fetch all cities',
   tags: ['city'],
   querystring: {
     type: 'object',
@@ -76,10 +76,10 @@ export const fetchCitySchema: FastifySchema = {
   },
   response: {
     200: {
-      description: 'Successful response result is array of citys',
+      description: 'Successful response result is array of cities',
       type: 'object',
       properties: {
-        citys: {
+        cities: {
           type: 'array',
           items: {
             type: 'object',
