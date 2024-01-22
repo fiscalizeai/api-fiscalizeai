@@ -19,25 +19,37 @@ export async function citysRoutes(app: FastifyInstance) {
 
   app.post(
     '/citys',
-    { onRequest: [verifyUserRole('ADMIN')], schema: cityCreateSchema },
+    {
+      // onRequest: [verifyUserRole('ADMIN')],
+      schema: cityCreateSchema,
+    },
     create,
   )
 
   app.put(
     '/citys/:cityId',
-    { onRequest: [verifyUserRole('ADMIN')], schema: editCitySchema },
+    {
+      // onRequest: [verifyUserRole('ADMIN')],
+      schema: editCitySchema,
+    },
     edit,
   )
 
   app.delete(
     '/citys/:cityId',
-    { onRequest: [verifyUserRole('ADMIN')], schema: deleteCitySchema },
+    {
+      // onRequest: [verifyUserRole('ADMIN')],
+      schema: deleteCitySchema,
+    },
     deleteCity,
   )
 
   app.get(
     '/citys',
-    { onRequest: [verifyUserRole('ADMIN')], schema: fetchCitySchema },
+    {
+      // onRequest: [verifyUserRole('ADMIN')],
+      schema: fetchCitySchema,
+    },
     fetch,
   )
 

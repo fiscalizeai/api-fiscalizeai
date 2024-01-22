@@ -20,7 +20,7 @@ export async function transportRecordsRoutes(app: FastifyInstance) {
   app.post(
     '/transport',
     {
-      onRequest: verifyUserRole('ADMIN'),
+      // onRequest: verifyUserRole('ADMIN'),
       schema: RegisterTransportRecordsSchema,
     },
     register,
@@ -36,7 +36,10 @@ export async function transportRecordsRoutes(app: FastifyInstance) {
 
   app.put(
     '/transport/:transportId',
-    { onRequest: verifyUserRole('ADMIN'), schema: editTransportRecordSchema },
+    {
+      // onRequest: verifyUserRole('ADMIN'),
+      schema: editTransportRecordSchema,
+    },
     edit,
   )
 

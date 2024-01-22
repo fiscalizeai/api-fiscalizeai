@@ -29,14 +29,17 @@ export async function usersRoutes(app: FastifyInstance) {
 
   app.get(
     '/profile',
-    { onRequest: [verifyJwt], schema: profileSchema },
+    {
+      // onRequest: [verifyJwt],
+      schema: profileSchema,
+    },
     profile,
   )
 
   app.post(
     '/users',
     {
-      onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      // onRequest: [verifyJwt, verifyUserRole('ADMIN')],
       schema: userCreateSchema,
     },
     register,
@@ -44,14 +47,17 @@ export async function usersRoutes(app: FastifyInstance) {
 
   app.put(
     '/users/:userId',
-    { onRequest: [verifyJwt, verifyUserRole('ADMIN')], schema: editUserSchema },
+    {
+      // onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      schema: editUserSchema,
+    },
     edit,
   )
 
   app.delete(
     '/users/:userId',
     {
-      onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      // onRequest: [verifyJwt, verifyUserRole('ADMIN')],
       schema: deleteUserSchema,
     },
     deleteUser,
@@ -60,7 +66,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.get(
     '/users',
     {
-      onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      // onRequest: [verifyJwt, verifyUserRole('ADMIN')],
       schema: fetchUsersSchema,
     },
     fetch,
@@ -69,7 +75,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.get(
     '/users/cpf',
     {
-      onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      // onRequest: [verifyJwt, verifyUserRole('ADMIN')],
       schema: getUserByCpfSchema,
     },
     getByCpf,
@@ -78,7 +84,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.get(
     '/users/:userId',
     {
-      onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      // onRequest: [verifyJwt, verifyUserRole('ADMIN')],
       schema: getUserByIdSchema,
     },
     info,

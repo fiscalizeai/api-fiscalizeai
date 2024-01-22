@@ -20,7 +20,7 @@ export async function healthRecordsRoutes(app: FastifyInstance) {
   app.post(
     '/health',
     {
-      onRequest: verifyUserRole('ADMIN'),
+      // onRequest: verifyUserRole('ADMIN'),
       schema: RegisterHealthRecordsSchema,
     },
     register,
@@ -32,7 +32,10 @@ export async function healthRecordsRoutes(app: FastifyInstance) {
 
   app.put(
     '/health/:healthId',
-    { onRequest: verifyUserRole('ADMIN'), schema: editHealthRecordSchema },
+    {
+      // onRequest: verifyUserRole('ADMIN'),
+      schema: editHealthRecordSchema,
+    },
     edit,
   )
 
