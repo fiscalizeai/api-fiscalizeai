@@ -1,5 +1,5 @@
 import { City, User } from '@prisma/client'
-import { CitysRepository } from '@/repositories/cities'
+import { CitiesRepository } from '@/repositories/cities'
 import { CityNotFoundError } from '../errors/cities/city-not-found'
 
 interface GetCityByIdUseCaseRequest {
@@ -13,7 +13,7 @@ interface GetCityByIdCaseResponse {
 }
 
 export class GetCityByIdUseCase {
-  constructor(private cityRepository: CitysRepository) {}
+  constructor(private cityRepository: CitiesRepository) {}
 
   async execute({
     id,

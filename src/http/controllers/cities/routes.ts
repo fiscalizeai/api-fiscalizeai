@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { create } from './create'
 import { verifyJwt } from '@/http/middlewares/verify-jwt'
-import { verifyUserRole } from '@/http/middlewares/verify-user-role'
+// import { verifyUserRole } from '@/http/middlewares/verify-user-role'
 import { edit } from './edit'
 import { deleteCity } from './delete'
 import { fetch } from './fetch'

@@ -1,9 +1,10 @@
 import { Prisma, City, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
-import { CitysRepository } from '../cities'
-import { CityFilters } from '@/utils/filters-type'
 
-export class InMemoryCitysRepository implements CitysRepository {
+import { CityFilters } from '@/utils/filters-type'
+import { CitiesRepository } from '../cities'
+
+export class InMemoryCitysRepository implements CitiesRepository {
   public items: City[] = []
   public users: User[] = []
 
