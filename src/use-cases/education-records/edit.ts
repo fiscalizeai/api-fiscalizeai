@@ -25,15 +25,13 @@ export class EditEducationRecordUseCase {
       throw new RecordsNotExistsError()
     }
 
-    const { month } = data
+    const { month, year } = data
 
     let existingEducationRecordInMonth
 
-    if (month) {
-      const date = new Date(month.toString())
-
+    if (month && year) {
       existingEducationRecordInMonth =
-        await this.educationRecordRepository.findByMonthAndYear(date)
+        await this.educationRecordRepository.findByMonthAndYear(month, year)
     }
 
     if (

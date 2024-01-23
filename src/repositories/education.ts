@@ -2,12 +2,16 @@ import { Prisma, Education } from '@prisma/client'
 
 export interface EducationRecordsRepository {
   register(data: Prisma.EducationUncheckedCreateInput): Promise<Education>
-  findByMonthAndYear(date: Date): Promise<Education | null>
+  findByMonthAndYear(
+    month: number | Prisma.IntFieldUpdateOperationsInput,
+    year: number | Prisma.IntFieldUpdateOperationsInput,
+  ): Promise<Education | null>
   fetch(
     page: number,
     cityId: string,
     items?: number,
-    date?: Date,
+    month?: number,
+    year?: number,
   ): Promise<{
     education: Education[]
     pagination: {

@@ -12,7 +12,8 @@ export async function edit(request: FastifyRequest, reply: FastifyReply) {
 
   const editEducationRecordBodySchema = z.object({
     data: z.object({
-      month: z.coerce.date().optional(),
+      year: z.coerce.number(),
+      month: z.coerce.number().optional(),
       schools: z.number().optional(),
       students: z.number().optional(),
       teachers: z.number().optional(),

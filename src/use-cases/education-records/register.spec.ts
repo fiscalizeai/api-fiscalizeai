@@ -40,7 +40,8 @@ describe('Register Education Records Use Case', () => {
     })
 
     const { education_record } = await sut.execute({
-      month: new Date('2024-02'),
+      month: 1,
+      year: 2024,
       schools: 10,
       students: 24789,
       teachers: 256,
@@ -55,7 +56,8 @@ describe('Register Education Records Use Case', () => {
   it('not should be able register education record', async () => {
     await expect(() =>
       sut.execute({
-        month: new Date('01/01/2024'),
+        month: 1,
+        year: 2024,
         schools: 10,
         students: 24789,
         teachers: 256,
@@ -82,7 +84,8 @@ describe('Register Education Records Use Case', () => {
     })
 
     await sut.execute({
-      month: new Date('01/01/2024'),
+      month: 1,
+      year: 2024,
       schools: 10,
       students: 24789,
       teachers: 256,
@@ -93,7 +96,8 @@ describe('Register Education Records Use Case', () => {
 
     await expect(() =>
       sut.execute({
-        month: new Date('01/01/2024'),
+        month: 1,
+        year: 2024,
         schools: 10,
         students: 24789,
         teachers: 256,

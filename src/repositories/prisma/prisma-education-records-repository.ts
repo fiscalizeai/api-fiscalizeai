@@ -1,7 +1,6 @@
 import { Education, Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 import { EducationRecordsRepository } from '../education'
-import { startOfMonth, endOfMonth } from 'date-fns'
 
 export class PrismaEducationRecordsRepository
   implements EducationRecordsRepository
@@ -41,16 +40,17 @@ export class PrismaEducationRecordsRepository
     return education_record
   }
 
-  async findByMonthAndYear(date: Date) {
-    const startOfMonthDate = startOfMonth(date)
-    const endOfMonthDate = endOfMonth(date)
-
+  async findByMonthAndYear(month: number, year: number) {
     const education_record = await prisma.education.findFirst({
       where: {
-        month: {
-          gte: startOfMonthDate,
-          lte: endOfMonthDate,
-        },
+        AND: [
+          {
+            month,
+          },
+          {
+            year,
+          },
+        ],
       },
     })
 
@@ -61,20 +61,23 @@ export class PrismaEducationRecordsRepository
     page: number,
     cityId: string,
     items: number,
-    date?: Date | undefined,
+    month?: number,
+    year?: number,
   ) {
+    const whereConditions: any = {
+      city_id: cityId,
+    }
+
+    if (month !== undefined) {
+      whereConditions.month = month
+    }
+
+    if (year !== undefined) {
+      whereConditions.year = year
+    }
+
     const totalItems = await prisma.education.count({
-      where: {
-        city_id: cityId,
-        AND: [
-          {
-            month: {
-              gte: date && startOfMonth(date),
-              lte: date && endOfMonth(date),
-            },
-          },
-        ],
-      },
+      where: whereConditions,
     })
 
     const education = await prisma.education.findMany({
@@ -82,10 +85,10 @@ export class PrismaEducationRecordsRepository
         city_id: cityId,
         AND: [
           {
-            month: {
-              gte: date && startOfMonth(date),
-              lte: date && endOfMonth(date),
-            },
+            month,
+          },
+          {
+            year,
           },
         ],
       },

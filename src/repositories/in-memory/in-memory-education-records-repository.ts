@@ -13,7 +13,8 @@ export class InMemoryEducationRecordsRepository
   async register(data: Prisma.EducationUncheckedCreateInput) {
     const education_record: Education = {
       id: data.id ?? randomUUID(),
-      month: new Date(data.month),
+      month: data.month,
+      year: data.year,
       schools: data.schools,
       students: data.schools,
       teachers: data.teachers,
@@ -29,9 +30,9 @@ export class InMemoryEducationRecordsRepository
     return education_record
   }
 
-  async findByMonthAndYear(date: Date) {
+  async findByMonthAndYear(month: number, year: number) {
     const education_record = this.items.find(
-      (item) => isSameMonth(item.month, date) && isSameYear(item.month, date),
+      (item) => item.month === month && item.year === year,
     )
 
     if (!education_record) {
@@ -41,7 +42,13 @@ export class InMemoryEducationRecordsRepository
     return education_record
   }
 
-  async fetch(page: number, cityId: string, items = 20, date?: Date) {
+  async fetch(
+    page: number,
+    cityId: string,
+    items = 20,
+    month?: number,
+    year?: number,
+  ) {
     let filteredEducationRecords = this.items.filter(
       (educationRecord) => educationRecord.city_id === cityId,
     )
@@ -50,11 +57,15 @@ export class InMemoryEducationRecordsRepository
       return null
     }
 
-    if (date) {
+    if (year) {
       filteredEducationRecords = filteredEducationRecords.filter(
-        (educationRecord) =>
-          isSameMonth(educationRecord.month, date) &&
-          isSameYear(educationRecord.month, date),
+        (educationRecord) => educationRecord.year === year,
+      )
+    }
+
+    if (month) {
+      filteredEducationRecords = filteredEducationRecords.filter(
+        (educationRecord) => educationRecord.month === month,
       )
     }
 

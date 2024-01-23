@@ -6,7 +6,8 @@ interface FetchEducationRecordsUseCaseRequest {
   page: number
   cityId: string
   items: number
-  date?: Date
+  month?: number
+  year?: number
 }
 
 interface FetchEducationRecordsUseCaseResponse {
@@ -25,13 +26,15 @@ export class FetchEducationRecordsUseCase {
     page,
     cityId,
     items,
-    date,
+    month,
+    year,
   }: FetchEducationRecordsUseCaseRequest): Promise<FetchEducationRecordsUseCaseResponse> {
     const educationRecords = await this.educationRepository.fetch(
       page,
       cityId,
       items,
-      date,
+      month,
+      year,
     )
 
     if (!educationRecords) {

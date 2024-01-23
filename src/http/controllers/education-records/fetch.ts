@@ -6,10 +6,11 @@ export async function fetch(request: FastifyRequest, reply: FastifyReply) {
   const fetchQuerySchema = z.object({
     page: z.coerce.number().min(1).default(1),
     items: z.coerce.number().default(20),
-    date: z.coerce.date().optional(),
+    month: z.coerce.number().optional(),
+    year: z.coerce.number().optional(),
   })
 
-  const { page, items, date } = fetchQuerySchema.parse(request.query)
+  const { page, items, month, year } = fetchQuerySchema.parse(request.query)
 
   const { city } = request.user
 
@@ -19,7 +20,8 @@ export async function fetch(request: FastifyRequest, reply: FastifyReply) {
     page,
     cityId: city,
     items,
-    date,
+    month,
+    year,
   })
 
   return reply.status(200).send({

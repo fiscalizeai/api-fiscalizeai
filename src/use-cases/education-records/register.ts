@@ -6,7 +6,8 @@ import { RecordsAlreadyExistsError } from '../errors/records/record-already-exis
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 
 interface RegisterEducationRecordsUseCaseRequest {
-  month: Date
+  month: number
+  year: number
   schools: number
   students: number
   teachers: number
@@ -28,6 +29,7 @@ export class RegisterEducationRecordsUseCase {
 
   async execute({
     month,
+    year,
     schools,
     students,
     teachers,
@@ -43,16 +45,15 @@ export class RegisterEducationRecordsUseCase {
     }
 
     const hasSameEducationRecord =
-      await this.educationRecordsRepository.findByMonthAndYear(month)
+      await this.educationRecordsRepository.findByMonthAndYear(month, year)
 
     if (hasSameEducationRecord && hasSameEducationRecord.city_id === cityId) {
       throw new RecordsAlreadyExistsError()
     }
 
-    const monthUTC = new Date(month)
-
     const education_record = await this.educationRecordsRepository.register({
-      month: monthUTC,
+      month,
+      year,
       schools,
       students,
       teachers,

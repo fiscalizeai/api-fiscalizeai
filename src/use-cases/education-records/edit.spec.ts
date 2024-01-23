@@ -35,7 +35,8 @@ describe('Edit Education Record Use Case', () => {
     await educationRecordsRepository.register({
       id: 'education-01',
       city_id: 'city-01',
-      month: new Date('01/01/2024'),
+      month: 1,
+      year: 2024,
       schools: 100,
       students: 1000,
       teachers: 500,
@@ -47,7 +48,8 @@ describe('Edit Education Record Use Case', () => {
     await educationRecordsRepository.register({
       id: 'education-02',
       city_id: 'city-01',
-      month: new Date('01/02/2024'),
+      month: 1,
+      year: 2024,
       schools: 200,
       students: 1000,
       teachers: 500,
@@ -75,7 +77,8 @@ describe('Edit Education Record Use Case', () => {
       sut.execute({
         id: 'education-02',
         data: {
-          month: new Date('01/01/2024'),
+          month: 1,
+          year: 2024,
         },
       }),
     ).rejects.toBeInstanceOf(RecordsAlreadyExistsError)

@@ -31,7 +31,7 @@ describe('Delete City Users Use Case', () => {
       id: 'city-02',
     })
 
-    const cities = await citiesRepository.fetch(1, 10)
+    const { cities } = await citiesRepository.fetch(1, 10)
 
     expect(cities).toHaveLength(1)
   })

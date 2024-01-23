@@ -64,7 +64,8 @@ model Education {
   teachers Int
   total    Int
 
-  month      DateTime
+  month      Int
+  year       Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
@@ -84,7 +85,8 @@ model Person {
   headcounts  Int
   total       Int
 
-  month      DateTime
+  month      Int
+  year       Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
@@ -104,7 +106,8 @@ model Health {
   doctors  Int
   total    Int
 
-  month      DateTime
+  month      Int
+  year       Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
@@ -125,7 +128,8 @@ model Transport {
   machines Int
   total    Int
 
-  month      DateTime
+  month      Int
+  year       Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
