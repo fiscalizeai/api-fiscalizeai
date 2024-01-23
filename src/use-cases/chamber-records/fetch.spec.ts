@@ -1,20 +1,20 @@
 import { expect, it, describe, beforeEach } from 'vitest'
-import { FetchPersonRecordsUseCase } from './fetch'
+import { FetchChamberRecordsUseCase } from './fetch'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { InMemoryCitiesRepository } from '@/repositories/in-memory/in-memory-cities-repository'
-import { InMemoryPersonRecordsRepository } from '@/repositories/in-memory/in-memory-person-records'
+import { InMemoryChamberRecordsRepository } from '@/repositories/in-memory/in-memory-chamber-records'
 
 let usersRepository: InMemoryUsersRepository
 let citiesRepository: InMemoryCitiesRepository
-let personRecordsRepository: InMemoryPersonRecordsRepository
-let sut: FetchPersonRecordsUseCase
+let chamberRecordsRepository: InMemoryChamberRecordsRepository
+let sut: FetchChamberRecordsUseCase
 
-describe('Fetch Person Records Use Case', () => {
+describe('Fetch Chamber Records Use Case', () => {
   beforeEach(async () => {
-    personRecordsRepository = new InMemoryPersonRecordsRepository()
+    chamberRecordsRepository = new InMemoryChamberRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
     citiesRepository = new InMemoryCitiesRepository()
-    sut = new FetchPersonRecordsUseCase(personRecordsRepository)
+    sut = new FetchChamberRecordsUseCase(chamberRecordsRepository)
 
     await citiesRepository.create({
       id: 'city-01',
@@ -32,12 +32,13 @@ describe('Fetch Person Records Use Case', () => {
     })
   })
 
-  it('should be able fetch person records', async () => {
+  it('should be able fetch chamber records', async () => {
     for (let i = 1; i <= 22; i++) {
-      await personRecordsRepository.register({
+      await chamberRecordsRepository.register({
         city_id: 'city-01',
         user_id: 'user-01',
-        month: '2024-01',
+        month: 1,
+        year: 2024,
         contractors: parseInt(`${i}`),
         headcounts: parseInt(`${i}`),
         staffs: parseInt(`${i}`),
@@ -47,10 +48,11 @@ describe('Fetch Person Records Use Case', () => {
     }
 
     for (let i = 1; i <= 5; i++) {
-      await personRecordsRepository.register({
+      await chamberRecordsRepository.register({
         city_id: 'city-01',
         user_id: 'user-01',
-        month: '2023-02',
+        month: 2,
+        year: 2024,
         contractors: parseInt(`${i}`),
         headcounts: parseInt(`${i}`),
         staffs: parseInt(`${i}`),
@@ -59,13 +61,13 @@ describe('Fetch Person Records Use Case', () => {
       })
     }
 
-    const { personRecords } = await sut.execute({
+    const { chamber } = await sut.execute({
       page: 2,
       cityId: 'city-01',
       items: 20,
-      date: new Date('2024-01'),
+      month: 1,
     })
 
-    expect(personRecords).toHaveLength(2)
+    expect(chamber).toHaveLength(2)
   })
 })

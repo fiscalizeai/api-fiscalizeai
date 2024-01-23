@@ -6,7 +6,8 @@ import { RecordsAlreadyExistsError } from '../errors/records/record-already-exis
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 
 interface RegisterHealthRecordsUseCaseRequest {
-  month: Date
+  month: number
+  year: number
   doctors: number
   services: number
   total: number
@@ -27,6 +28,7 @@ export class RegisterHealthRecordsUseCase {
 
   async execute({
     month,
+    year,
     doctors,
     services,
     total,
@@ -41,16 +43,15 @@ export class RegisterHealthRecordsUseCase {
     }
 
     const hasSameHealthRecord =
-      await this.healthRecordsRepository.findByMonthAndYear(month)
+      await this.healthRecordsRepository.findByMonthAndYear(month, year)
 
     if (hasSameHealthRecord && hasSameHealthRecord.city_id === cityId) {
       throw new RecordsAlreadyExistsError()
     }
 
-    const monthUTC = new Date(month)
-
     const health_record = await this.healthRecordsRepository.register({
-      month: monthUTC,
+      month,
+      year,
       doctors,
       services,
       total,

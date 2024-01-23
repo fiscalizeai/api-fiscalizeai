@@ -6,7 +6,8 @@ import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 import { TransportRecordsRepository } from '@/repositories/transport'
 
 interface RegisterTransportRecordsUseCaseRequest {
-  month: Date
+  month: number
+  year: number
   cars: number
   bus: number
   machines: number
@@ -28,6 +29,7 @@ export class RegisterTransportRecordsUseCase {
 
   async execute({
     month,
+    year,
     cars,
     bus,
     machines,
@@ -43,16 +45,15 @@ export class RegisterTransportRecordsUseCase {
     }
 
     const hasSameTransportRecord =
-      await this.transportRecordsRepository.findByMonthAndYear(month)
+      await this.transportRecordsRepository.findByMonthAndYear(month, year)
 
     if (hasSameTransportRecord && hasSameTransportRecord.city_id === cityId) {
       throw new RecordsAlreadyExistsError()
     }
 
-    const monthUTC = new Date(month)
-
     const transport_record = await this.transportRecordsRepository.register({
-      month: monthUTC,
+      month,
+      year,
       cars,
       bus,
       machines,

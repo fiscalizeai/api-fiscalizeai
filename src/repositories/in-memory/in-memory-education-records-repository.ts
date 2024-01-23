@@ -1,7 +1,6 @@
 import { Prisma, Education, City, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { EducationRecordsRepository } from '../education'
-import { isSameMonth, isSameYear } from 'date-fns'
 
 export class InMemoryEducationRecordsRepository
   implements EducationRecordsRepository

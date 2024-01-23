@@ -25,15 +25,13 @@ export class EditHealthRecordUseCase {
       throw new RecordsNotExistsError()
     }
 
-    const { month } = data
+    const { month, year } = data
 
     let existingHealthRecordInMonth
 
-    if (month) {
-      const date = new Date(month.toString())
-
+    if (month && year) {
       existingHealthRecordInMonth =
-        await this.healthRecordRepository.findByMonthAndYear(date)
+        await this.healthRecordRepository.findByMonthAndYear(month, year)
     }
 
     if (existingHealthRecordInMonth && existingHealthRecordInMonth.id !== id) {

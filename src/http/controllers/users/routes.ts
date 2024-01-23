@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { register } from './register'
 import { authenticate } from './authenticate'
-import { verifyUserRole } from '@/http/middlewares/verify-user-role'
+// import { verifyUserRole } from '@/http/middlewares/verify-user-role'
 import { refresh } from './refresh'
 import { verifyJwt } from '@/http/middlewares/verify-jwt'
 import { info } from './info'
@@ -30,7 +30,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.get(
     '/profile',
     {
-      // onRequest: [verifyJwt],
+      onRequest: [verifyJwt],
       schema: profileSchema,
     },
     profile,
@@ -39,7 +39,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.post(
     '/users',
     {
-      // onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      onRequest: [verifyJwt],
       schema: userCreateSchema,
     },
     register,
@@ -48,7 +48,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.put(
     '/users/:userId',
     {
-      // onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      onRequest: [verifyJwt],
       schema: editUserSchema,
     },
     edit,
@@ -57,7 +57,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.delete(
     '/users/:userId',
     {
-      // onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      onRequest: [verifyJwt],
       schema: deleteUserSchema,
     },
     deleteUser,
@@ -66,7 +66,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.get(
     '/users',
     {
-      // onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      onRequest: [verifyJwt],
       schema: fetchUsersSchema,
     },
     fetch,
@@ -75,7 +75,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.get(
     '/users/cpf',
     {
-      // onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      onRequest: [verifyJwt],
       schema: getUserByCpfSchema,
     },
     getByCpf,
@@ -84,7 +84,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.get(
     '/users/:userId',
     {
-      // onRequest: [verifyJwt, verifyUserRole('ADMIN')],
+      onRequest: [verifyJwt],
       schema: getUserByIdSchema,
     },
     info,

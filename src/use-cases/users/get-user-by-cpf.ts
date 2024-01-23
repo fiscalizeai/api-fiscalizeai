@@ -1,6 +1,6 @@
 import { UsersRepository } from '@/repositories/users'
 import { User } from '@prisma/client'
-import { ResouceNotFoundError } from '../errors/resource-not-found'
+import { ResourceNotFoundError } from '../errors/resource-not-found'
 
 interface GetUserByCpfUseCaseRequest {
   cpf: string
@@ -19,7 +19,7 @@ export class GetUserByCpfUseCase {
     const user = await this.userRepository.findByCpf(cpf)
 
     if (!user) {
-      throw new ResouceNotFoundError()
+      throw new ResourceNotFoundError()
     }
 
     return {

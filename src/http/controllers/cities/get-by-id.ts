@@ -1,5 +1,5 @@
 import { CityNotFoundError } from '@/use-cases/errors/cities/city-not-found'
-import { makeGetByIdUseCase } from '@/use-cases/factories/cities/make-get-by-id'
+import { makeGetByIdUseCase } from '@/use-cases/factories/citys/make-get-by-id'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 

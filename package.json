@@ -18,6 +18,9 @@
     "test:ui": "vitest --ui",
     "seed": "node prisma/seed.ts"
   },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "keywords": [],
   "author": "eduardo-rodrigues",
   "license": "ISC",

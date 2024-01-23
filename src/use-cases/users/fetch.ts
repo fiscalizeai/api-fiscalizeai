@@ -1,6 +1,6 @@
 import { UsersRepository } from '@/repositories/users'
 import { Status, Role, User } from '@prisma/client'
-import { ResouceNotFoundError } from '../errors/resource-not-found'
+import { ResourceNotFoundError } from '../errors/resource-not-found'
 
 interface FetchUserUseCaseRequest {
   page: number
@@ -54,7 +54,7 @@ export class FetchUserUseCase {
     const usersReturn = await this.userRepository.fetch(page, items, params)
 
     if (!usersReturn) {
-      throw new ResouceNotFoundError()
+      throw new ResourceNotFoundError()
     }
 
     const { users, pagination } = usersReturn

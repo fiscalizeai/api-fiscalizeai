@@ -1,12 +1,13 @@
-import { Person } from '@prisma/client'
-import { PersonRecordsRepository } from '@/repositories/person'
+import { Chamber } from '@prisma/client'
+import { ChamberRecordsRepository } from '@/repositories/chamber'
 import { UsersRepository } from '@/repositories/users'
 import { CitiesRepository } from '@/repositories/cities'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 
-interface RegisterPersonRecordsUseCaseRequest {
-  month: Date
+interface RegisterChamberRecordsUseCaseRequest {
+  month: number
+  year: number
   contractors: number
   headcounts: number
   staffs: number
@@ -15,26 +16,27 @@ interface RegisterPersonRecordsUseCaseRequest {
   cityId: string
 }
 
-interface RegisterPersonRecordsUserCaseResponse {
-  personRecord: Person
+interface RegisterChamberRecordsUserCaseResponse {
+  chamberRecord: Chamber
 }
 
-export class RegisterPersonRecordsUseCase {
+export class RegisterChamberRecordsUseCase {
   constructor(
-    private personRecordsRepository: PersonRecordsRepository,
+    private chamberRecordsRepository: ChamberRecordsRepository,
     private usersRepository: UsersRepository,
     private citiesRepository: CitiesRepository,
   ) {}
 
   async execute({
     month,
+    year,
     contractors,
     headcounts,
     staffs,
     total,
     cityId,
     userId,
-  }: RegisterPersonRecordsUseCaseRequest): Promise<RegisterPersonRecordsUserCaseResponse> {
+  }: RegisterChamberRecordsUseCaseRequest): Promise<RegisterChamberRecordsUserCaseResponse> {
     const city = await this.citiesRepository.findById(cityId)
     const user = await this.usersRepository.findById(userId)
 
@@ -42,17 +44,16 @@ export class RegisterPersonRecordsUseCase {
       throw new InvalidUserOrCityError()
     }
 
-    const hasSamePersonRecord =
-      await this.personRecordsRepository.findByMonthAndYear(month)
+    const hasSameChamberRecord =
+      await this.chamberRecordsRepository.findByMonthAndYear(month, year)
 
-    if (hasSamePersonRecord && hasSamePersonRecord.city_id === cityId) {
+    if (hasSameChamberRecord && hasSameChamberRecord.city_id === cityId) {
       throw new RecordsAlreadyExistsError()
     }
 
-    const monthUTC = new Date(month)
-
-    const personRecord = await this.personRecordsRepository.register({
-      month: monthUTC,
+    const chamberRecord = await this.chamberRecordsRepository.register({
+      month,
+      year,
       contractors,
       headcounts,
       staffs,
@@ -62,7 +63,7 @@ export class RegisterPersonRecordsUseCase {
     })
 
     return {
-      personRecord,
+      chamberRecord,
     }
   }
 }

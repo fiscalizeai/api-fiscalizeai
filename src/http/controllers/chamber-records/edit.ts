@@ -1,18 +1,19 @@
 import { RecordsNotExistsError } from '@/use-cases/errors/records/records-not-exists'
 import { RecordsAlreadyExistsError } from '@/use-cases/errors/records/record-already-exists'
-import { makeEditUseCase } from '@/use-cases/factories/person-records/make-edit-use-case'
+import { makeEditUseCase } from '@/use-cases/factories/chamber-records/make-edit-use-case'
 import { error } from 'console'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 export async function edit(request: FastifyRequest, reply: FastifyReply) {
-  const editPersonRecordParamsSchema = z.object({
-    personId: z.string().uuid(),
+  const editChamberRecordParamsSchema = z.object({
+    chamberId: z.string().uuid(),
   })
 
-  const editPersonRecordBodySchema = z.object({
+  const editChamberRecordBodySchema = z.object({
     data: z.object({
-      month: z.coerce.date().optional(),
+      year: z.coerce.number(),
+      month: z.coerce.number().optional(),
       contractors: z.number().optional(),
       headcounts: z.number().optional(),
       staffs: z.number().optional(),
@@ -20,14 +21,14 @@ export async function edit(request: FastifyRequest, reply: FastifyReply) {
     }),
   })
 
-  const { personId } = editPersonRecordParamsSchema.parse(request.params)
-  const { data } = editPersonRecordBodySchema.parse(request.body)
+  const { chamberId } = editChamberRecordParamsSchema.parse(request.params)
+  const { data } = editChamberRecordBodySchema.parse(request.body)
 
   try {
-    const editPersonRecordUseCase = makeEditUseCase()
+    const editChamberRecordUseCase = makeEditUseCase()
 
-    await editPersonRecordUseCase.execute({
-      id: personId,
+    await editChamberRecordUseCase.execute({
+      id: chamberId,
       data,
     })
 

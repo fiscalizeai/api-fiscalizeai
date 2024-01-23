@@ -20,7 +20,6 @@ export async function citiesRoutes(app: FastifyInstance) {
   app.post(
     '/cities',
     {
-      // onRequest: [verifyUserRole('ADMIN')],
       schema: cityCreateSchema,
     },
     create,
@@ -29,7 +28,6 @@ export async function citiesRoutes(app: FastifyInstance) {
   app.put(
     '/cities/:cityId',
     {
-      // onRequest: [verifyUserRole('ADMIN')],
       schema: editCitieschema,
     },
     edit,
@@ -38,7 +36,6 @@ export async function citiesRoutes(app: FastifyInstance) {
   app.delete(
     '/cities/:cityId',
     {
-      // onRequest: [verifyUserRole('ADMIN')],
       schema: deleteCitieschema,
     },
     deleteCity,
@@ -47,7 +44,6 @@ export async function citiesRoutes(app: FastifyInstance) {
   app.get(
     '/cities',
     {
-      // onRequest: [verifyUserRole('ADMIN')],
       schema: fetchCitieschema,
     },
     fetch,

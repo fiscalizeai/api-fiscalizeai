@@ -25,15 +25,13 @@ export class EditTransportRecordUseCase {
       throw new RecordsNotExistsError()
     }
 
-    const { month } = data
+    const { month, year } = data
 
     let existingEducationRecordInMonth
 
-    if (month) {
-      const date = new Date(month.toString())
-
+    if (month && year) {
       existingEducationRecordInMonth =
-        await this.transportRecordRepository.findByMonthAndYear(date)
+        await this.transportRecordRepository.findByMonthAndYear(month, year)
     }
 
     if (

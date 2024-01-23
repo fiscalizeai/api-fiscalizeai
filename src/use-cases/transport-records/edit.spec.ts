@@ -35,7 +35,8 @@ describe('Edit Transport Record Use Case', () => {
     await transportRecordsRepository.register({
       id: 'transport-01',
       city_id: 'city-01',
-      month: new Date('01/01/2024'),
+      month: 1,
+      year: 2024,
       cars: 100,
       bus: 1000,
       machines: 500,
@@ -47,7 +48,8 @@ describe('Edit Transport Record Use Case', () => {
     await transportRecordsRepository.register({
       id: 'education-02',
       city_id: 'city-01',
-      month: new Date('01/02/2024'),
+      month: 2,
+      year: 2024,
       cars: 200,
       bus: 1000,
       machines: 500,
@@ -75,7 +77,8 @@ describe('Edit Transport Record Use Case', () => {
       sut.execute({
         id: 'education-02',
         data: {
-          month: new Date('01/01/2024'),
+          month: 1,
+          year: 2024,
         },
       }),
     ).rejects.toBeInstanceOf(RecordsAlreadyExistsError)

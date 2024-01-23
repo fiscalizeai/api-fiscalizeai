@@ -1,5 +1,5 @@
 import { City } from '@prisma/client'
-import { ResouceNotFoundError } from '../errors/resource-not-found'
+import { ResourceNotFoundError } from '../errors/resource-not-found'
 import { CitiesRepository } from '@/repositories/cities'
 
 interface FetchUseCaseRequest {
@@ -42,7 +42,7 @@ export class FetchUseCase {
     const citiesReturn = await this.cityRepository.fetch(page, items, params)
 
     if (!citiesReturn) {
-      throw new ResouceNotFoundError() // TODO: Switch this error for correctly error.
+      throw new ResourceNotFoundError() // TODO: Switch this error for correctly error.
     }
 
     const { cities, pagination } = citiesReturn

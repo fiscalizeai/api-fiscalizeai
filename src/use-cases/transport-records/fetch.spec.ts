@@ -37,7 +37,8 @@ describe('Fetch Transport Records Use Case', () => {
       await transportRecordsRepository.register({
         city_id: 'city-01',
         user_id: 'user-01',
-        month: '2024-01',
+        month: 1,
+        year: 2024,
         cars: parseInt(`${i}`),
         bus: parseInt(`${i}`),
         machines: parseInt(`${i}`),
@@ -50,7 +51,8 @@ describe('Fetch Transport Records Use Case', () => {
       await transportRecordsRepository.register({
         city_id: 'city-01',
         user_id: 'user-01',
-        month: '2023-02',
+        month: 2,
+        year: 2024,
         cars: parseInt(`${i}`),
         bus: parseInt(`${i}`),
         machines: parseInt(`${i}`),
@@ -59,13 +61,13 @@ describe('Fetch Transport Records Use Case', () => {
       })
     }
 
-    const { transportRecords } = await sut.execute({
+    const { transport } = await sut.execute({
       page: 2,
       cityId: 'city-01',
       items: 20,
-      date: new Date('2024-01'),
+      month: 1,
     })
 
-    expect(transportRecords).toHaveLength(2)
+    expect(transport).toHaveLength(2)
   })
 })

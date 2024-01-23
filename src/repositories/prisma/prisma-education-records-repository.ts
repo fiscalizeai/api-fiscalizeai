@@ -43,14 +43,7 @@ export class PrismaEducationRecordsRepository
   async findByMonthAndYear(month: number, year: number) {
     const education_record = await prisma.education.findFirst({
       where: {
-        AND: [
-          {
-            month,
-          },
-          {
-            year,
-          },
-        ],
+        AND: [{ month }, { year }],
       },
     })
 
@@ -83,14 +76,7 @@ export class PrismaEducationRecordsRepository
     const education = await prisma.education.findMany({
       where: {
         city_id: cityId,
-        AND: [
-          {
-            month,
-          },
-          {
-            year,
-          },
-        ],
+        AND: [{ month }, { year }],
       },
       take: items,
       skip: (page - 1) * items,

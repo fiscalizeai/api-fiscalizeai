@@ -12,7 +12,8 @@ export async function edit(request: FastifyRequest, reply: FastifyReply) {
 
   const editTransportRecordBodySchema = z.object({
     data: z.object({
-      month: z.coerce.date().optional(),
+      year: z.coerce.number(),
+      month: z.coerce.number().optional(),
       bus: z.number().optional(),
       cars: z.number().optional(),
       machines: z.number().optional(),

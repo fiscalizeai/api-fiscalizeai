@@ -6,7 +6,8 @@ export const RegisterTransportRecordsSchema: FastifySchema = {
   body: {
     type: 'object',
     properties: {
-      month: { type: 'string' },
+      month: { type: 'number' },
+      year: { type: 'number' },
       bus: { type: 'number' },
       cars: { type: 'number' },
       machines: { type: 'number' },
@@ -30,7 +31,8 @@ export const FetchTransportRecordsSchema: FastifySchema = {
     properties: {
       page: { type: 'number' },
       items: { type: 'number' },
-      date: { type: 'string' },
+      month: { type: 'number' },
+      year: { type: 'number' },
     },
   },
   response: {
@@ -38,7 +40,7 @@ export const FetchTransportRecordsSchema: FastifySchema = {
       description: 'Successful',
       type: 'object',
       properties: {
-        transportRecords: {
+        transport: {
           type: 'array',
           items: {
             type: 'object',
@@ -48,9 +50,19 @@ export const FetchTransportRecordsSchema: FastifySchema = {
               cars: { type: 'number' },
               machines: { type: 'number' },
               total: { type: 'number' },
-              month: { type: 'string' },
+              month: { type: 'number' },
+              year: { type: 'number' },
               user_id: { type: 'string' },
             },
+          },
+        },
+        pagination: {
+          type: 'object',
+          properties: {
+            totalItems: { type: 'number' },
+            pageSize: { type: 'number' },
+            pageNumber: { type: 'number' },
+            pageItems: { type: 'number' },
           },
         },
       },
@@ -70,7 +82,8 @@ export const editTransportRecordSchema: FastifySchema = {
       data: {
         type: 'object',
         properties: {
-          month: { type: 'string' },
+          month: { type: 'number' },
+          year: { type: 'number' },
           bus: { type: 'number' },
           cars: { type: 'number' },
           machines: { type: 'number' },
@@ -105,7 +118,8 @@ export const getTransportRecordByIdSchema: FastifySchema = {
           type: 'object',
           properties: {
             id: { type: 'string' },
-            month: { type: 'string' },
+            month: { type: 'number' },
+            year: { type: 'number' },
             bus: { type: 'number' },
             machines: { type: 'number' },
             cars: { type: 'number' },

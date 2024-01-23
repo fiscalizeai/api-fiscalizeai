@@ -6,7 +6,8 @@ export const RegisterHealthRecordsSchema: FastifySchema = {
   body: {
     type: 'object',
     properties: {
-      month: { type: 'string' },
+      month: { type: 'number' },
+      year: { type: 'number' },
       doctors: { type: 'number' },
       services: { type: 'number' },
       total: { type: 'number' },
@@ -29,7 +30,8 @@ export const FetchHealthRecordsSchema: FastifySchema = {
     properties: {
       page: { type: 'number' },
       items: { type: 'number' },
-      date: { type: 'string' },
+      month: { type: 'number' },
+      year: { type: 'number' },
     },
   },
   response: {
@@ -37,7 +39,7 @@ export const FetchHealthRecordsSchema: FastifySchema = {
       description: 'Successful',
       type: 'object',
       properties: {
-        healthRecords: {
+        health: {
           type: 'array',
           items: {
             type: 'object',
@@ -46,9 +48,19 @@ export const FetchHealthRecordsSchema: FastifySchema = {
               doctors: { type: 'number' },
               services: { type: 'number' },
               total: { type: 'number' },
-              month: { type: 'string' },
+              month: { type: 'number' },
+              year: { type: 'number' },
               user_id: { type: 'string' },
             },
+          },
+        },
+        pagination: {
+          type: 'object',
+          properties: {
+            totalItems: { type: 'number' },
+            pageSize: { type: 'number' },
+            pageNumber: { type: 'number' },
+            pageItems: { type: 'number' },
           },
         },
       },
@@ -68,7 +80,8 @@ export const editHealthRecordSchema: FastifySchema = {
       data: {
         type: 'object',
         properties: {
-          month: { type: 'string' },
+          month: { type: 'number' },
+          year: { type: 'number' },
           doctors: { type: 'number' },
           services: { type: 'number' },
           total: {
@@ -102,7 +115,8 @@ export const getHealthRecordByIdSchema: FastifySchema = {
           type: 'object',
           properties: {
             id: { type: 'string' },
-            month: { type: 'string' },
+            month: { type: 'number' },
+            year: { type: 'number' },
             doctors: { type: 'number' },
             services: { type: 'number' },
             total: { type: 'number' },

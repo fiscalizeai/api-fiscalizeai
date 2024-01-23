@@ -1,6 +1,5 @@
 import { Transport, Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
-import { startOfMonth, endOfMonth } from 'date-fns'
 import { TransportRecordsRepository } from '../transport'
 
 export class PrismaTransportRecordsRepository
@@ -41,16 +40,10 @@ export class PrismaTransportRecordsRepository
     return transport_record
   }
 
-  async findByMonthAndYear(date: Date) {
-    const startOfMonthDate = startOfMonth(date)
-    const endOfMonthDate = endOfMonth(date)
-
+  async findByMonthAndYear(month: number, year: number) {
     const transport_record = await prisma.transport.findFirst({
       where: {
-        month: {
-          gte: startOfMonthDate,
-          lte: endOfMonthDate,
-        },
+        AND: [{ month }, { year }],
       },
     })
 
@@ -61,24 +54,45 @@ export class PrismaTransportRecordsRepository
     page: number,
     cityId: string,
     items: number,
-    date?: Date | undefined,
+    month?: number,
+    year?: number,
   ) {
-    const transport_records = await prisma.transport.findMany({
+    const whereConditions: any = {
+      city_id: cityId,
+    }
+
+    if (month !== undefined) {
+      whereConditions.month = month
+    }
+
+    if (year !== undefined) {
+      whereConditions.year = year
+    }
+
+    const totalItems = await prisma.transport.count({
+      where: whereConditions,
+    })
+
+    const transport = await prisma.transport.findMany({
       where: {
         city_id: cityId,
-        AND: [
-          {
-            month: {
-              gte: date && startOfMonth(date),
-              lte: date && endOfMonth(date),
-            },
-          },
-        ],
+        AND: [{ month }, { year }],
       },
       take: items,
       skip: (page - 1) * items,
     })
 
-    return transport_records
+    const totalPages = Math.ceil(totalItems / items)
+    const pageItems = page === totalPages ? totalItems % items : items
+
+    return {
+      transport,
+      pagination: {
+        totalItems,
+        pageSize: items,
+        pageNumber: page,
+        pageItems,
+      },
+    }
   }
 }

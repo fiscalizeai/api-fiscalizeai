@@ -8,7 +8,7 @@ export async function deleteHealthRecord(
   reply: FastifyReply,
 ) {
   const deleteParamsSchema = z.object({
-    healthId: z.string().uuid(), // Troquei de "personId" para "healthId"
+    healthId: z.string().uuid(),
   })
 
   const { healthId } = deleteParamsSchema.parse(request.params)
@@ -17,7 +17,7 @@ export async function deleteHealthRecord(
     const deleteUseCase = makeDeleteUseCase()
 
     await deleteUseCase.execute({
-      id: healthId, // Troquei de "personId" para "healthId"
+      id: healthId, // Troquei de "chamberId" para "healthId"
     })
   } catch (error) {
     if (error instanceof RecordsNotExistsError) {

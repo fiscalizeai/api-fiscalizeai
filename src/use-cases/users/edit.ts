@@ -1,5 +1,5 @@
 import { Prisma, User } from '@prisma/client'
-import { ResouceNotFoundError } from '../errors/resource-not-found'
+import { ResourceNotFoundError } from '../errors/resource-not-found'
 import { UsersRepository } from '@/repositories/users'
 
 interface EditUserUseCaseRequest {
@@ -21,7 +21,7 @@ export class EditUserUseCase {
     const user = await this.usersRepository.findById(userId)
 
     if (!user) {
-      throw new ResouceNotFoundError() // TODO: Colocar o erro certo!
+      throw new ResourceNotFoundError() // TODO: Colocar o erro certo!
     }
 
     const userEdited = await this.usersRepository.edit(userId, data)

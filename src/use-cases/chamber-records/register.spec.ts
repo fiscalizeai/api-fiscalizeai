@@ -1,30 +1,30 @@
 import { expect, it, describe, beforeEach } from 'vitest'
-import { RegisterPersonRecordsUseCase } from './register'
+import { RegisterChamberRecordsUseCase } from './register'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { InMemoryCitiesRepository } from '@/repositories/in-memory/in-memory-cities-repository'
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
-import { InMemoryPersonRecordsRepository } from '@/repositories/in-memory/in-memory-person-records'
+import { InMemoryChamberRecordsRepository } from '@/repositories/in-memory/in-memory-chamber-records'
 
-let personRecordsRepository: InMemoryPersonRecordsRepository
+let chamberRecordsRepository: InMemoryChamberRecordsRepository
 let usersRepository: InMemoryUsersRepository
 let citiesRepository: InMemoryCitiesRepository
-let sut: RegisterPersonRecordsUseCase
+let sut: RegisterChamberRecordsUseCase
 
-describe('Register Person Records Use Case', () => {
+describe('Register Chamber Records Use Case', () => {
   beforeEach(async () => {
-    personRecordsRepository = new InMemoryPersonRecordsRepository()
+    chamberRecordsRepository = new InMemoryChamberRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
     citiesRepository = new InMemoryCitiesRepository()
 
-    sut = new RegisterPersonRecordsUseCase(
-      personRecordsRepository,
+    sut = new RegisterChamberRecordsUseCase(
+      chamberRecordsRepository,
       usersRepository,
       citiesRepository,
     )
   })
 
-  it('should be able register person record', async () => {
+  it('should be able register chamber record', async () => {
     const city = await citiesRepository.create({
       id: 'city-01',
       name: 'Sacramento',
@@ -39,8 +39,9 @@ describe('Register Person Records Use Case', () => {
       city_id: city.id,
     })
 
-    const { personRecord } = await sut.execute({
-      month: new Date('2024-02'),
+    const { chamberRecord } = await sut.execute({
+      month: 1,
+      year: 2024,
       contractors: 10,
       headcounts: 24789,
       staffs: 256,
@@ -49,13 +50,14 @@ describe('Register Person Records Use Case', () => {
       userId: user.id,
     })
 
-    expect(personRecord.id).toEqual(expect.any(String))
+    expect(chamberRecord.id).toEqual(expect.any(String))
   })
 
-  it('not should be able register person record', async () => {
+  it('not should be able register chamber record', async () => {
     await expect(() =>
       sut.execute({
-        month: new Date('01/01/2024'),
+        month: 1,
+        year: 2024,
         contractors: 10,
         headcounts: 24789,
         staffs: 256,
@@ -66,7 +68,7 @@ describe('Register Person Records Use Case', () => {
     ).rejects.toBeInstanceOf(InvalidUserOrCityError)
   })
 
-  it('not should be able register person record with same month in', async () => {
+  it('not should be able register chamber record with same month in', async () => {
     const city = await citiesRepository.create({
       id: 'city-01',
       name: 'Sacramento',
@@ -82,7 +84,8 @@ describe('Register Person Records Use Case', () => {
     })
 
     await sut.execute({
-      month: new Date('01/01/2024'),
+      month: 1,
+      year: 2024,
       contractors: 10,
       headcounts: 24789,
       staffs: 256,
@@ -93,7 +96,8 @@ describe('Register Person Records Use Case', () => {
 
     await expect(() =>
       sut.execute({
-        month: new Date('01/01/2024'),
+        month: 1,
+        year: 2024,
         contractors: 10,
         headcounts: 24789,
         staffs: 256,

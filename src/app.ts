@@ -1,18 +1,22 @@
 import fastify from 'fastify'
-import { usersRoutes } from './http/controllers/users/routes'
-import { ZodError } from 'zod'
-import { env } from './env'
 import cors from '@fastify/cors'
+
+import { env } from './env'
+import { ZodError } from 'zod'
+
 import fastifyJwt from '@fastify/jwt'
 import fastifyCookie from '@fastify/cookie'
-import { citiesRoutes } from './http/controllers/cities/routes'
-import swaggerUi from '@fastify/swagger-ui'
+
 import swagger from '@fastify/swagger'
 import swaggerFile from './swagger.json'
+import swaggerUi from '@fastify/swagger-ui'
+
+import { usersRoutes } from './http/controllers/users/routes'
+import { citiesRoutes } from './http/controllers/cities/routes'
+import { healthRecordsRoutes } from './http/controllers/health-records/routes'
+import { chamberRecordsRoutes } from './http/controllers/chamber-records/routes'
 import { educationRecordsRoutes } from './http/controllers/education-records/routes'
 import { transportRecordsRoutes } from './http/controllers/transport-records/routes'
-import { personRecordsRoutes } from './http/controllers/person-records/routes'
-import { healthRecordsRoutes } from './http/controllers/health-records/routes'
 
 export const app = fastify()
 
@@ -48,7 +52,7 @@ app.register(usersRoutes)
 app.register(citiesRoutes)
 app.register(educationRecordsRoutes)
 app.register(transportRecordsRoutes)
-app.register(personRecordsRoutes)
+app.register(chamberRecordsRoutes)
 app.register(healthRecordsRoutes)
 
 app.setErrorHandler((error, _request, reply) => {

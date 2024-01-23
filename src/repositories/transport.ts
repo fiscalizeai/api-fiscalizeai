@@ -2,13 +2,25 @@ import { Prisma, Transport } from '@prisma/client'
 
 export interface TransportRecordsRepository {
   register(data: Prisma.TransportUncheckedCreateInput): Promise<Transport>
-  findByMonthAndYear(date: Date): Promise<Transport | null>
+  findByMonthAndYear(
+    month: number | Prisma.IntFieldUpdateOperationsInput,
+    year: number | Prisma.IntFieldUpdateOperationsInput,
+  ): Promise<Transport | null>
   fetch(
     page: number,
     cityId: string,
     items?: number,
-    date?: Date,
-  ): Promise<Transport[] | null>
+    month?: number,
+    year?: number,
+  ): Promise<{
+    transport: Transport[]
+    pagination: {
+      totalItems: number
+      pageSize: number
+      pageNumber: number
+      pageItems: number
+    }
+  } | null>
   edit(
     transportId: string,
     data: Prisma.TransportUncheckedUpdateInput,

@@ -37,7 +37,8 @@ describe('Fetch Health Records Use Case', () => {
       await healthRecordsRepository.register({
         city_id: 'city-01',
         user_id: 'user-01',
-        month: '2024-01',
+        month: 1,
+        year: 2024,
         doctors: parseInt(`${i}`),
         services: parseInt(`${i}`),
         total: parseInt(`${i}`),
@@ -49,7 +50,8 @@ describe('Fetch Health Records Use Case', () => {
       await healthRecordsRepository.register({
         city_id: 'city-01',
         user_id: 'user-01',
-        month: '2023-02',
+        month: 2,
+        year: 2024,
         doctors: parseInt(`${i}`),
         services: parseInt(`${i}`),
         total: parseInt(`${i}`),
@@ -57,13 +59,13 @@ describe('Fetch Health Records Use Case', () => {
       })
     }
 
-    const { healthRecords } = await sut.execute({
+    const { health } = await sut.execute({
       page: 2,
       cityId: 'city-01',
       items: 20,
-      date: new Date('2024-01'),
+      month: 1,
     })
 
-    expect(healthRecords).toHaveLength(2)
+    expect(health).toHaveLength(2)
   })
 })

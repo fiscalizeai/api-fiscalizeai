@@ -1,6 +1,6 @@
 import { RecordsAlreadyExistsError } from '@/use-cases/errors/records/record-already-exists'
 import { InvalidUserOrCityError } from '@/use-cases/errors/records/invalid-user-or-city'
-import { makeRegisterUseCase } from '@/use-cases/factories/person-records/make-register-use-case'
+import { makeRegisterUseCase } from '@/use-cases/factories/chamber-records/make-register-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -8,14 +8,15 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   request.jwtVerify({ onlyCookie: true })
 
   const registerBodySchema = z.object({
-    month: z.coerce.date(),
+    month: z.coerce.number(),
+    year: z.coerce.number(),
     contractors: z.number(),
     headcounts: z.number(),
     staffs: z.number(),
     total: z.number(),
   })
 
-  const { month, contractors, headcounts, staffs, total } =
+  const { month, year, contractors, headcounts, staffs, total } =
     registerBodySchema.parse(request.body)
 
   const { sub, city } = request.user
@@ -25,6 +26,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 
     await registerUseCase.execute({
       month,
+      year,
       contractors,
       headcounts,
       staffs,

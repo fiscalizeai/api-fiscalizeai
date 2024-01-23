@@ -1,11 +1,11 @@
 import { Health, Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
-import { HealthRecordsRepository } from '../health' // Troquei de "person" para "health"
+import { HealthRecordsRepository } from '../health' // Troquei de "chamber" para "health"
 import { startOfMonth, endOfMonth } from 'date-fns'
 
 export class PrismaHealthRecordsRepository implements HealthRecordsRepository {
   async register(data: Prisma.HealthUncheckedCreateInput) {
-    // Troquei de "person" para "health"
+    // Troquei de "chamber" para "health"
     const health_record = await prisma.health.create({
       data,
     })
@@ -40,16 +40,10 @@ export class PrismaHealthRecordsRepository implements HealthRecordsRepository {
     return health_record
   }
 
-  async findByMonthAndYear(date: Date) {
-    const startOfMonthDate = startOfMonth(date)
-    const endOfMonthDate = endOfMonth(date)
-
+  async findByMonthAndYear(month: number, year: number) {
     const health_record = await prisma.health.findFirst({
       where: {
-        month: {
-          gte: startOfMonthDate,
-          lte: endOfMonthDate,
-        },
+        AND: [{ month }, { year }],
       },
     })
 
@@ -60,24 +54,45 @@ export class PrismaHealthRecordsRepository implements HealthRecordsRepository {
     page: number,
     cityId: string,
     items: number,
-    date?: Date | undefined,
+    month?: number,
+    year?: number,
   ) {
-    const health_records = await prisma.health.findMany({
+    const whereConditions: any = {
+      city_id: cityId,
+    }
+
+    if (month !== undefined) {
+      whereConditions.month = month
+    }
+
+    if (year !== undefined) {
+      whereConditions.year = year
+    }
+
+    const totalItems = await prisma.health.count({
+      where: whereConditions,
+    })
+
+    const health = await prisma.health.findMany({
       where: {
         city_id: cityId,
-        AND: [
-          {
-            month: {
-              gte: date && startOfMonth(date),
-              lte: date && endOfMonth(date),
-            },
-          },
-        ],
+        AND: [{ month }, { year }],
       },
       take: items,
       skip: (page - 1) * items,
     })
 
-    return health_records
+    const totalPages = Math.ceil(totalItems / items)
+    const pageItems = page === totalPages ? totalItems % items : items
+
+    return {
+      health,
+      pagination: {
+        totalItems,
+        pageSize: items,
+        pageNumber: page,
+        pageItems,
+      },
+    }
   }
 }

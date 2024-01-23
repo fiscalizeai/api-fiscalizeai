@@ -2,7 +2,7 @@ import { UsersRepository } from '@/repositories/users'
 import { User } from '@prisma/client'
 import { InvalidCredentialsError } from '../errors/invalid-credentials'
 import { compare } from 'bcryptjs'
-import { ResouceNotFoundError } from '../errors/resource-not-found'
+import { ResourceNotFoundError } from '../errors/resource-not-found'
 
 interface AuthenticateUseCaseRequest {
   email: string
@@ -33,7 +33,7 @@ export class AuthenticateUseCase {
     }
 
     if (user.status === 'DENIED') {
-      throw new ResouceNotFoundError()
+      throw new ResourceNotFoundError()
     }
 
     return {

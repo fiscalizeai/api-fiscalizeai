@@ -1,6 +1,5 @@
 import { Prisma, Transport, City, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
-import { isSameMonth, isSameYear } from 'date-fns'
 import { TransportRecordsRepository } from '../transport'
 
 export class InMemoryTransportRecordsRepository
@@ -13,7 +12,8 @@ export class InMemoryTransportRecordsRepository
   async register(data: Prisma.TransportUncheckedCreateInput) {
     const transport_record: Transport = {
       id: data.id ?? randomUUID(),
-      month: new Date(data.month),
+      month: data.month,
+      year: data.year,
       cars: data.cars,
       bus: data.bus,
       machines: data.machines,
@@ -29,9 +29,9 @@ export class InMemoryTransportRecordsRepository
     return transport_record
   }
 
-  async findByMonthAndYear(date: Date) {
+  async findByMonthAndYear(month: number, year: number) {
     const transport_record = this.items.find(
-      (item) => isSameMonth(item.month, date) && isSameYear(item.month, date),
+      (item) => item.month === month && item.year === year,
     )
 
     if (!transport_record) {
@@ -41,7 +41,13 @@ export class InMemoryTransportRecordsRepository
     return transport_record
   }
 
-  async fetch(page: number, cityId: string, items = 20, date?: Date) {
+  async fetch(
+    page: number,
+    cityId: string,
+    items = 20,
+    month?: number,
+    year?: number,
+  ) {
     let filteredTransportRecords = this.items.filter(
       (transportRecord) => transportRecord.city_id === cityId,
     )
@@ -50,11 +56,15 @@ export class InMemoryTransportRecordsRepository
       return null
     }
 
-    if (date) {
+    if (year) {
       filteredTransportRecords = filteredTransportRecords.filter(
-        (transportRecord) =>
-          isSameMonth(transportRecord.month, date) &&
-          isSameYear(transportRecord.month, date),
+        (transportRecord) => transportRecord.year === year,
+      )
+    }
+
+    if (month) {
+      filteredTransportRecords = filteredTransportRecords.filter(
+        (transportRecord) => transportRecord.month === month,
       )
     }
 
@@ -63,7 +73,19 @@ export class InMemoryTransportRecordsRepository
       page * items,
     )
 
-    return paginatedTransportRecords
+    const totalItems = filteredTransportRecords.length
+    const totalPages = Math.ceil(totalItems / items)
+    const pageItems = page === totalPages ? totalPages % items : items
+
+    return {
+      transport: paginatedTransportRecords,
+      pagination: {
+        totalItems,
+        pageSize: items,
+        pageNumber: page,
+        pageItems,
+      },
+    }
   }
 
   async edit(transportId: string, data: Transport) {

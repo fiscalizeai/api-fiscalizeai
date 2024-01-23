@@ -34,7 +34,7 @@ model User {
   education_records Education[]
   health_records    Health[]
   transport_records Transport[]
-  person_records    Person[]
+  chamber_records   Chamber[]
 
   city    City   @relation(fields: [city_id], references: [id])
   city_id String
@@ -50,7 +50,7 @@ model City {
 
   users             User[]
   education_records Education[]
-  person_records    Person[]
+  chamber_records   Chamber[]
   health_records    Health[]
   transport_records Transport[]
 
@@ -78,7 +78,7 @@ model Education {
   @@map("education_data")
 }
 
-model Person {
+model Chamber {
   id          String @id @default(uuid())
   staffs      Int
   contractors Int
@@ -96,7 +96,7 @@ model Person {
   city    City   @relation(fields: [city_id], references: [id])
   city_id String
 
-  @@map("person_data")
+  @@map("chamber_data")
 }
 
 model Health {

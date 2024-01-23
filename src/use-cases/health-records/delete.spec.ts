@@ -35,7 +35,8 @@ describe('Delete Health Record Use Case', () => {
     await healthRecordsRepository.register({
       id: 'health-01',
       city_id: 'city-01',
-      month: new Date('01/01/2024'),
+      month: 1,
+      year: 2024,
       doctors: 100,
       services: 1000,
       total: 50000000,
@@ -46,7 +47,8 @@ describe('Delete Health Record Use Case', () => {
     await healthRecordsRepository.register({
       id: 'health-02',
       city_id: 'city-01',
-      month: new Date('01/02/2024'),
+      month: 2,
+      year: 2024,
       doctors: 200,
       services: 1000,
       total: 50000000,
@@ -60,9 +62,9 @@ describe('Delete Health Record Use Case', () => {
       id: 'health-01',
     })
 
-    const transportRecords = await healthRecordsRepository.fetch(1, 'city-01')
+    const healthRecords = await healthRecordsRepository.fetch(1, 'city-01')
 
-    expect(transportRecords).toHaveLength(1)
+    expect(healthRecords?.health).toHaveLength(1)
   })
 
   it('not should be able delete health record with wrong id', async () => {

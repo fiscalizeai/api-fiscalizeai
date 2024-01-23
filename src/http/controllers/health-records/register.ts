@@ -8,13 +8,14 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   request.jwtVerify({ onlyCookie: true })
 
   const registerBodySchema = z.object({
-    month: z.coerce.date(),
+    month: z.coerce.number(),
+    year: z.coerce.number(),
     doctors: z.number(),
     services: z.number(),
     total: z.number(),
   })
 
-  const { month, doctors, services, total } = registerBodySchema.parse(
+  const { month, year, doctors, services, total } = registerBodySchema.parse(
     request.body,
   )
 
@@ -25,6 +26,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 
     await registerUseCase.execute({
       month,
+      year,
       doctors,
       services,
       total,

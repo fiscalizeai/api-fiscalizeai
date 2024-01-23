@@ -1,4 +1,4 @@
-import { ResouceNotFoundError } from '@/use-cases/errors/resource-not-found'
+import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found'
 import { makeGetUserInfoUseCase } from '@/use-cases/factories/users/make-get-user-info-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 
@@ -11,7 +11,7 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
   const { user } = await getUserProfile.execute({ userId: request.user.sub })
 
   if (!user) {
-    throw new ResouceNotFoundError()
+    throw new ResourceNotFoundError()
   }
 
   const token = await reply.jwtSign(

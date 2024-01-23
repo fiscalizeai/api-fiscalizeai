@@ -1,16 +1,23 @@
 import { HealthRecordsRepository } from '@/repositories/health'
 import { Health } from '@prisma/client'
-import { ResouceNotFoundError } from '../errors/resource-not-found'
+import { ResourceNotFoundError } from '../errors/resource-not-found'
 
 interface FetchHealthRecordsUseCaseRequest {
   page: number
   cityId: string
   items: number
-  date?: Date
+  month?: number
+  year?: number
 }
 
 interface FetchHealthRecordsUseCaseResponse {
-  healthRecords: Health[]
+  health: Health[]
+  pagination: {
+    totalItems: number
+    pageSize: number
+    pageNumber: number
+    pageItems: number
+  }
 }
 
 export class FetchHealthRecordsUseCase {
@@ -20,21 +27,26 @@ export class FetchHealthRecordsUseCase {
     page,
     cityId,
     items,
-    date,
+    month,
+    year,
   }: FetchHealthRecordsUseCaseRequest): Promise<FetchHealthRecordsUseCaseResponse> {
     const healthRecords = await this.healthRepository.fetch(
       page,
       cityId,
       items,
-      date,
+      month,
+      year,
     )
 
     if (!healthRecords) {
-      throw new ResouceNotFoundError()
+      throw new ResourceNotFoundError()
     }
 
+    const { health, pagination } = healthRecords
+
     return {
-      healthRecords,
+      health,
+      pagination,
     }
   }
 }

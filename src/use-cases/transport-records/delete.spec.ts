@@ -35,7 +35,8 @@ describe('Delete Transport Record Use Case', () => {
     await transportRecordsRepository.register({
       id: 'transport-01',
       city_id: 'city-01',
-      month: new Date('01/01/2024'),
+      month: 1,
+      year: 2024,
       cars: 100,
       bus: 1000,
       machines: 500,
@@ -47,7 +48,8 @@ describe('Delete Transport Record Use Case', () => {
     await transportRecordsRepository.register({
       id: 'education-02',
       city_id: 'city-01',
-      month: new Date('01/02/2024'),
+      month: 2,
+      year: 2024,
       cars: 200,
       bus: 1000,
       machines: 500,
@@ -62,12 +64,12 @@ describe('Delete Transport Record Use Case', () => {
       id: 'transport-01',
     })
 
-    const educationRecords = await transportRecordsRepository.fetch(
+    const transportRecords = await transportRecordsRepository.fetch(
       1,
       'city-01',
     )
 
-    expect(educationRecords).toHaveLength(1)
+    expect(transportRecords?.transport).toHaveLength(1)
   })
 
   it('not should be able delete transport record with wrong id', async () => {

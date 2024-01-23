@@ -1,24 +1,24 @@
 import { RecordsNotExistsError } from '@/use-cases/errors/records/records-not-exists'
-import { makeGetByIdUseCase } from '@/use-cases/factories/person-records/make-get-by-id'
+import { makeGetByIdUseCase } from '@/use-cases/factories/chamber-records/make-get-by-id'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 export async function getById(request: FastifyRequest, reply: FastifyReply) {
   const getByIdParamsSchema = z.object({
-    personId: z.string(),
+    chamberId: z.string(),
   })
 
-  const { personId } = getByIdParamsSchema.parse(request.params)
+  const { chamberId } = getByIdParamsSchema.parse(request.params)
 
   try {
-    const person = makeGetByIdUseCase()
+    const chamber = makeGetByIdUseCase()
 
-    const { personRecord } = await person.execute({
-      id: personId,
+    const { chamberRecord } = await chamber.execute({
+      id: chamberId,
     })
 
     return reply.status(200).send({
-      personRecord,
+      chamberRecord,
     })
   } catch (error) {
     if (error instanceof RecordsNotExistsError) {

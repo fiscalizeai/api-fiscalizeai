@@ -12,10 +12,10 @@ export async function edit(request: FastifyRequest, reply: FastifyReply) {
 
   const editHealthRecordBodySchema = z.object({
     data: z.object({
-      month: z.coerce.date().optional(),
-      contractors: z.number().optional(),
-      headcounts: z.number().optional(),
-      staffs: z.number().optional(),
+      year: z.coerce.number(),
+      month: z.coerce.number().optional(),
+      doctors: z.number().optional(),
+      services: z.number().optional(),
       total: z.number().optional(),
     }),
   })

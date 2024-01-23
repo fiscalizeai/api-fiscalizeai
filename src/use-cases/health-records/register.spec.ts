@@ -26,7 +26,6 @@ describe('Register Health Records Use Case', () => {
   })
 
   it('should be able register health record', async () => {
-    // Troquei de "education" para "health"
     const city = await citiesRepository.create({
       id: 'city-01',
       name: 'Sacramento',
@@ -42,8 +41,8 @@ describe('Register Health Records Use Case', () => {
     })
 
     const { health_record } = await sut.execute({
-      // Troquei de "education" para "health"
-      month: new Date('2024-02'),
+      month: 1,
+      year: 2024,
       doctors: 10,
       services: 24789,
       total: 563.0 * 100,
@@ -55,10 +54,10 @@ describe('Register Health Records Use Case', () => {
   })
 
   it('not should be able register health record', async () => {
-    // Troquei de "education" para "health"
     await expect(() =>
       sut.execute({
-        month: new Date('01/01/2024'),
+        month: 1,
+        year: 2024,
         doctors: 10,
         services: 24789,
         total: 563.0 * 100,
@@ -69,7 +68,6 @@ describe('Register Health Records Use Case', () => {
   })
 
   it('not should be able register health record with same month in', async () => {
-    // Troquei de "education" para "health"
     const city = await citiesRepository.create({
       id: 'city-01',
       name: 'Sacramento',
@@ -85,8 +83,8 @@ describe('Register Health Records Use Case', () => {
     })
 
     await sut.execute({
-      // Troquei de "education" para "health"
-      month: new Date('01/01/2024'),
+      month: 1,
+      year: 2024,
       doctors: 10,
       services: 24789,
       total: 563.0 * 100,
@@ -96,7 +94,8 @@ describe('Register Health Records Use Case', () => {
 
     await expect(() =>
       sut.execute({
-        month: new Date('01/01/2024'),
+        month: 1,
+        year: 2024,
         doctors: 10,
         services: 24789,
         total: 563.0 * 100,

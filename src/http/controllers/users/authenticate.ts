@@ -1,5 +1,5 @@
 import { InvalidCredentialsError } from '@/use-cases/errors/invalid-credentials'
-import { ResouceNotFoundError } from '@/use-cases/errors/resource-not-found'
+import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found'
 import { makeAuthenticateUseCase } from '@/use-cases/factories/users/make-authenticate-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
@@ -76,7 +76,7 @@ export async function authenticate(
       return reply.status(400).send({ message: error.message })
     }
 
-    if (error instanceof ResouceNotFoundError) {
+    if (error instanceof ResourceNotFoundError) {
       return reply.status(400).send({ message: error.message })
     } // TODO: Erro de acesso negado a plataforma
 

@@ -1,7 +1,6 @@
 import { Prisma, Health, City, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { HealthRecordsRepository } from '../health' // Troquei de "education" para "health"
-import { isSameMonth, isSameYear } from 'date-fns'
 
 export class InMemoryHealthRecordsRepository
   implements HealthRecordsRepository
@@ -13,7 +12,8 @@ export class InMemoryHealthRecordsRepository
   async register(data: Prisma.HealthUncheckedCreateInput) {
     const health_record: Health = {
       id: data.id ?? randomUUID(),
-      month: new Date(data.month),
+      month: data.month,
+      year: data.year,
       doctors: data.doctors,
       services: data.services,
       total: data.total,
@@ -28,9 +28,9 @@ export class InMemoryHealthRecordsRepository
     return health_record
   }
 
-  async findByMonthAndYear(date: Date) {
+  async findByMonthAndYear(month: number, year: number) {
     const health_record = this.items.find(
-      (item) => isSameMonth(item.month, date) && isSameYear(item.month, date),
+      (item) => item.month === month && item.year === year,
     )
 
     if (!health_record) {
@@ -40,7 +40,13 @@ export class InMemoryHealthRecordsRepository
     return health_record
   }
 
-  async fetch(page: number, cityId: string, items = 20, date?: Date) {
+  async fetch(
+    page: number,
+    cityId: string,
+    items = 20,
+    month?: number,
+    year?: number,
+  ) {
     let filteredHealthRecords = this.items.filter(
       (healthRecord) => healthRecord.city_id === cityId,
     )
@@ -49,11 +55,15 @@ export class InMemoryHealthRecordsRepository
       return null
     }
 
-    if (date) {
+    if (year) {
       filteredHealthRecords = filteredHealthRecords.filter(
-        (healthRecord) =>
-          isSameMonth(healthRecord.month, date) &&
-          isSameYear(healthRecord.month, date),
+        (healthRecord) => healthRecord.year === year,
+      )
+    }
+
+    if (month) {
+      filteredHealthRecords = filteredHealthRecords.filter(
+        (healthRecord) => healthRecord.month === month,
       )
     }
 
@@ -62,7 +72,19 @@ export class InMemoryHealthRecordsRepository
       page * items,
     )
 
-    return paginatedHealthRecords
+    const totalItems = filteredHealthRecords.length
+    const totalPages = Math.ceil(totalItems / items)
+    const pageItems = page === totalPages ? totalPages % items : items
+
+    return {
+      health: paginatedHealthRecords,
+      pagination: {
+        totalItems,
+        pageSize: items,
+        pageNumber: page,
+        pageItems,
+      },
+    }
   }
 
   async edit(healthId: string, data: Health) {

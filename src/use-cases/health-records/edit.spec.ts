@@ -35,7 +35,8 @@ describe('Edit Health Record Use Case', () => {
     await healthRecordsRepository.register({
       id: 'health-01',
       city_id: 'city-01',
-      month: new Date('01/01/2024'),
+      month: 1,
+      year: 2024,
       doctors: 100,
       services: 1000,
       total: 50000000,
@@ -46,7 +47,8 @@ describe('Edit Health Record Use Case', () => {
     await healthRecordsRepository.register({
       id: 'health-02',
       city_id: 'city-01',
-      month: new Date('01/02/2024'),
+      month: 2,
+      year: 2024,
       doctors: 200,
       services: 1000,
       total: 50000000,
@@ -73,7 +75,8 @@ describe('Edit Health Record Use Case', () => {
       sut.execute({
         id: 'health-02',
         data: {
-          month: new Date('01/01/2024'),
+          month: 1,
+          year: 2024,
         },
       }),
     ).rejects.toBeInstanceOf(RecordsAlreadyExistsError)

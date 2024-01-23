@@ -6,7 +6,8 @@ export const RegisterEducationRecordsSchema: FastifySchema = {
   body: {
     type: 'object',
     properties: {
-      month: { type: 'string' },
+      month: { type: 'number' },
+      year: { type: 'number' },
       schools: { type: 'number' },
       students: { type: 'number' },
       teachers: { type: 'number' },
@@ -30,7 +31,8 @@ export const FetchEducationRecordsSchema: FastifySchema = {
     properties: {
       page: { type: 'number' },
       items: { type: 'number' },
-      date: { type: 'string' },
+      month: { type: 'number' },
+      year: { type: 'number' },
     },
   },
   response: {
@@ -48,7 +50,8 @@ export const FetchEducationRecordsSchema: FastifySchema = {
               students: { type: 'number' },
               teachers: { type: 'number' },
               total: { type: 'number' },
-              month: { type: 'string' },
+              month: { type: 'number' },
+              year: { type: 'number' },
               user_id: { type: 'string' },
             },
           },
@@ -79,7 +82,8 @@ export const editEducationRecordSchema: FastifySchema = {
       data: {
         type: 'object',
         properties: {
-          month: { type: 'string' },
+          month: { type: 'number' },
+          year: { type: 'number' },
           schools: { type: 'number' },
           students: { type: 'number' },
           teachers: { type: 'number' },
@@ -114,7 +118,8 @@ export const getEducationRecordByIdSchema: FastifySchema = {
           type: 'object',
           properties: {
             id: { type: 'string' },
-            month: { type: 'string' },
+            month: { type: 'number' },
+            year: { type: 'number' },
             schools: { type: 'number' },
             teachers: { type: 'number' },
             students: { type: 'number' },

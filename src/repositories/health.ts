@@ -2,13 +2,25 @@ import { Prisma, Health } from '@prisma/client'
 
 export interface HealthRecordsRepository {
   register(data: Prisma.HealthUncheckedCreateInput): Promise<Health>
-  findByMonthAndYear(date: Date): Promise<Health | null>
+  findByMonthAndYear(
+    month: number | Prisma.IntFieldUpdateOperationsInput,
+    year: number | Prisma.IntFieldUpdateOperationsInput,
+  ): Promise<Health | null>
   fetch(
     page: number,
     cityId: string,
     items?: number,
-    date?: Date,
-  ): Promise<Health[] | null>
+    month?: number,
+    year?: number,
+  ): Promise<{
+    health: Health[]
+    pagination: {
+      totalItems: number
+      pageSize: number
+      pageNumber: number
+      pageItems: number
+    }
+  } | null>
   edit(
     HealthId: string,
     data: Prisma.HealthUncheckedUpdateInput,

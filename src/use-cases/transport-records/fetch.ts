@@ -1,16 +1,23 @@
 import { Transport } from '@prisma/client'
-import { ResouceNotFoundError } from '../errors/resource-not-found'
+import { ResourceNotFoundError } from '../errors/resource-not-found'
 import { TransportRecordsRepository } from '@/repositories/transport'
 
 interface FetchTransportRecordsUseCaseRequest {
   page: number
   cityId: string
   items: number
-  date?: Date
+  month?: number
+  year?: number
 }
 
 interface FetchTransportRecordsUseCaseResponse {
-  transportRecords: Transport[]
+  transport: Transport[]
+  pagination: {
+    totalItems: number
+    pageSize: number
+    pageNumber: number
+    pageItems: number
+  }
 }
 
 export class FetchTransportRecordsUseCase {
@@ -20,21 +27,26 @@ export class FetchTransportRecordsUseCase {
     page,
     cityId,
     items,
-    date,
+    month,
+    year,
   }: FetchTransportRecordsUseCaseRequest): Promise<FetchTransportRecordsUseCaseResponse> {
     const transportRecords = await this.transportRecords.fetch(
       page,
       cityId,
       items,
-      date,
+      month,
+      year,
     )
 
     if (!transportRecords) {
-      throw new ResouceNotFoundError()
+      throw new ResourceNotFoundError()
     }
 
+    const { transport, pagination } = transportRecords
+
     return {
-      transportRecords,
+      transport,
+      pagination,
     }
   }
 }

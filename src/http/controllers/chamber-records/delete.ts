@@ -1,23 +1,23 @@
 import { RecordsNotExistsError } from '@/use-cases/errors/records/records-not-exists'
-import { makeDeleteUseCase } from '@/use-cases/factories/person-records/make-delete-use-case'
+import { makeDeleteUseCase } from '@/use-cases/factories/chamber-records/make-delete-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-export async function deletePersonRecord(
+export async function deleteChamberRecord(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
   const deleteParamsSchema = z.object({
-    personId: z.string().uuid(),
+    chamberId: z.string().uuid(),
   })
 
-  const { personId } = deleteParamsSchema.parse(request.params)
+  const { chamberId } = deleteParamsSchema.parse(request.params)
 
   try {
     const deleteUseCase = makeDeleteUseCase()
 
     await deleteUseCase.execute({
-      id: personId,
+      id: chamberId,
     })
   } catch (error) {
     if (error instanceof RecordsNotExistsError) {

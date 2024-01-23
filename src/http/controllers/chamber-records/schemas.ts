@@ -1,12 +1,13 @@
 import { FastifySchema } from 'fastify'
 
-export const RegisterPersonRecordsSchema: FastifySchema = {
-  description: 'POST create a new person record',
-  tags: ['person'],
+export const RegisterChamberRecordsSchema: FastifySchema = {
+  description: 'POST create a new chamber record',
+  tags: ['chamber'],
   body: {
     type: 'object',
     properties: {
-      month: { type: 'string' },
+      month: { type: 'number' },
+      year: { type: 'number' },
       contractors: { type: 'number' },
       headcounts: { type: 'number' },
       staffs: { type: 'number' },
@@ -21,16 +22,17 @@ export const RegisterPersonRecordsSchema: FastifySchema = {
   },
 }
 
-export const FetchPersonRecordsSchema: FastifySchema = {
-  description: 'GET a fetch person record',
-  tags: ['person'],
+export const FetchChamberRecordsSchema: FastifySchema = {
+  description: 'GET a fetch chamber record',
+  tags: ['chamber'],
   querystring: {
     type: 'object',
     required: ['page'],
     properties: {
       page: { type: 'number' },
       items: { type: 'number' },
-      date: { type: 'string' },
+      month: { type: 'number' },
+      year: { type: 'number' },
     },
   },
   response: {
@@ -38,7 +40,7 @@ export const FetchPersonRecordsSchema: FastifySchema = {
       description: 'Successful',
       type: 'object',
       properties: {
-        personRecords: {
+        chamber: {
           type: 'array',
           items: {
             type: 'object',
@@ -48,9 +50,19 @@ export const FetchPersonRecordsSchema: FastifySchema = {
               headcounts: { type: 'number' },
               staffs: { type: 'number' },
               total: { type: 'number' },
-              month: { type: 'string' },
+              month: { type: 'number' },
+              year: { type: 'number' },
               user_id: { type: 'string' },
             },
+          },
+        },
+        pagination: {
+          type: 'object',
+          properties: {
+            totalItems: { type: 'number' },
+            pageSize: { type: 'number' },
+            pageNumber: { type: 'number' },
+            pageItems: { type: 'number' },
           },
         },
       },
@@ -58,11 +70,11 @@ export const FetchPersonRecordsSchema: FastifySchema = {
   },
 }
 
-export const editPersonRecordSchema: FastifySchema = {
-  description: 'PUT edit a person record',
-  tags: ['person'],
+export const editChamberRecordSchema: FastifySchema = {
+  description: 'PUT edit a chamber record',
+  tags: ['chamber'],
   params: {
-    personId: { type: 'string' },
+    chamberId: { type: 'string' },
   },
   body: {
     type: 'object',
@@ -70,7 +82,8 @@ export const editPersonRecordSchema: FastifySchema = {
       data: {
         type: 'object',
         properties: {
-          month: { type: 'string' },
+          month: { type: 'number' },
+          year: { type: 'number' },
           contractors: { type: 'number' },
           headcounts: { type: 'number' },
           staffs: { type: 'number' },
@@ -90,22 +103,23 @@ export const editPersonRecordSchema: FastifySchema = {
   },
 }
 
-export const getPersonRecordByIdSchema: FastifySchema = {
-  description: 'GET a person record by id',
-  tags: ['person'],
+export const getChamberRecordByIdSchema: FastifySchema = {
+  description: 'GET a chamber record by id',
+  tags: ['chamber'],
   params: {
-    personId: { type: 'string' },
+    chamberId: { type: 'string' },
   },
   response: {
     200: {
       description: 'Successful',
       type: 'object',
       properties: {
-        personRecord: {
+        chamberRecord: {
           type: 'object',
           properties: {
             id: { type: 'string' },
-            month: { type: 'string' },
+            month: { type: 'number' },
+            year: { type: 'number' },
             contractors: { type: 'number' },
             staffs: { type: 'number' },
             headcounts: { type: 'number' },
@@ -121,11 +135,11 @@ export const getPersonRecordByIdSchema: FastifySchema = {
   },
 }
 
-export const deletePersonRecordSchema: FastifySchema = {
-  description: 'Delete a person record',
-  tags: ['person'],
+export const deleteChamberRecordSchema: FastifySchema = {
+  description: 'Delete a chamber record',
+  tags: ['chamber'],
   params: {
-    personId: { type: 'string' },
+    chamberId: { type: 'string' },
   },
   response: {
     204: {

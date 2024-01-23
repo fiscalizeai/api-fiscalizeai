@@ -1,21 +1,21 @@
 import { expect, it, describe, beforeEach } from 'vitest'
-import { EditPersonRecordUseCase } from './edit'
-import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { InMemoryCitiesRepository } from '@/repositories/in-memory/in-memory-cities-repository'
-import { InMemoryPersonRecordsRepository } from '@/repositories/in-memory/in-memory-person-records'
+import { RecordsNotExistsError } from '../errors/records/records-not-exists'
+import { DeleteChamberRecordUseCase } from './delete'
+import { InMemoryChamberRecordsRepository } from '@/repositories/in-memory/in-memory-chamber-records'
 
-let personRecordsRepository: InMemoryPersonRecordsRepository
+let chamberRecordsRepository: InMemoryChamberRecordsRepository
 let usersRepository: InMemoryUsersRepository
 let citiesRepository: InMemoryCitiesRepository
-let sut: EditPersonRecordUseCase
+let sut: DeleteChamberRecordUseCase
 
-describe('Edit Person Record Use Case', () => {
+describe('Delete Chamber Record Use Case', () => {
   beforeEach(async () => {
-    personRecordsRepository = new InMemoryPersonRecordsRepository()
+    chamberRecordsRepository = new InMemoryChamberRecordsRepository()
     usersRepository = new InMemoryUsersRepository()
     citiesRepository = new InMemoryCitiesRepository()
-    sut = new EditPersonRecordUseCase(personRecordsRepository)
+    sut = new DeleteChamberRecordUseCase(chamberRecordsRepository)
 
     await citiesRepository.create({
       id: 'city-01',
@@ -32,10 +32,11 @@ describe('Edit Person Record Use Case', () => {
       city_id: 'city-01',
     })
 
-    await personRecordsRepository.register({
-      id: 'person-01',
+    await chamberRecordsRepository.register({
+      id: 'chamber-01',
       city_id: 'city-01',
-      month: new Date('01/01/2024'),
+      month: 1,
+      year: 2024,
       contractors: 100,
       headcounts: 1000,
       staffs: 500,
@@ -44,10 +45,11 @@ describe('Edit Person Record Use Case', () => {
       created_at: '2024-01-13T00:00:00.000Z',
     })
 
-    await personRecordsRepository.register({
-      id: 'person-02',
+    await chamberRecordsRepository.register({
+      id: 'chamber-02',
       city_id: 'city-01',
-      month: new Date('01/02/2024'),
+      month: 2,
+      year: 2024,
       contractors: 200,
       headcounts: 1000,
       staffs: 500,
@@ -57,27 +59,21 @@ describe('Edit Person Record Use Case', () => {
     })
   })
 
-  it('should be able edit person record', async () => {
-    const { personRecordEdited } = await sut.execute({
-      id: 'person-01',
-      data: {
-        staffs: 150,
-        updated_at: new Date('2024-01-14'),
-      },
+  it('should be able delete chamber record', async () => {
+    await sut.execute({
+      id: 'chamber-01',
     })
 
-    expect(personRecordEdited).not.toEqual(null)
-    expect.objectContaining({ personRecordEdited })
+    const chamberRecords = await chamberRecordsRepository.fetch(1, 'city-01')
+
+    expect(chamberRecords?.chamber).toHaveLength(1)
   })
 
-  it('not should be able edit city with date exactly month', async () => {
+  it('not should be able delete chamber record with wrong id', async () => {
     await expect(() =>
       sut.execute({
-        id: 'person-02',
-        data: {
-          month: new Date('01/01/2024'),
-        },
+        id: 'wrong-id',
       }),
-    ).rejects.toBeInstanceOf(RecordsAlreadyExistsError)
+    ).rejects.toBeInstanceOf(RecordsNotExistsError)
   })
 })

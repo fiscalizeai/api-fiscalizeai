@@ -1,4 +1,4 @@
-import { makeFetchUseCase } from '@/use-cases/factories/cities/make-fetch-use-case'
+import { makeFetchUseCase } from '@/use-cases/factories/citys/make-fetch-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
