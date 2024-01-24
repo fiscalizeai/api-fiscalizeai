@@ -1,7 +1,5 @@
-import { edit } from '@/http/controllers/users/edit'
 import { UserFilters } from '@/utils/filters-type'
 import { Prisma, User } from '@prisma/client'
-import { number, string } from 'zod'
 
 export interface UsersRepository {
   create(data: Prisma.UserUncheckedCreateInput): Promise<User>

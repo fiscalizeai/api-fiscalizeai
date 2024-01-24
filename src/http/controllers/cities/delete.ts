@@ -1,6 +1,6 @@
 import { CityAssociatedUsers } from '@/use-cases/errors/cities/city-associated-users'
 import { CityNotFoundError } from '@/use-cases/errors/cities/city-not-found'
-import { makeDeleteUseCase } from '@/use-cases/factories/citys/make-delete-use-case'
+import { makeDeleteUseCase } from '@/use-cases/factories/cities/make-delete-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 

@@ -15,7 +15,6 @@ export interface CityFilters {
   state?: string
 }
 
-export interface EducationFilters {
-  month?: Date
-  year?: Date
+export interface TransferFilters {
+  demonstrative?: string
 }

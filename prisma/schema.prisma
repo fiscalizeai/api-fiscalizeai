@@ -53,6 +53,7 @@ model City {
   chamber_records   Chamber[]
   health_records    Health[]
   transport_records Transport[]
+  Transfer          Transfer[]
 
   @@map("cities")
 }
@@ -138,4 +139,32 @@ model Transport {
 
   city    City   @relation(fields: [city_id], references: [id])
   city_id String
+
+  @@map("transport_data")
+}
+
+model Parcel {
+  id         String   @id @default(uuid())
+  parcel     String
+  value      String
+  date       DateTime
+  created_at DateTime @default(now())
+
+  transfer    Transfer @relation(fields: [transfer_id], references: [id])
+  transfer_id String
+
+  @@map("parcels")
+}
+
+model Transfer {
+  id            String   @id @default(uuid())
+  file          String
+  demonstrative String
+  created_at    DateTime @default(now())
+
+  parcel  Parcel[]
+  city    City     @relation(fields: [city_id], references: [id])
+  city_id String
+
+  @@map("transfers")
 }

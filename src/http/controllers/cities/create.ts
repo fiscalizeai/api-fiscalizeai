@@ -1,5 +1,5 @@
 import { CityAlreadyExistsError } from '@/use-cases/errors/cities/city-already-exists'
-import { makeCreateUseCase } from '@/use-cases/factories/citys/make-create-use-case'
+import { makeCreateUseCase } from '@/use-cases/factories/cities/make-create-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
