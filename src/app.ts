@@ -17,26 +17,9 @@ import { healthRecordsRoutes } from './http/controllers/health-records/routes'
 import { chamberRecordsRoutes } from './http/controllers/chamber-records/routes'
 import { educationRecordsRoutes } from './http/controllers/education-records/routes'
 import { transportRecordsRoutes } from './http/controllers/transport-records/routes'
-
-import cron from 'node-cron'
-import { deleteTmpFolder } from './tasks/delete-tmp-folder'
-import { scraping } from './tasks/scraping'
-import { processFilesTmp } from './tasks/process-files-tmp'
 import { transfersRoutes } from './http/controllers/transfers/routes'
 
 export const app = fastify()
-
-cron.schedule('06 12 * * *', () => {
-  deleteTmpFolder()
-})
-
-cron.schedule('08 12 * * *', () => {
-  scraping()
-})
-
-cron.schedule('35 12 * * *', () => {
-  processFilesTmp()
-})
 
 app.register(cors, {
   origin: true,

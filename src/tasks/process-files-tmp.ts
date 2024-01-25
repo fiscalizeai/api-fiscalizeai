@@ -15,7 +15,7 @@ interface RowData {
 }
 
 export async function processFilesTmp() {
-  const tmpFolderPath = path.join(__dirname, '../tmp')
+  const tmpFolderPath = path.join(__dirname, '../../tmp')
 
   try {
     const files = await fs.readdir(tmpFolderPath)
