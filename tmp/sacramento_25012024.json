@@ -1,0 +1,35 @@
+[
+  {
+    "demonstrative": "EXP - EXAMPLE",
+    "parcels": [
+      {
+        "date": "2024-01-25T11:48:06.438Z",
+        "parcel": "CREDITO FUNDO",
+        "value": "23619898"
+      }
+    ],
+    "cityId": "clrqorjti0000v8dp7w8qfqc5"
+  },
+  {
+    "demonstrative": "SNA - SIMPLES NACIONAL",
+    "parcels": [
+      {
+        "date": "2024-01-25T11:48:06.074Z",
+        "parcel": "CREDITO FUNDO",
+        "value": "348372"
+      }
+    ],
+    "cityId": "clrqorjti0000v8dp7w8qfqc5"
+  },
+  {
+    "demonstrative": "TOTAL DOS REPASSES NO PERIODO",
+    "parcels": [
+      {
+        "date": "2024-01-25T11:48:06.075Z",
+        "parcel": "CREDITO BENEF.",
+        "value": "348372"
+      }
+    ],
+    "cityId": "clrqorjti0000v8dp7w8qfqc5"
+  }
+]

@@ -14,7 +14,7 @@ interface RowData {
   cityId: string
 }
 
-export async function processFilesTmp() {
+export async function processTmpFiles() {
   const tmpFolderPath = path.join(__dirname, '../../tmp')
 
   try {

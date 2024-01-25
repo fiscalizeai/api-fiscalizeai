@@ -1,0 +1,12 @@
+jobs:
+  - name: deleteTmpFiles
+    schedule: "0 10 * * *"
+    command: npm run deleteTmpFiles
+
+  - name: scraping
+    schedule: "00 10 * * *"
+    command: npm run scraping
+
+  - name: processFilesTmp
+    schedule: "1 10 * * *"
+    command: npm run processFilesTmp

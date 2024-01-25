@@ -31,8 +31,14 @@ export async function saveDataToPrisma(fileName: string, data: RowData[]) {
         return
       }
 
-      if (!existingTransfer) {
-        console.error(`Transferencia da cidade ${fileName}`)
+      if (
+        existingTransfer?.file === fileName &&
+        existingTransfer?.demonstrative === row.demonstrative
+      ) {
+        console.error(
+          `Transferencia ${existingTransfer.demonstrative} da cidade ${existingCity.name} já existe`,
+        )
+        return
       }
 
       // Crie a transferência
@@ -58,7 +64,9 @@ export async function saveDataToPrisma(fileName: string, data: RowData[]) {
         }),
       )
 
-      console.log(`Dados salvos para ${row.demonstrative}`)
+      console.log(
+        `Dados salvos para ${row.demonstrative} na cidade de ${existingCity.name}`,
+      )
     } catch (error) {
       console.error(`Erro ao salvar dados para ${row.demonstrative}:`, error)
     }

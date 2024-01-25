@@ -1,0 +1,24 @@
+[
+  {
+    "demonstrative": "SNA - SIMPLES NACIONAL",
+    "parcels": [
+      {
+        "date": "2024-01-25T11:48:06.221Z",
+        "parcel": "CREDITO FUNDO",
+        "value": "10351845"
+      }
+    ],
+    "cityId": "clrqorjti0000v8dp7w8qfqc1"
+  },
+  {
+    "demonstrative": "TOTAL DOS REPASSES NO PERIODO",
+    "parcels": [
+      {
+        "date": "2024-01-25T11:48:06.222Z",
+        "parcel": "CREDITO BENEF.",
+        "value": "10351845"
+      }
+    ],
+    "cityId": "clrqorjti0000v8dp7w8qfqc1"
+  }
+]
