@@ -57,16 +57,10 @@ export const FetchTransfersSchema: FastifySchema = {
 }
 
 export const GetTransferSchema: FastifySchema = {
-  description: 'GET a fetch transfers',
+  description: 'GET a transfer by id',
   tags: ['transfer'],
-  querystring: {
-    type: 'object',
-    required: ['page'],
-    properties: {
-      page: { type: 'number' },
-      items: { type: 'number' },
-      demonstrative: { type: 'string' },
-    },
+  params: {
+    transferId: { type: 'string' },
   },
   response: {
     200: {
