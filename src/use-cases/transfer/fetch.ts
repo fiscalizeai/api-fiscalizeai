@@ -28,12 +28,10 @@ export class FetchTransferUseCase {
     items,
     demonstrative,
   }: FetchTransferUseCaseRequest): Promise<FetchTransferUseCaseResponse> {
-    const params: { [key: string]: string | undefined } = {
-      demonstrative,
-    }
-
-    Object.keys(params).forEach(
-      (key) => params[key] === undefined && delete params[key],
+    const params = Object.fromEntries(
+      Object.entries({ demonstrative }).filter(
+        ([_, value]) => value !== undefined,
+      ),
     )
 
     const transferReturn = await this.transferRepository.fetch(

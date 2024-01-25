@@ -18,7 +18,10 @@
     "test:ui": "vitest --ui",
     "scraping": "node build/tasks/scraping.js",
     "deleteTmpFiles": "node build/tasks/delete-tmp-files.js",
-    "processTmpFiles": "node build/tasks/process-tmp-files.js"
+    "processTmpFiles": "node build/tasks/process-tmp-files.js",
+    "scraping:dev": "tsx src/tasks/scraping.ts",
+    "deleteFiles:dev": "tsx src/tasks/delete-tmp-files.ts",
+    "processFiles:dev": "tsx src/tasks/process-tmp-files.ts"
   },
   "keywords": [],
   "author": "eduardo-rodrigues",

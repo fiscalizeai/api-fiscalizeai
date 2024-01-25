@@ -50,6 +50,9 @@ export class PrismaTransferRepository implements TransferRepository {
 
   async findById(id: string) {
     const transfer = await prisma.transfer.findUnique({
+      include: {
+        parcel: true,
+      },
       where: {
         id,
       },

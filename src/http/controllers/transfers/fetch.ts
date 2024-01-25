@@ -13,9 +13,9 @@ export async function fetch(request: FastifyRequest, reply: FastifyReply) {
 
   const { city } = request.user
 
-  const fetchTransfersUseCase = makeFetchUseCase()
+  const fetchUseCase = makeFetchUseCase()
 
-  const { transfers, pagination } = await fetchTransfersUseCase.execute({
+  const { transfers, pagination } = await fetchUseCase.execute({
     page,
     cityId: city,
     items,
