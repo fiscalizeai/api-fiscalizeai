@@ -1,9 +1,9 @@
 import path from 'node:path'
 import fs from 'node:fs'
 
-const tmpFolderPath = path.join(__dirname, '../../tmp')
+const tmpFolderPath = path.join(__dirname, '../tmp')
 
-export function deleteTmpFiles() {
+function deleteTmpFiles() {
   fs.readdir(tmpFolderPath, (error, files) => {
     if (error) {
       console.error(`Erro ao ler a pasta ${tmpFolderPath}`, error)
@@ -24,3 +24,5 @@ export function deleteTmpFiles() {
     })
   })
 }
+
+deleteTmpFiles()

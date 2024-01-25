@@ -3,7 +3,7 @@ import { formatDateForWriteInBanking } from '@/utils/format-date-for-write-in-ba
 import { getDatasWebBanking } from '@/utils/get-datas-web-banking'
 import { City } from '@prisma/client'
 
-export async function scraping() {
+async function scraping() {
   try {
     const cities = await prisma.city.findMany()
 
@@ -33,3 +33,5 @@ async function processCities(cities: City[]) {
     }
   }
 }
+
+scraping()

@@ -14,8 +14,8 @@ interface RowData {
   cityId: string
 }
 
-export async function processTmpFiles() {
-  const tmpFolderPath = path.join(__dirname, '../../tmp')
+async function processTmpFiles() {
+  const tmpFolderPath = path.join(__dirname, '../tmp')
 
   try {
     const files = await fs.readdir(tmpFolderPath)
@@ -41,3 +41,5 @@ export async function processTmpFiles() {
     console.error('Erro ao ler arquivos da pasta tmp:', error)
   }
 }
+
+processTmpFiles()

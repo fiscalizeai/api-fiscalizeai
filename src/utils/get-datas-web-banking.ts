@@ -152,7 +152,7 @@ export async function getDatasWebBanking(
       }
     })
 
-    const tmpDir = path.join(__dirname, '../../tmp')
+    const tmpDir = path.join(__dirname, '../tmp')
     if (!fs.existsSync(tmpDir)) {
       fs.mkdirSync(tmpDir)
     }

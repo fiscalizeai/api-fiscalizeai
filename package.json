@@ -16,12 +16,9 @@
     "test:e2e:watch": "vitest --dir src/http",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
-    "scraping": "node build/src/tasks/scraping.js",
-    "deleteTmpFiles": "node build/src/tasks/delete-tmp-files.js",
-    "processTmpFiles": "node build/src/tasks/process-tmp-files.js"
-  },
-  "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "scraping": "node build/tasks/scraping.js",
+    "deleteTmpFiles": "node build/tasks/delete-tmp-files.js",
+    "processTmpFiles": "node build/tasks/process-tmp-files.js"
   },
   "keywords": [],
   "author": "eduardo-rodrigues",
