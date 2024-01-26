@@ -1,7 +1,7 @@
 import { Prisma, User } from '@prisma/client'
-import { ResourceNotFoundError } from '../errors/resource-not-found'
 import { UsersRepository } from '@/repositories/users'
 import { hash } from 'bcryptjs'
+import { UserNotFoundError } from '../errors/users/user-not-found'
 
 interface EditUserUseCaseRequest {
   userId: string
@@ -22,8 +22,9 @@ export class EditUserUseCase {
     const user = await this.usersRepository.findById(userId)
 
     if (!user) {
-      throw new ResourceNotFoundError() // TODO: Colocar o erro certo!
+      throw new UserNotFoundError()
     }
+
     const { password } = user
 
     let password_hash
@@ -36,8 +37,6 @@ export class EditUserUseCase {
       ...data,
       password: password_hash || password,
     })
-
-    console.log(userEdited?.password)
 
     return {
       userEdited,

@@ -18,6 +18,7 @@ import { chamberRecordsRoutes } from './http/controllers/chamber-records/routes'
 import { educationRecordsRoutes } from './http/controllers/education-records/routes'
 import { transportRecordsRoutes } from './http/controllers/transport-records/routes'
 import { transfersRoutes } from './http/controllers/transfers/routes'
+import { dashboardRoutes } from './http/controllers/dashboard/routes'
 
 export const app = fastify()
 
@@ -56,6 +57,7 @@ app.register(transportRecordsRoutes)
 app.register(chamberRecordsRoutes)
 app.register(healthRecordsRoutes)
 app.register(transfersRoutes)
+app.register(dashboardRoutes)
 
 app.setErrorHandler((error, _request, reply) => {
   if (error instanceof ZodError) {

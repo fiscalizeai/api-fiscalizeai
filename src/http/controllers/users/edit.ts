@@ -1,3 +1,4 @@
+import { UserNotFoundError } from '@/use-cases/errors/users/user-not-found'
 import { makeEditUseCase } from '@/use-cases/factories/users/make-edit-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
@@ -24,12 +25,18 @@ export async function edit(request: FastifyRequest, reply: FastifyReply) {
   const { userId } = editUserParamsSchema.parse(request.params)
   const { data } = editUserBodySchema.parse(request.body)
 
-  const editUserUseCase = makeEditUseCase()
+  try {
+    const editUserUseCase = makeEditUseCase()
 
-  await editUserUseCase.execute({
-    userId,
-    data,
-  })
+    await editUserUseCase.execute({
+      userId,
+      data,
+    })
 
-  return reply.status(204).send()
+    return reply.status(204).send()
+  } catch (error) {
+    if (error instanceof UserNotFoundError) {
+      return reply.status(400).send({ message: error.message })
+    }
+  }
 }
