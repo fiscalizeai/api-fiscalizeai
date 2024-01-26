@@ -2,6 +2,7 @@ import { Prisma, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { UsersRepository } from '../users'
 import { UserFilters } from '@/utils/filters-type'
+import { compare, hash } from 'bcryptjs'
 
 export class InMemoryUsersRepository implements UsersRepository {
   public items: User[] = []
@@ -89,6 +90,10 @@ export class InMemoryUsersRepository implements UsersRepository {
 
     if (userIndex < 0) {
       return null
+    }
+
+    if (data.password) {
+      data.password = await hash(data.password, 6)
     }
 
     const updatedUser = { ...this.items[userIndex], ...data }
