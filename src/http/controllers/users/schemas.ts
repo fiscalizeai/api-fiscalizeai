@@ -218,6 +218,7 @@ export const editUserSchema: FastifySchema = {
             type: 'string',
             description: 'MEMBER | ADMIN | SECRETARY (optional)',
           },
+          city_id: { type: 'string', description: 'CUID (optional)' },
         },
       },
     },

@@ -21,12 +21,15 @@ import {
   userCreateSchema,
 } from './schemas'
 import { profile } from './profile'
+import { profileEdit } from './profile-edit'
 
 export async function usersRoutes(app: FastifyInstance) {
+  // Auth Routes
   app.post('/auth/login', { schema: authenticateSchema }, authenticate)
 
   app.patch('/auth/refresh', { schema: refreshTokenSchema }, refresh)
 
+  // User Profile Routes
   app.get(
     '/profile',
     {
@@ -36,6 +39,9 @@ export async function usersRoutes(app: FastifyInstance) {
     profile,
   )
 
+  app.put('/profile/:userId', profileEdit)
+
+  // Admin User Routes
   app.post(
     '/users',
     {
