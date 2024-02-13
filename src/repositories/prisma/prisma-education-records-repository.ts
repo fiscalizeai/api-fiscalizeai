@@ -78,6 +78,7 @@ export class PrismaEducationRecordsRepository
         city_id: cityId,
         AND: [{ month }, { year }],
       },
+      orderBy: [{ year: 'asc' }, { month: 'asc' }],
       take: items,
       skip: (page - 1) * items,
     })

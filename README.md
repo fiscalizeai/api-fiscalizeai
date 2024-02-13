@@ -17,12 +17,12 @@
 - [X] Deve ser possivel editar demonstrativos como secreatario(a);
 - [X] Deve ser possivel apagar demonstrativos como secreatario(a);
 - [ ] Deve ser possivel comparar demonstrativos
-- [ ] Deve ser possivel buscar informações do BB
+- [X] Deve ser possivel buscar informações do BB
 - [ ] Deve ser possivel comparar informações do mes no banco BB
 
 ## Regras de negocio
 
-- [X] O usuario deve estar associado a uma camara;
+- [X] O usuario deve estar associado a uma cidade;
 - [X] Nao pode realizar cadastro com um e-mail e cpf duplicado;
 - [X] Nao pode ter cidade com o mesmo nome no mesmo estado;
 - [X] Usuarios so pode ser cadastrado por administradores;
@@ -35,10 +35,10 @@
 
 ## TODOS
 
-- [ ] Adicionar erros certos
+- [X] Adicionar erros certos
 - [X] Aumentar tempo do refresh token
 - [X] Rotas de usuários /users tem que ter paginação no caso ter pageNumber e pageSize como query params da rota
-- [ ] Padronizar para fiscalize ai
+- [X] Padronizar para fiscalize ai
 - [X] Mudanças em nome de rotas
 - [X] /sessions para /auth/login
 - [X] /token/refresh para /auth/refresh

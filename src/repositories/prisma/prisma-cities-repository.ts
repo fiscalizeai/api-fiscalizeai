@@ -44,6 +44,7 @@ export class PrismaCitiesRepository implements CitiesRepository {
         name: name ? { contains: name, mode: 'insensitive' } : undefined,
         state: state ? { contains: state, mode: 'insensitive' } : undefined,
       },
+      orderBy: [{ state: 'asc' }, { name: 'asc' }],
       take: items,
       skip: (page - 1) * items,
     })

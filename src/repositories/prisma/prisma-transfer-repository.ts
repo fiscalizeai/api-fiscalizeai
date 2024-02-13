@@ -30,6 +30,9 @@ export class PrismaTransferRepository implements TransferRepository {
           ? { contains: demonstrative, mode: 'insensitive' }
           : undefined,
       },
+      orderBy: {
+        file: 'asc',
+      },
       take: items,
       skip: (page - 1) * items,
     })
