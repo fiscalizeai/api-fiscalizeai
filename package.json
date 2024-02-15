@@ -27,6 +27,7 @@
   "author": "eduardo-rodrigues",
   "license": "ISC",
   "dependencies": {
+    "@fastify/caching": "8.3.0",
     "@fastify/cookie": "9.2.0",
     "@fastify/cors": "8.4.2",
     "@fastify/jwt": "7.2.4",

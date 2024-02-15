@@ -11,7 +11,7 @@ export async function metrics(request: FastifyRequest, reply: FastifyReply) {
   try {
     const { date: dateString } = metricsQuerySchema.parse(request.query)
     const [month, year] = dateString.split('/')
-    const fomattedDate = new Date(`${month}-01-${year}`)
+    const formattedDate = new Date(`${month}-01-${year}`)
 
     const { city } = request.user
 
@@ -19,37 +19,44 @@ export async function metrics(request: FastifyRequest, reply: FastifyReply) {
       throw new InvalidUserOrCityError()
     }
 
-    const recentTransportRecord = await prisma.transport.findFirst({
-      where: {
-        city_id: city,
-        month: fomattedDate.getMonth() + 1,
-        year: fomattedDate.getFullYear(),
-      },
-    })
+    // Iniciar uma transação
+    const result = await prisma.$transaction([
+      prisma.transport.findFirst({
+        where: {
+          city_id: city,
+          month: formattedDate.getMonth() + 1,
+          year: formattedDate.getFullYear(),
+        },
+      }),
+      prisma.education.findFirst({
+        where: {
+          city_id: city,
+          month: formattedDate.getMonth() + 1,
+          year: formattedDate.getFullYear(),
+        },
+      }),
+      prisma.chamber.findFirst({
+        where: {
+          city_id: city,
+          month: formattedDate.getMonth() + 1,
+          year: formattedDate.getFullYear(),
+        },
+      }),
+      prisma.health.findFirst({
+        where: {
+          city_id: city,
+          month: formattedDate.getMonth() + 1,
+          year: formattedDate.getFullYear(),
+        },
+      }),
+    ])
 
-    const recentEducationRecord = await prisma.education.findFirst({
-      where: {
-        city_id: city,
-        month: fomattedDate.getMonth() + 1,
-        year: fomattedDate.getFullYear(),
-      },
-    })
-
-    const recentChamberRecord = await prisma.chamber.findFirst({
-      where: {
-        city_id: city,
-        month: fomattedDate.getMonth() + 1,
-        year: fomattedDate.getFullYear(),
-      },
-    })
-
-    const recentHealthRecord = await prisma.health.findFirst({
-      where: {
-        city_id: city,
-        month: fomattedDate.getMonth() + 1,
-        year: fomattedDate.getFullYear(),
-      },
-    })
+    const [
+      recentTransportRecord,
+      recentEducationRecord,
+      recentChamberRecord,
+      recentHealthRecord,
+    ] = result
 
     const totalMonthSpending =
       (recentHealthRecord?.total ?? 0) +

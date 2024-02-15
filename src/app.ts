@@ -6,6 +6,7 @@ import { ZodError } from 'zod'
 
 import fastifyJwt from '@fastify/jwt'
 import fastifyCookie from '@fastify/cookie'
+import fastifyCaching from '@fastify/caching'
 
 import swagger from '@fastify/swagger'
 import swaggerFile from './swagger.json'
@@ -28,6 +29,11 @@ app.register(cors, {
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['set-cookie'],
 })
+
+// app.register(fastifyCaching, {
+//   privacy: 'private',
+//   expiresIn: 24 * 60 * 60 * 1000,
+// })
 
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
