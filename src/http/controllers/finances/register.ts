@@ -1,25 +1,23 @@
-import { RecordsAlreadyExistsError } from '@/use-cases/errors/records/record-already-exists'
 import { InvalidUserOrCityError } from '@/use-cases/errors/records/invalid-user-or-city'
-import { makeRegisterUseCase } from '@/use-cases/factories/chamber-records/make-register-use-case'
+import { RecordsAlreadyExistsError } from '@/use-cases/errors/records/record-already-exists'
+import { makeRegisterUseCase } from '@/use-cases/factories/finances/make-register-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {
-  // Verificando se o JWT é valido, usando apenas os cookie
   request.jwtVerify({ onlyCookie: true })
 
-  // Definindo o esquema de validação para os parametros, o coerce converte para número
   const registerBodySchema = z.object({
     month: z.coerce.number(),
     year: z.coerce.number(),
-    contractors: z.number(),
-    headcounts: z.number(),
-    staffs: z.number(),
-    total: z.number(),
+    iptu: z.coerce.number(),
+    iss: z.coerce.number(),
+    itbi: z.coerce.number(),
   })
 
-  const { month, year, contractors, headcounts, staffs, total } =
-    registerBodySchema.parse(request.body)
+  const { month, year, iptu, iss, itbi } = registerBodySchema.parse(
+    request.body,
+  )
 
   const { sub, city } = request.user
 
@@ -29,10 +27,9 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     await registerUseCase.execute({
       month,
       year,
-      contractors,
-      headcounts,
-      staffs,
-      total,
+      iptu,
+      iss,
+      itbi,
       cityId: city,
       userId: sub,
     })
@@ -42,11 +39,9 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     if (error instanceof RecordsAlreadyExistsError) {
       return reply.status(409).send({ message: error.message })
     }
+
     if (error instanceof InvalidUserOrCityError) {
       return reply.status(404).send({ message: error.message })
     }
-
-    // Se o erro não for do tipo RecordsAlreadyExistsError nem do tipo InvalidUserOrCityError, lançamos o erro para ser tratado em outro lugar
-    throw error
   }
 }

@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma'
 import { TransferRepository } from '../transfer'
 import { TransferFilters } from '@/utils/filters-type'
+import { endOfMonth, subMonths } from 'date-fns'
+import {} from '@prisma/client'
 
 export class PrismaTransferRepository implements TransferRepository {
   async fetch(
@@ -31,7 +33,7 @@ export class PrismaTransferRepository implements TransferRepository {
           : undefined,
       },
       orderBy: {
-        file: 'asc',
+        created_at: 'desc',
       },
       take: items,
       skip: (page - 1) * items,
@@ -62,5 +64,36 @@ export class PrismaTransferRepository implements TransferRepository {
     })
 
     return transfer
+  }
+
+  async totalTransferByMonth(month: Date, cityId: string) {
+    const startMonth = subMonths(month, 0)
+    const endMonth = endOfMonth(month)
+
+    const totalTransfer = await prisma.transfer.findMany({
+      where: {
+        city_id: cityId,
+        created_at: {
+          gte: startMonth,
+          lte: endMonth,
+        },
+      },
+      select: {
+        created_at: true,
+        parcel: {
+          select: {
+            value: true,
+          },
+        },
+      },
+    })
+
+    let sum = 0
+
+    totalTransfer.forEach((transfer) => {
+      transfer.parcel.forEach((parcel) => (sum += parseInt(parcel.value)))
+    })
+
+    return sum
   }
 }

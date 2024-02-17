@@ -3,6 +3,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 export async function fetch(request: FastifyRequest, reply: FastifyReply) {
+  // Definindo o esquema de validação para os parametros
   const fetchQuerySchema = z.object({
     page: z.coerce.number().min(1).default(1),
     items: z.coerce.number().default(20),

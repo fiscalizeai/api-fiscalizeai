@@ -18,4 +18,6 @@ export interface TransferRepository {
       pageItems: number
     }
   } | null>
+
+  totalTransferByMonth(month: Date, cityId: string): Promise<number>
 }

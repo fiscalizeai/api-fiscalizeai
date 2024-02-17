@@ -1,7 +1,14 @@
 import { prisma } from '@/lib/prisma'
 import { InvalidUserOrCityError } from '@/use-cases/errors/records/invalid-user-or-city'
+import { endOfMonth, subMonths } from 'date-fns'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
+
+interface TransferMonthProps {
+  month: number
+  year: number
+  value: number
+}
 
 export async function metrics(request: FastifyRequest, reply: FastifyReply) {
   const metricsQuerySchema = z.object({
@@ -20,7 +27,13 @@ export async function metrics(request: FastifyRequest, reply: FastifyReply) {
     }
 
     // Iniciar uma transação
-    const result = await prisma.$transaction([
+    const [
+      recentTransportRecord,
+      recentEducationRecord,
+      recentChamberRecord,
+      recentHealthRecord,
+      totalTransfersInMonth,
+    ] = await Promise.all([
       prisma.transport.findFirst({
         where: {
           city_id: city,
@@ -49,14 +62,52 @@ export async function metrics(request: FastifyRequest, reply: FastifyReply) {
           year: formattedDate.getFullYear(),
         },
       }),
+      prisma.transfer.findMany({
+        orderBy: { created_at: 'desc' },
+        where: {
+          city_id: city,
+          created_at: {
+            gte: subMonths(formattedDate, 0), // Pegar o mes da data
+            lte: endOfMonth(formattedDate), // Final do mes
+          },
+        },
+        select: {
+          id: true,
+          demonstrative: true,
+          created_at: true,
+          parcel: {
+            select: {
+              id: true,
+              value: true,
+            },
+          },
+        },
+      }),
     ])
 
-    const [
-      recentTransportRecord,
-      recentEducationRecord,
-      recentChamberRecord,
-      recentHealthRecord,
-    ] = result
+    const monthTransfers: TransferMonthProps[] = []
+
+    totalTransfersInMonth.forEach((transfer) => {
+      const parcelValue = parseFloat(transfer.parcel[0].value)
+
+      const existingEntryIndex = monthTransfers.findIndex(
+        (entry) =>
+          entry.month === transfer.created_at.getMonth() + 1 &&
+          entry.year === transfer.created_at.getFullYear(),
+      )
+
+      if (existingEntryIndex !== -1) {
+        monthTransfers[existingEntryIndex].value += parcelValue
+      } else {
+        monthTransfers.push({
+          month: transfer.created_at.getMonth() + 1,
+          year: transfer.created_at.getFullYear(),
+          value: parcelValue,
+        })
+      }
+    })
+
+    console.log(formattedDate)
 
     const totalMonthSpending =
       (recentHealthRecord?.total ?? 0) +
@@ -70,6 +121,10 @@ export async function metrics(request: FastifyRequest, reply: FastifyReply) {
       recentEducationRecord,
       recentHealthRecord,
       totalMonthSpending,
+      totalTransfersInMonth: monthTransfers.reduce(
+        (acc, curr) => acc + curr.value,
+        0,
+      ),
     })
   } catch (error) {
     if (error instanceof z.ZodError) {

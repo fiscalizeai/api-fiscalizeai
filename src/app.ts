@@ -6,7 +6,6 @@ import { ZodError } from 'zod'
 
 import fastifyJwt from '@fastify/jwt'
 import fastifyCookie from '@fastify/cookie'
-import fastifyCaching from '@fastify/caching'
 
 import swagger from '@fastify/swagger'
 import swaggerFile from './swagger.json'
@@ -20,6 +19,7 @@ import { educationRecordsRoutes } from './http/controllers/education-records/rou
 import { transportRecordsRoutes } from './http/controllers/transport-records/routes'
 import { transfersRoutes } from './http/controllers/transfers/routes'
 import { dashboardRoutes } from './http/controllers/dashboard/routes'
+import { financesRoutes } from './http/controllers/finances/routes'
 
 export const app = fastify()
 
@@ -29,11 +29,6 @@ app.register(cors, {
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['set-cookie'],
 })
-
-// app.register(fastifyCaching, {
-//   privacy: 'private',
-//   expiresIn: 24 * 60 * 60 * 1000,
-// })
 
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
@@ -62,6 +57,7 @@ app.register(educationRecordsRoutes)
 app.register(transportRecordsRoutes)
 app.register(chamberRecordsRoutes)
 app.register(healthRecordsRoutes)
+app.register(financesRoutes)
 app.register(transfersRoutes)
 app.register(dashboardRoutes)
 

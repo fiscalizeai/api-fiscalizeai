@@ -16,12 +16,14 @@ import {
   fetchUsersSchema,
   getUserByCpfSchema,
   getUserByIdSchema,
+  profileEditUserSchema,
   profileSchema,
   refreshTokenSchema,
   userCreateSchema,
 } from './schemas'
 import { profile } from './profile'
 import { profileEdit } from './profile-edit'
+import { verifyUserRole } from '@/http/middlewares/verify-user-role'
 
 export async function usersRoutes(app: FastifyInstance) {
   // Auth Routes
@@ -39,13 +41,13 @@ export async function usersRoutes(app: FastifyInstance) {
     profile,
   )
 
-  app.put('/profile/:userId', profileEdit)
+  app.put('/profile/:userId', { schema: profileEditUserSchema }, profileEdit)
 
   // Admin User Routes
   app.post(
     '/users',
     {
-      onRequest: [verifyJwt],
+      onRequest: [verifyJwt, verifyUserRole(['ADMIN'])],
       schema: userCreateSchema,
     },
     register,
@@ -54,7 +56,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.put(
     '/users/:userId',
     {
-      onRequest: [verifyJwt],
+      onRequest: [verifyJwt, verifyUserRole(['ADMIN'])],
       schema: editUserSchema,
     },
     edit,
@@ -63,7 +65,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.delete(
     '/users/:userId',
     {
-      onRequest: [verifyJwt],
+      onRequest: [verifyJwt, verifyUserRole(['ADMIN'])],
       schema: deleteUserSchema,
     },
     deleteUser,
@@ -72,7 +74,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.get(
     '/users',
     {
-      onRequest: [verifyJwt],
+      onRequest: [verifyJwt, verifyUserRole(['ADMIN'])],
       schema: fetchUsersSchema,
     },
     fetch,
@@ -81,7 +83,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.get(
     '/users/cpf',
     {
-      onRequest: [verifyJwt],
+      onRequest: [verifyJwt, verifyUserRole(['ADMIN'])],
       schema: getUserByCpfSchema,
     },
     getByCpf,
@@ -90,7 +92,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.get(
     '/users/:userId',
     {
-      onRequest: [verifyJwt],
+      onRequest: [verifyJwt, verifyUserRole(['ADMIN'])],
       schema: getUserByIdSchema,
     },
     info,

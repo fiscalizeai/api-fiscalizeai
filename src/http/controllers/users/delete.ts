@@ -1,4 +1,3 @@
-import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found'
 import { UserNotFoundError } from '@/use-cases/errors/users/user-not-found'
 import { makeDeleteUseCase } from '@/use-cases/factories/users/make-delete-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'

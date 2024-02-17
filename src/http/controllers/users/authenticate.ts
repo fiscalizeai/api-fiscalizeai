@@ -1,5 +1,4 @@
 import { InvalidCredentialsError } from '@/use-cases/errors/invalid-credentials'
-import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found'
 import { AccessDeniedError } from '@/use-cases/errors/users/access-denied'
 import { makeAuthenticateUseCase } from '@/use-cases/factories/users/make-authenticate-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'

@@ -13,6 +13,7 @@ import { deleteTransportRecord } from './delete'
 import { edit } from './edit'
 import { getById } from './get-by-id'
 import { fetch } from './fetch'
+import { verifyUserRole } from '@/http/middlewares/verify-user-role'
 
 export async function transportRecordsRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJwt)
@@ -20,7 +21,7 @@ export async function transportRecordsRoutes(app: FastifyInstance) {
   app.post(
     '/transport',
     {
-      // onRequest: verifyUserRole('ADMIN'),
+      onRequest: verifyUserRole(['ADMIN', 'SECRETARY']),
       schema: RegisterTransportRecordsSchema,
     },
     register,
@@ -37,7 +38,7 @@ export async function transportRecordsRoutes(app: FastifyInstance) {
   app.put(
     '/transport/:transportId',
     {
-      // onRequest: verifyUserRole('ADMIN'),
+      onRequest: verifyUserRole(['ADMIN', 'SECRETARY']),
       schema: editTransportRecordSchema,
     },
     edit,

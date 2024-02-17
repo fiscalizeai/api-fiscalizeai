@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { create } from './create'
 import { verifyJwt } from '@/http/middlewares/verify-jwt'
-// import { verifyUserRole } from '@/http/middlewares/verify-user-role'
+import { verifyUserRole } from '@/http/middlewares/verify-user-role'
 import { edit } from './edit'
 import { deleteCity } from './delete'
 import { fetch } from './fetch'
@@ -16,6 +16,7 @@ import { getById } from './get-by-id'
 
 export async function citiesRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJwt)
+  app.addHook('onRequest', verifyUserRole(['ADMIN']))
 
   app.post(
     '/cities',

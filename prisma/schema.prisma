@@ -36,8 +36,9 @@ model User {
   transport_records Transport[]
   chamber_records   Chamber[]
 
-  city    City   @relation(fields: [city_id], references: [id])
+  city    City      @relation(fields: [city_id], references: [id])
   city_id String
+  Finance Finance[]
 
   @@map("users")
 }
@@ -54,6 +55,7 @@ model City {
   health_records    Health[]
   transport_records Transport[]
   Transfer          Transfer[]
+  Finance           Finance[]
 
   @@map("cities")
 }
@@ -119,6 +121,27 @@ model Health {
   city_id String
 
   @@map("health_data")
+}
+
+model Finance {
+  id String @id @default(uuid())
+
+  iptu Int
+  iss  Int
+  itbi Int
+
+  month      Int
+  year       Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  city    City   @relation(fields: [city_id], references: [id])
+  city_id String
+
+  @@map("finances_data")
 }
 
 model Transport {

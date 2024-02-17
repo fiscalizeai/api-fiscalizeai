@@ -20,7 +20,7 @@ export async function educationRecordsRoutes(app: FastifyInstance) {
   app.post(
     '/education',
     {
-      // onRequest: verifyUserRole('ADMIN'),
+      onRequest: [verifyUserRole(['ADMIN', 'SECRETARY'])],
       schema: RegisterEducationRecordsSchema,
     },
     register,
@@ -37,7 +37,7 @@ export async function educationRecordsRoutes(app: FastifyInstance) {
   app.put(
     '/education/:educationId',
     {
-      // onRequest: verifyUserRole('ADMIN'),
+      onRequest: [verifyUserRole(['ADMIN', 'SECRETARY'])],
       schema: editEducationRecordSchema,
     },
     edit,
@@ -45,7 +45,10 @@ export async function educationRecordsRoutes(app: FastifyInstance) {
 
   app.delete(
     '/education/:educationId',
-    { schema: deleteEducationRecordSchema },
+    {
+      onRequest: [verifyUserRole(['ADMIN', 'SECRETARY'])],
+      schema: deleteEducationRecordSchema,
+    },
     deleteEducationRecord,
   )
 }

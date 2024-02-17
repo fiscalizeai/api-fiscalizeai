@@ -4,6 +4,7 @@ import console from 'console'
 import fs from 'node:fs'
 import path from 'path'
 
+/* Interfaces */
 interface SubData {
   parcel: string
   value: string
@@ -16,6 +17,7 @@ interface RowData {
   cityId: string
 }
 
+/* Funcao para obter dados do banco */
 export async function getDatasWebBanking(
   cityId: string,
   cityName: string,
@@ -26,13 +28,13 @@ export async function getDatasWebBanking(
 
   try {
     browser = await launch({
-      headless: 'new',
+      headless: 'new', // Navegador invisivel, use 'new' | false
     })
     page = await browser.newPage()
 
     await page.goto('https://www42.bb.com.br/portalbb/daf/beneficiario.bbx')
 
-    // Inputs e Buttons
+    // Seletores para inputs e botoes
     const beneficiarioSelector = '#formulario\\:txtBenef'
     const beneficiarioSubmit =
       '#formulario > div:nth-child(4) > div > input:nth-child(1)'
@@ -46,12 +48,13 @@ export async function getDatasWebBanking(
     await page.click(beneficiarioSelector)
     await page.type(beneficiarioSelector, cityName)
 
+    // Submetendo o formulario e aguardando a navegacao
     await Promise.all([
       page.click(beneficiarioSubmit),
       page.waitForNavigation(),
     ])
 
-    // Dados de consulta
+    // Preenchendo os campos de data e fundo
     await page.waitForSelector(startOfDateSelector)
     await page.waitForSelector(endOfDateSelector)
     await page.waitForSelector(dadosDeConsultaSubmit)
@@ -60,12 +63,14 @@ export async function getDatasWebBanking(
     await page.type(endOfDateSelector, date)
     await page.type(fundoSelector, 'TODOS')
 
+    // Submetendo o formulario de consulta
     try {
       await Promise.all([
         page.waitForNavigation(),
         page.click(dadosDeConsultaSubmit),
       ])
 
+      // Verificando se ha uma mensagem de alerta de erro
       const alertMessage = await page.waitForSelector('.alert.alert-danger', {
         visible: true,
         timeout: 3000,
@@ -78,7 +83,7 @@ export async function getDatasWebBanking(
       console.error(err)
     }
 
-    // Extrair dados
+    // Extrair dados da pagina
     await page.waitForSelector('#formulario\\:demonstrativoList\\:tb')
 
     const pageData = await page.evaluate(() => {
@@ -157,7 +162,7 @@ export async function getDatasWebBanking(
       fs.mkdirSync(tmpDir)
     }
 
-    // Exibindo os resultados
+    // screvendo os dados em um arquivo JSON na pasta tmp
     const fileName = `${cityName}_${date}.json`
     const filePath = path.join(tmpDir, fileName)
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2))
@@ -165,7 +170,7 @@ export async function getDatasWebBanking(
     console.error(err)
   } finally {
     if (browser) {
-      await browser.close()
+      await browser.close() // Fechando o navegador
     }
   }
 }

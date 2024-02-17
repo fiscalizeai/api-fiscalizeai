@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { register } from './register'
-// import { verifyUserRole } from '@/http/middlewares/verify-user-role'
+import { verifyUserRole } from '@/http/middlewares/verify-user-role'
 import { verifyJwt } from '@/http/middlewares/verify-jwt'
 import {
   FetchChamberRecordsSchema,
@@ -20,7 +20,7 @@ export async function chamberRecordsRoutes(app: FastifyInstance) {
   app.post(
     '/chamber',
     {
-      // onRequest: verifyUserRole('ADMIN'),
+      onRequest: verifyUserRole(['ADMIN', 'SECRETARY']),
       schema: RegisterChamberRecordsSchema,
     },
     register,
@@ -37,7 +37,7 @@ export async function chamberRecordsRoutes(app: FastifyInstance) {
   app.put(
     '/chamber/:chamberId',
     {
-      // onRequest: verifyUserRole('ADMIN'),
+      onRequest: verifyUserRole(['ADMIN', 'SECRETARY']),
       schema: editChamberRecordSchema,
     },
     edit,

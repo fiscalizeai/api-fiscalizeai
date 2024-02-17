@@ -281,3 +281,31 @@ export const fetchUsersSchema: FastifySchema = {
     },
   },
 }
+
+export const profileEditUserSchema: FastifySchema = {
+  description: 'PUT edit a profile user',
+  tags: ['user'],
+  params: {
+    userId: { type: 'string' },
+  },
+  body: {
+    type: 'object',
+    properties: {
+      old_password: { type: 'string' },
+      data: {
+        type: 'object',
+        properties: {
+          name: { type: 'string', description: 'user name (optional)' },
+          email: { type: 'string', description: 'user email (optional)' },
+          password: { type: 'string', description: 'user password (optional)' },
+        },
+      },
+    },
+  },
+  response: {
+    204: {
+      description: 'Successful no content',
+      type: 'object',
+    },
+  },
+}

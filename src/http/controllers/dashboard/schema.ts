@@ -66,6 +66,7 @@ export const MetricsSchema: FastifySchema = {
           },
         },
         totalMonthSpending: { type: 'number' },
+        totalTransfersInMonth: { type: 'number' },
       },
     },
   },

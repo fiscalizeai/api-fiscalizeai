@@ -6,10 +6,12 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 export async function edit(request: FastifyRequest, reply: FastifyReply) {
+  // Definindo o esquema de validação para os parametros
   const editChamberRecordParamsSchema = z.object({
     chamberId: z.string().uuid(),
   })
 
+  // Definindo o esquema de validação para os parametros
   const editChamberRecordBodySchema = z.object({
     data: z.object({
       year: z.coerce.number(),

@@ -4,6 +4,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 export async function getById(request: FastifyRequest, reply: FastifyReply) {
+  // Definindo o esquema de validação para os parametros
   const getByIdParamsSchema = z.object({
     chamberId: z.string(),
   })

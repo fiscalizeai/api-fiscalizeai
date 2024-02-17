@@ -1,7 +1,6 @@
 import { Health, Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 import { HealthRecordsRepository } from '../health' // Troquei de "chamber" para "health"
-import { startOfMonth, endOfMonth } from 'date-fns'
 
 export class PrismaHealthRecordsRepository implements HealthRecordsRepository {
   async register(data: Prisma.HealthUncheckedCreateInput) {

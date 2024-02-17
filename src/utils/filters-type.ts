@@ -1,3 +1,5 @@
+/* Interfaces criadas para as query params nas rotas de fetch */
+
 type Role = 'ADMIN' | 'MEMBER' | 'SECRETARY'
 type Status = 'ACCEPTED' | 'DENIED'
 
