@@ -66,6 +66,7 @@ export async function metrics(request: FastifyRequest, reply: FastifyReply) {
         orderBy: { created_at: 'desc' },
         where: {
           city_id: city,
+          demonstrative: 'TOTAL DOS REPASSES NO PERIODO',
           created_at: {
             gte: subMonths(formattedDate, 0), // Pegar o mes da data
             lte: endOfMonth(formattedDate), // Final do mes
