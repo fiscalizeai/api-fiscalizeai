@@ -108,8 +108,6 @@ export async function metrics(request: FastifyRequest, reply: FastifyReply) {
       }
     })
 
-    console.log(formattedDate)
-
     const totalMonthSpending =
       (recentHealthRecord?.total ?? 0) +
       (recentChamberRecord?.total ?? 0) +

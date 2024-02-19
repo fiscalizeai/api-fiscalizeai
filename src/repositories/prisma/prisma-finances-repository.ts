@@ -63,8 +63,19 @@ export class PrismaFinancesRepository implements FinancesRepository {
     const totalPages = Math.ceil(totalItems / items)
     const pageItems = page === totalPages ? totalItems % items : items
 
+    const totalTransfers = await prisma.totalTransfer.findMany({
+      where: {
+        city_id: cityId,
+        AND: [{ month, year }],
+      },
+      orderBy: [{ year: 'asc' }, { month: 'asc' }],
+      take: items,
+      skip: (page - 1) * items,
+    })
+
     return {
       finances,
+      totalTransfers,
       pagination: {
         totalItems,
         pageSize: items,

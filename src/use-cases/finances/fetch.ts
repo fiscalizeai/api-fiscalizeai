@@ -1,5 +1,5 @@
 import { FinancesRepository } from '@/repositories/finance'
-import { Finance } from '@prisma/client'
+import { Finance, TotalTransfer } from '@prisma/client'
 import { RecordsNotExistsError } from '../errors/records/records-not-exists'
 
 interface FetchFinancesUseCaseRequest {
@@ -12,6 +12,7 @@ interface FetchFinancesUseCaseRequest {
 
 interface FetchFinancesUseCaseRespose {
   finances: Finance[]
+  totalTransfers: TotalTransfer[]
   pagination: {
     totalItems: number
     pageSize: number
@@ -42,10 +43,11 @@ export class FetchFinancesUseCase {
       throw new RecordsNotExistsError()
     }
 
-    const { finances, pagination } = financesResponse
+    const { finances, totalTransfers, pagination } = financesResponse
 
     return {
       finances,
+      totalTransfers,
       pagination,
     }
   }

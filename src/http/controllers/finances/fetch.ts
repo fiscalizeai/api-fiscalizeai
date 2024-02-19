@@ -17,16 +17,19 @@ export async function fetch(request: FastifyRequest, reply: FastifyReply) {
   try {
     const fetchUseCase = makeFetchUseCase()
 
-    const { finances, pagination } = await fetchUseCase.execute({
-      page,
-      cityId: city,
-      items,
-      month,
-      year,
-    })
+    const { finances, totalTransfers, pagination } = await fetchUseCase.execute(
+      {
+        page,
+        cityId: city,
+        items,
+        month,
+        year,
+      },
+    )
 
     return reply.status(200).send({
       finances,
+      totalTransfers,
       pagination,
     })
   } catch (error) {

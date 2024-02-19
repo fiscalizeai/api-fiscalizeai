@@ -1,4 +1,4 @@
-import { Finance, Prisma } from '@prisma/client'
+import { Finance, Prisma, TotalTransfer } from '@prisma/client'
 
 export interface FinancesRepository {
   register(data: Prisma.FinanceUncheckedCreateInput): Promise<Finance>
@@ -14,6 +14,7 @@ export interface FinancesRepository {
     year?: number,
   ): Promise<{
     finances: Finance[]
+    totalTransfers: TotalTransfer[]
     pagination: {
       totalItems: number
       pageSize: number

@@ -49,13 +49,16 @@ model City {
   state      String
   created_at DateTime @default(now())
 
-  users             User[]
+  users User[]
+
   education_records Education[]
   chamber_records   Chamber[]
   health_records    Health[]
   transport_records Transport[]
-  Transfer          Transfer[]
   Finance           Finance[]
+
+  transfer      Transfer[]
+  totalTransfer TotalTransfer[]
 
   @@map("cities")
 }
@@ -190,4 +193,16 @@ model Transfer {
   city_id String
 
   @@map("transfers")
+}
+
+model TotalTransfer {
+  id    String @id @default(uuid())
+  month Int
+  year  Int
+  value String
+
+  city    City   @relation(fields: [city_id], references: [id])
+  city_id String
+
+  @@map("total_transfers")
 }

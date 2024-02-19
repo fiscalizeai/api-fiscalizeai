@@ -87,6 +87,19 @@ export const FetchFinanceSchema: FastifySchema = {
             },
           },
         },
+        totalTransfers: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              month: { type: 'number' },
+              year: { type: 'number' },
+              city_id: { type: 'string' },
+              value: { type: 'string' },
+            },
+          },
+        },
         pagination: {
           type: 'object',
           properties: {

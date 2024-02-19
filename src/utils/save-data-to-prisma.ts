@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { getMonth, getYear } from 'date-fns'
 
 interface SubData {
   parcel: string
@@ -63,6 +64,49 @@ export async function saveDataToPrisma(fileName: string, data: RowData[]) {
           })
         }),
       )
+
+      let totalValue: number | null = null
+      if (row.demonstrative.startsWith('TOTAL DOS REPASSES NO PERIODO')) {
+        totalValue = parseInt(row.parcels[0].value)
+      }
+
+      // Verificar se o valor total foi extraído com sucesso
+      if (totalValue !== null && !isNaN(totalValue)) {
+        const currentDate = new Date()
+        const month = getMonth(currentDate) + 1
+        const year = getYear(currentDate)
+
+        // Verificar se já existe um registro para o mês e ano correntes na tabela totalTransfer
+        const existingTotalTransfer = await prisma.totalTransfer.findFirst({
+          where: {
+            month,
+            year,
+            city_id: existingCity.id, // Adicione a condição para a cidade
+          },
+        })
+
+        if (existingTotalTransfer) {
+          // Se já existir um registro, atualizar o valor total
+          await prisma.totalTransfer.update({
+            where: { id: existingTotalTransfer.id },
+            data: {
+              value: (
+                parseInt(existingTotalTransfer.value) + totalValue
+              ).toString(),
+            },
+          })
+        } else {
+          // Se não existir, criar um novo registro
+          await prisma.totalTransfer.create({
+            data: {
+              month,
+              year,
+              value: totalValue.toString(),
+              city: { connect: { id: existingCity.id } }, // Conecte a cidade ao registro totalTransfer
+            },
+          })
+        }
+      }
 
       console.log(
         `Dados salvos para ${row.demonstrative} na cidade de ${existingCity.name}`,
