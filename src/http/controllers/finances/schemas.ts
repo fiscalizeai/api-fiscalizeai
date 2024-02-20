@@ -77,6 +77,7 @@ export const FetchFinanceSchema: FastifySchema = {
             type: 'object',
             properties: {
               id: { type: 'string' },
+              finance_id: { type: 'string' },
               iptu: { type: 'number' },
               iss: { type: 'number' },
               itbi: { type: 'number' },
@@ -84,18 +85,6 @@ export const FetchFinanceSchema: FastifySchema = {
               year: { type: 'number' },
               created_at: { type: 'string' },
               updated_at: { type: 'string' },
-            },
-          },
-        },
-        totalTransfers: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'string' },
-              month: { type: 'number' },
-              year: { type: 'number' },
-              city_id: { type: 'string' },
               value: { type: 'string' },
             },
           },

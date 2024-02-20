@@ -1,4 +1,19 @@
-import { Finance, Prisma, TotalTransfer } from '@prisma/client'
+import { Finance, Prisma } from '@prisma/client'
+
+interface FetchReturnData {
+  id: string
+  finance_id: string
+  iptu: number
+  iss: number
+  itbi: number
+  month: number
+  year: number
+  created_at: number
+  updated_at: number
+  user_id: string
+  city_id: string
+  value: string
+}
 
 export interface FinancesRepository {
   register(data: Prisma.FinanceUncheckedCreateInput): Promise<Finance>
@@ -13,8 +28,7 @@ export interface FinancesRepository {
     month?: number,
     year?: number,
   ): Promise<{
-    finances: Finance[]
-    totalTransfers: TotalTransfer[]
+    finances: FetchReturnData[]
     pagination: {
       totalItems: number
       pageSize: number

@@ -77,7 +77,7 @@ export class PrismaHealthRecordsRepository implements HealthRecordsRepository {
         city_id: cityId,
         AND: [{ month }, { year }],
       },
-      orderBy: [{ year: 'asc' }, { month: 'asc' }],
+      orderBy: [{ year: 'desc' }, { month: 'desc' }],
       take: items,
       skip: (page - 1) * items,
     })

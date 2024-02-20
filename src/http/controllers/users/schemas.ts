@@ -263,8 +263,15 @@ export const fetchUsersSchema: FastifySchema = {
               cpf: { type: 'string' },
               status: { type: 'string' },
               role: { type: 'string' },
-              city_id: { type: 'string' },
               created_at: { type: 'string' },
+              city: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  name: { type: 'string' },
+                  state: { type: 'string' },
+                },
+              },
             },
           },
         },

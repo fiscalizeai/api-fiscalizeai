@@ -61,6 +61,15 @@ export class PrismaUsersRepository implements UsersRepository {
       ],
       take: items,
       skip: (page - 1) * items,
+      include: {
+        city: {
+          select: {
+            id: true,
+            name: true,
+            state: true,
+          },
+        },
+      },
     })
     const totalPages = Math.ceil(totalItems / items)
     const pageItems = page === totalPages ? totalItems % items : items

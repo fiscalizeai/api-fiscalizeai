@@ -46,7 +46,10 @@ export async function transportRecordsRoutes(app: FastifyInstance) {
 
   app.delete(
     '/transport/:transportId',
-    { schema: deleteTransportRecordSchema },
+    {
+      onRequest: verifyUserRole(['ADMIN', 'SECRETARY']),
+      schema: deleteTransportRecordSchema,
+    },
     deleteTransportRecord,
   )
 }
