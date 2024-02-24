@@ -2,6 +2,7 @@ import { City, Prisma } from '@prisma/client'
 import { CitiesRepository } from '../cities'
 import { prisma } from '@/lib/prisma'
 import { CityFilters } from '@/utils/filters-type'
+import removeAccents from 'remove-accents'
 
 export class PrismaCitiesRepository implements CitiesRepository {
   async create(data: Prisma.CityCreateInput) {
@@ -63,9 +64,10 @@ export class PrismaCitiesRepository implements CitiesRepository {
   }
 
   async findByName(name: string, state: string) {
+    const normalizeName = removeAccents(name.toLocaleLowerCase())
     const city = await prisma.city.findFirst({
       where: {
-        name,
+        name: { contains: normalizeName, mode: 'insensitive' },
         state,
       },
     })

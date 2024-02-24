@@ -24,8 +24,12 @@ export class CreateCityUseCase {
       throw new CityAlreadyExistsError()
     }
 
+    const formattedName = name.replace(/\b\w/g, function (char) {
+      return char.toUpperCase()
+    })
+
     const city = await this.cityRepository.create({
-      name,
+      name: formattedName,
       state,
     })
 
