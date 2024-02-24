@@ -26,11 +26,7 @@ export async function financesRoutes(app: FastifyInstance) {
     register,
   )
 
-  app.get(
-    '/finance',
-    // { schema: FetchFinanceSchema },
-    fetch,
-  )
+  app.get('/finance', { schema: FetchFinanceSchema }, fetch)
 
   app.get('/finance/:financeId', { schema: GetFinanceSchema }, getById)
 
