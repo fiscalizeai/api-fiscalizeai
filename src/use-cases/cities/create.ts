@@ -24,9 +24,10 @@ export class CreateCityUseCase {
       throw new CityAlreadyExistsError()
     }
 
-    const formattedName = name.replace(/\b\w/g, function (char) {
-      return char.toUpperCase()
-    })
+    const words = name.split(' ')
+    const formattedName = words
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ')
 
     const city = await this.cityRepository.create({
       name: formattedName,

@@ -34,35 +34,43 @@ export async function metrics(request: FastifyRequest, reply: FastifyReply) {
       recentHealthRecord,
       totalTransfersInMonth,
     ] = await Promise.all([
-      prisma.transport.findFirst({
-        where: {
-          city_id: city,
-          month: formattedDate.getMonth() + 1,
-          year: formattedDate.getFullYear(),
-        },
-      }),
-      prisma.education.findFirst({
-        where: {
-          city_id: city,
-          month: formattedDate.getMonth() + 1,
-          year: formattedDate.getFullYear(),
-        },
-      }),
-      prisma.chamber.findFirst({
-        where: {
-          city_id: city,
-          month: formattedDate.getMonth() + 1,
-          year: formattedDate.getFullYear(),
-        },
-      }),
-      prisma.health.findFirst({
-        where: {
-          city_id: city,
-          month: formattedDate.getMonth() + 1,
-          year: formattedDate.getFullYear(),
-        },
-      }),
-      prisma.transfer.findMany({
+      (
+        await prisma.transport.findFirst({
+          where: {
+            city_id: city,
+            month: formattedDate.getMonth() + 1,
+            year: formattedDate.getFullYear(),
+          },
+        })
+      )?.total || 0,
+      (
+        await prisma.education.findFirst({
+          where: {
+            city_id: city,
+            month: formattedDate.getMonth() + 1,
+            year: formattedDate.getFullYear(),
+          },
+        })
+      )?.total || 0,
+      (
+        await prisma.chamber.findFirst({
+          where: {
+            city_id: city,
+            month: formattedDate.getMonth() + 1,
+            year: formattedDate.getFullYear(),
+          },
+        })
+      )?.total || 0,
+      (
+        await prisma.health.findFirst({
+          where: {
+            city_id: city,
+            month: formattedDate.getMonth() + 1,
+            year: formattedDate.getFullYear(),
+          },
+        })
+      )?.total || 0,
+      (await prisma.transfer.findMany({
         orderBy: { created_at: 'desc' },
         where: {
           city_id: city,
@@ -83,7 +91,7 @@ export async function metrics(request: FastifyRequest, reply: FastifyReply) {
             },
           },
         },
-      }),
+      })) || [],
     ])
 
     const monthTransfers: TransferMonthProps[] = []
@@ -108,11 +116,11 @@ export async function metrics(request: FastifyRequest, reply: FastifyReply) {
       }
     })
 
-    const totalMonthSpending =
-      (recentHealthRecord?.total ?? 0) +
-      (recentChamberRecord?.total ?? 0) +
-      (recentEducationRecord?.total ?? 0) +
-      (recentTransportRecord?.total ?? 0)
+    const totalMonthSpending: number =
+      (recentHealthRecord as number) +
+      (recentChamberRecord as number) +
+      (recentEducationRecord as number) +
+      (recentTransportRecord as number)
 
     return reply.status(200).send({
       recentTransportRecord,

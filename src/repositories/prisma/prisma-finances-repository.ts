@@ -65,16 +65,6 @@ export class PrismaFinancesRepository implements FinancesRepository {
       where: whereConditions,
     })
 
-    // const finances = await prisma.finance.findMany({
-    //   where: {
-    //     city_id: cityId,
-    //     AND: [{ month, year }],
-    //   },
-    //   orderBy: [{ year: 'asc' }, { month: 'asc' }],
-    //   take: items,
-    //   skip: (page - 1) * items,
-    // })
-
     const totalPages = Math.ceil(totalItems / items)
     const pageItems = page === totalPages ? totalItems % items : items
 
@@ -89,13 +79,14 @@ export class PrismaFinancesRepository implements FinancesRepository {
         tt.value
       FROM 
         finances_data f
-      INNER JOIN 
+      LEFT JOIN 
         total_transfers tt 
       ON 
         f.city_id = tt.city_id
-      WHERE 
-        f.month = tt.month
+        AND f.month = tt.month
         AND f.year = tt.year
+      WHERE 
+        (f.month = tt.month AND f.year = tt.year) OR tt.value IS NULL
       ORDER BY 
         f.year DESC, f.month DESC
       LIMIT 
