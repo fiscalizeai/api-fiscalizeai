@@ -6,6 +6,7 @@ import removeAccents from 'remove-accents'
 
 export class PrismaCitiesRepository implements CitiesRepository {
   async create(data: Prisma.CityCreateInput) {
+    console.log(data.name)
     const city = await prisma.city.create({
       data,
     })

@@ -30,7 +30,7 @@ export class CreateCityUseCase {
 
     const city = await this.cityRepository.create({
       name: formattedName,
-      state,
+      state: state.toUpperCase(),
     })
 
     return {
