@@ -11,7 +11,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     email: z.string().email(),
     role: z.enum(roleEnum),
     cpf: z.string(),
-    cityId: z.string().optional(),
+    cityId: z.string().cuid().optional(),
   })
 
   const { name, role, email, cpf, cityId } = registerBodySchema.parse(

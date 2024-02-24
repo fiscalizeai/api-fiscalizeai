@@ -75,7 +75,7 @@ model Education {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  user    User   @relation(fields: [user_id], references: [id])
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String
 
   city    City   @relation(fields: [city_id], references: [id])
@@ -117,7 +117,7 @@ model Health {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  user    User   @relation(fields: [user_id], references: [id])
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String
 
   city    City   @relation(fields: [city_id], references: [id])
@@ -138,7 +138,7 @@ model Finance {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  user    User   @relation(fields: [user_id], references: [id])
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String
 
   city    City   @relation(fields: [city_id], references: [id])
@@ -160,7 +160,7 @@ model Transport {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  user    User   @relation(fields: [user_id], references: [id])
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String
 
   city    City   @relation(fields: [city_id], references: [id])
