@@ -68,7 +68,7 @@ model Education {
   schools  Int
   students Int
   teachers Int
-  total    Int
+  total    BigInt
 
   month      Int
   year       Int
@@ -110,7 +110,7 @@ model Health {
 
   services Int
   doctors  Int
-  total    Int
+  total    BigInt
 
   month      Int
   year       Int
@@ -153,7 +153,7 @@ model Transport {
   cars     Int
   bus      Int
   machines Int
-  total    Int
+  total    BigInt
 
   month      Int
   year       Int
