@@ -32,6 +32,7 @@ app.register(cors, {
     'Host',
     'User-Agent',
     'Referer',
+    'access-control-allow-origin',
   ],
   exposedHeaders: [
     'set-cookie',
