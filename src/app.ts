@@ -24,7 +24,7 @@ import { financesRoutes } from './http/controllers/finances/routes'
 export const app = fastify()
 
 app.register(cors, {
-  origin: 'https://app.fiscalizeai.com.br',
+  origin: '*',
   credentials: true,
   allowedHeaders: [
     'Content-Type',
