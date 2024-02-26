@@ -27,23 +27,14 @@ app.register(cors, {
   origin: true,
   // ^https?:\/\/(?:.*\.)?fiscalizeai\.com\.br$
   credentials: true,
-  // allowedHeaders: [
-  //   'Content-Type',
-  //   'Authorization',
-  //   'Host',
-  //   'User-Agent',
-  //   'Referer',
-  //   'Access-Control-Allow-Origin',
-  // ],
-  // exposedHeaders: [
-  //   'set-cookie',
-  //   'Cache-Control',
-  //   'Expires',
-  //   'Content-Language',
-  //   'Content-Type',
-  //   'Pragma',
-  //   'Last-Modified',
-  // ],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'Host',
+    'User-Agent',
+    'Referer',
+    'Access-Control-Allow-Origin',
+  ],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
 })
 
