@@ -19,7 +19,7 @@ export async function deleteCity(request: FastifyRequest, reply: FastifyReply) {
     })
   } catch (error) {
     if (error instanceof CityNotFoundError) {
-      return reply.status(409).send({ message: error.message })
+      return reply.status(404).send({ message: error.message })
     }
 
     if (error instanceof CityAssociatedUsers) {

@@ -35,7 +35,7 @@ export interface FinancesRepository {
       pageNumber: number
       pageItems: number
     }
-  } | null>
+  }>
   edit(
     financeId: string,
     data: Prisma.FinanceUncheckedUpdateInput,

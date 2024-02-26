@@ -37,7 +37,7 @@ export async function profileEdit(
     return reply.status(204).send()
   } catch (error) {
     if (error instanceof UserNotFoundError) {
-      return reply.status(400).send({ message: error.message })
+      return reply.status(404).send({ message: error.message })
     }
 
     if (error instanceof OldPasswordNotMatchError) {
@@ -45,7 +45,7 @@ export async function profileEdit(
     }
 
     if (error instanceof EmailAlreadyInUseError) {
-      return reply.status(400).send({ message: error.message })
+      return reply.status(409).send({ message: error.message })
     }
   }
 }

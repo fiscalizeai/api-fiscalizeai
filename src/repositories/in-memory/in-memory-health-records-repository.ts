@@ -16,7 +16,7 @@ export class InMemoryHealthRecordsRepository
       year: data.year,
       doctors: data.doctors,
       services: data.services,
-      total: data.total,
+      total: BigInt(data.total),
       city_id: data.city_id,
       user_id: data.user_id,
       created_at: new Date(),
@@ -50,10 +50,6 @@ export class InMemoryHealthRecordsRepository
     let filteredHealthRecords = this.items.filter(
       (healthRecord) => healthRecord.city_id === cityId,
     )
-
-    if (!filteredHealthRecords) {
-      return null
-    }
 
     if (year) {
       filteredHealthRecords = filteredHealthRecords.filter(

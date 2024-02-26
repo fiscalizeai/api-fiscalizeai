@@ -116,18 +116,11 @@ export async function metrics(request: FastifyRequest, reply: FastifyReply) {
       }
     })
 
-    const totalMonthSpending: number =
-      (recentHealthRecord as number) +
-      (recentChamberRecord as number) +
-      (recentEducationRecord as number) +
-      (recentTransportRecord as number)
-
     return reply.status(200).send({
       recentTransportRecord,
       recentChamberRecord,
       recentEducationRecord,
       recentHealthRecord,
-      totalMonthSpending,
       totalTransfersInMonth: monthTransfers.reduce(
         (acc, curr) => acc + curr.value,
         0,

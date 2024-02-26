@@ -34,9 +34,14 @@ export class PrismaFinancesRepository implements FinancesRepository {
   }
 
   async edit(id: string, data: Prisma.FinanceUncheckedUpdateInput) {
+    const updatedData = {
+      ...data,
+      updated_at: new Date(),
+    }
+
     const finance = await prisma.finance.update({
       where: { id },
-      data,
+      data: updatedData,
     })
 
     return finance

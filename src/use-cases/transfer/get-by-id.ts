@@ -1,6 +1,6 @@
 import { TransferRepository } from '@/repositories/transfer'
 import { Transfer } from '@prisma/client'
-import { ResourceNotFoundError } from '../errors/resource-not-found'
+import { TransferNotFoundError } from '../errors/records/transfer-not-found'
 
 interface GetTransferByIdUseCaseRequest {
   id: string
@@ -19,7 +19,7 @@ export class GetTransferByIdUseCase {
     const transfer = await this.transfersRepository.findById(id)
 
     if (!transfer) {
-      throw new ResourceNotFoundError()
+      throw new TransferNotFoundError()
     }
 
     return {

@@ -2,6 +2,7 @@ import { Prisma, User } from '@prisma/client'
 import { UsersRepository } from '@/repositories/users'
 import { hash } from 'bcryptjs'
 import { UserNotFoundError } from '../errors/users/user-not-found'
+import { UserAlreadyExistsError } from '../errors/user-already-exists'
 
 interface EditUserUseCaseRequest {
   userId: string
@@ -23,6 +24,16 @@ export class EditUserUseCase {
 
     if (!user) {
       throw new UserNotFoundError()
+    }
+
+    if (data.email && data.email !== user.email) {
+      const isSameEmail = await this.usersRepository.findByEmail(
+        data.email.toString(),
+      )
+
+      if (isSameEmail) {
+        throw new UserAlreadyExistsError()
+      }
     }
 
     const { password } = user

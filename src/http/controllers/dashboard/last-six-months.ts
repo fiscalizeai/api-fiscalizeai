@@ -138,31 +138,11 @@ export async function LastSixMonthsTransfers(
       },
     })
 
-    let totalSumLastSixMonths = 0
-
-    totalSumLastSixMonths += lastSixMonthsChamberRecord.reduce(
-      (acc, curr) => acc + curr.total,
-      0,
-    )
-    totalSumLastSixMonths += lastSixMonthsEducationRecord.reduce(
-      (acc, curr) => acc + curr.total,
-      0,
-    )
-    totalSumLastSixMonths += lastSixMonthsHealthRecord.reduce(
-      (acc, curr) => acc + curr.total,
-      0,
-    )
-    totalSumLastSixMonths += lastSixMonthsTransportRecord.reduce(
-      (acc, curr) => acc + curr.total,
-      0,
-    )
-
     return reply.status(200).send({
       lastSixMonthsChamberRecord,
       lastSixMonthsEducationRecord,
       lastSixMonthsHealthRecord,
       lastSixMonthsTransportRecord,
-      totalSumLastSixMonths,
     })
   } catch (error) {
     if (error instanceof InvalidUserOrCityError) {

@@ -1,4 +1,5 @@
 import { CityNotFoundError } from '@/use-cases/errors/cities/city-not-found'
+import { UserAlreadyExistsError } from '@/use-cases/errors/user-already-exists'
 import { UserNotFoundError } from '@/use-cases/errors/users/user-not-found'
 import { makeEditUseCase } from '@/use-cases/factories/users/make-edit-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
@@ -38,11 +39,15 @@ export async function edit(request: FastifyRequest, reply: FastifyReply) {
     return reply.status(204).send()
   } catch (error) {
     if (error instanceof UserNotFoundError) {
-      return reply.status(400).send({ message: error.message })
+      return reply.status(404).send({ message: error.message })
     }
 
     if (error instanceof CityNotFoundError) {
-      return reply.status(400).send({ message: error.message })
+      return reply.status(404).send({ message: error.message })
+    }
+
+    if (error instanceof UserAlreadyExistsError) {
+      return reply.status(409).send({ message: error.message })
     }
   }
 }

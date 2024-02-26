@@ -33,6 +33,21 @@ export class EditCityUseCase {
       throw new CityAlreadyExistsError()
     }
 
+    if (data?.name) {
+      const words = data.name.split(' ')
+      const formattedName = words
+        .map(
+          (word) =>
+            word.charAt(0).toUpperCase() + word.slice(1).toLocaleLowerCase(),
+        )
+        .join(' ')
+      data.name = formattedName
+    }
+
+    if (data?.state) {
+      data.state = data.state.toUpperCase()
+    }
+
     const cityEdited = await this.cityRepository.edit(id, data)
 
     return {

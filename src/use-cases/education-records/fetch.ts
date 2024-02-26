@@ -1,6 +1,5 @@
 import { EducationRecordsRepository } from '@/repositories/education'
 import { Education } from '@prisma/client'
-import { ResourceNotFoundError } from '../errors/resource-not-found'
 
 interface FetchEducationRecordsUseCaseRequest {
   page: number
@@ -36,10 +35,6 @@ export class FetchEducationRecordsUseCase {
       month,
       year,
     )
-
-    if (!educationRecords) {
-      throw new ResourceNotFoundError()
-    }
 
     const { education, pagination } = educationRecords
 

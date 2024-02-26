@@ -24,10 +24,25 @@ import { financesRoutes } from './http/controllers/finances/routes'
 export const app = fastify()
 
 app.register(cors, {
-  origin: true,
+  origin: 'https://app.dev.fiscalizeai.com.br',
   credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  exposedHeaders: ['set-cookie'],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'Host',
+    'User-Agent',
+    'Referer',
+  ],
+  exposedHeaders: [
+    'set-cookie',
+    'Cache-Control',
+    'Expires',
+    'Content-Language',
+    'Content-Type',
+    'Pragma',
+    'Last-Modified',
+  ],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
 })
 
 app.register(fastifyJwt, {
@@ -37,7 +52,7 @@ app.register(fastifyJwt, {
     signed: false,
   },
   sign: {
-    expiresIn: '1d', // 10M
+    expiresIn: '1d',
   },
 })
 

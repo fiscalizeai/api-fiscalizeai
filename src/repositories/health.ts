@@ -1,3 +1,4 @@
+import { edit } from '@/http/controllers/users/edit'
 import { Prisma, Health } from '@prisma/client'
 
 export interface HealthRecordsRepository {
@@ -20,7 +21,7 @@ export interface HealthRecordsRepository {
       pageNumber: number
       pageItems: number
     }
-  } | null>
+  }>
   edit(
     HealthId: string,
     data: Prisma.HealthUncheckedUpdateInput,

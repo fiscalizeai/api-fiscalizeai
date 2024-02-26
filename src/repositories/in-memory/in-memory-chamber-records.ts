@@ -52,10 +52,6 @@ export class InMemoryChamberRecordsRepository
       (chamberRecord) => chamberRecord.city_id === cityId,
     )
 
-    if (!filteredChamberRecords) {
-      return null
-    }
-
     if (year) {
       filteredChamberRecords = filteredChamberRecords.filter(
         (chamberRecord) => chamberRecord.year === year,

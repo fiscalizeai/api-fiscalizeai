@@ -1,6 +1,5 @@
 import { TransferRepository } from '@/repositories/transfer'
 import { Transfer } from '@prisma/client'
-import { ResourceNotFoundError } from '../errors/resource-not-found'
 
 interface FetchTransferUseCaseRequest {
   page: number
@@ -40,10 +39,6 @@ export class FetchTransferUseCase {
       items,
       params,
     )
-
-    if (!transferReturn) {
-      throw new ResourceNotFoundError()
-    }
 
     const { transfers, pagination } = transferReturn
 

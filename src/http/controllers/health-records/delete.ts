@@ -21,7 +21,7 @@ export async function deleteHealthRecord(
     })
   } catch (error) {
     if (error instanceof RecordsNotExistsError) {
-      return reply.status(409).send({ message: error.message })
+      return reply.status(404).send({ message: error.message })
     }
 
     throw error

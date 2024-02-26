@@ -64,16 +64,16 @@ model City {
 }
 
 model Education {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   schools  Int
   students Int
   teachers Int
-  total    BigInt
+  total    Decimal
 
   month      Int
   year       Int
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String
@@ -85,16 +85,16 @@ model Education {
 }
 
 model Chamber {
-  id          String @id @default(uuid())
+  id          String  @id @default(uuid())
   staffs      Int
   contractors Int
   headcounts  Int
-  total       Int
+  total       Decimal
 
   month      Int
   year       Int
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   user    User   @relation(fields: [user_id], references: [id])
   user_id String
@@ -110,12 +110,12 @@ model Health {
 
   services Int
   doctors  Int
-  total    BigInt
+  total    Decimal
 
   month      Int
   year       Int
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String
@@ -136,7 +136,7 @@ model Finance {
   month      Int
   year       Int
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String
@@ -153,12 +153,12 @@ model Transport {
   cars     Int
   bus      Int
   machines Int
-  total    BigInt
+  total    Decimal
 
   month      Int
   year       Int
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String

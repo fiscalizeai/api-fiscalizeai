@@ -2,7 +2,7 @@ import { Prisma, User } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { UsersRepository } from '../users'
 import { UserFilters } from '@/utils/filters-type'
-import { compare, hash } from 'bcryptjs'
+import { hash } from 'bcryptjs'
 
 export class InMemoryUsersRepository implements UsersRepository {
   public items: User[] = []
@@ -78,10 +78,10 @@ export class InMemoryUsersRepository implements UsersRepository {
   }
 
   async delete(id: string) {
-    const cityIndex = this.items.findIndex((item) => item.id === id)
+    const userIndex = this.items.findIndex((item) => item.id === id)
 
-    if (cityIndex > -1) {
-      this.items.splice(cityIndex, 1)
+    if (userIndex > -1) {
+      this.items.splice(userIndex, 1)
     }
   }
 

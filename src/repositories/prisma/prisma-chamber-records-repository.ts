@@ -22,9 +22,14 @@ export class PrismaChamberRecordsRepository
   }
 
   async edit(id: string, data: Chamber) {
+    const updatedData = {
+      ...data,
+      updated_at: new Date(),
+    }
+
     const chamber_record = await prisma.chamber.update({
       where: { id },
-      data,
+      data: updatedData,
     })
 
     return chamber_record

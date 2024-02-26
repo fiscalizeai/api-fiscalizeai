@@ -17,7 +17,7 @@ export interface TransferRepository {
       pageNumber: number
       pageItems: number
     }
-  } | null>
+  }>
 
   totalTransferByMonth(month: Date, cityId: string): Promise<number>
 }

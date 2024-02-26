@@ -18,15 +18,15 @@ export interface CitiesRepository {
       pageNumber: number
       pageItems: number
     }
-  } | null>
+  }>
 
   findByName(name: string, state: string): Promise<City | null>
 
   edit(id: string, data: Prisma.CityUncheckedCreateInput): Promise<City | null>
 
-  delete(id: string): Promise<void>
-
   countUsersByCity(id: string): Promise<number>
 
   fetchUserInCity(id: string): Promise<User[]>
+
+  delete(id: string): Promise<void>
 }

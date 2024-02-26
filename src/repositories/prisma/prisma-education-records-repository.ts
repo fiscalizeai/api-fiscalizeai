@@ -22,9 +22,14 @@ export class PrismaEducationRecordsRepository
   }
 
   async edit(id: string, data: Education) {
+    const updatedData = {
+      ...data,
+      updated_at: new Date(),
+    }
+
     const education_record = await prisma.education.update({
       where: { id },
-      data,
+      data: updatedData,
     })
 
     return education_record

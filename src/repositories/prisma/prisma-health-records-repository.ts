@@ -4,7 +4,6 @@ import { HealthRecordsRepository } from '../health' // Troquei de "chamber" para
 
 export class PrismaHealthRecordsRepository implements HealthRecordsRepository {
   async register(data: Prisma.HealthUncheckedCreateInput) {
-    // Troquei de "chamber" para "health"
     const health_record = await prisma.health.create({
       data,
     })
@@ -21,9 +20,14 @@ export class PrismaHealthRecordsRepository implements HealthRecordsRepository {
   }
 
   async edit(id: string, data: Health) {
+    const updatedData = {
+      ...data,
+      updated_at: new Date(),
+    }
+
     const health_record = await prisma.health.update({
       where: { id },
-      data,
+      data: updatedData,
     })
 
     return health_record

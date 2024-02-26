@@ -20,7 +20,7 @@ export interface EducationRecordsRepository {
       pageNumber: number
       pageItems: number
     }
-  } | null>
+  }>
   edit(
     educationId: string,
     data: Prisma.EducationUncheckedUpdateInput,

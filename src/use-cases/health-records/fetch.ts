@@ -1,6 +1,5 @@
 import { HealthRecordsRepository } from '@/repositories/health'
 import { Health } from '@prisma/client'
-import { RecordsNotExistsError } from '../errors/records/records-not-exists'
 
 interface FetchHealthRecordsUseCaseRequest {
   page: number
@@ -37,10 +36,6 @@ export class FetchHealthRecordsUseCase {
       month,
       year,
     )
-
-    if (!healthRecords) {
-      throw new RecordsNotExistsError()
-    }
 
     const { health, pagination } = healthRecords
 

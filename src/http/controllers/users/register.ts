@@ -1,3 +1,4 @@
+import { CityNotFoundError } from '@/use-cases/errors/cities/city-not-found'
 import { UserAlreadyExistsError } from '@/use-cases/errors/user-already-exists'
 import { makeRegisterUseCase } from '@/use-cases/factories/users/make-register-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
@@ -11,7 +12,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     email: z.string().email(),
     role: z.enum(roleEnum),
     cpf: z.string(),
-    cityId: z.string().cuid().optional(),
+    cityId: z.string().cuid(),
   })
 
   const { name, role, email, cpf, cityId } = registerBodySchema.parse(
@@ -31,6 +32,10 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   } catch (error) {
     if (error instanceof UserAlreadyExistsError) {
       return reply.status(409).send({ message: error.message })
+    }
+
+    if (error instanceof CityNotFoundError) {
+      return reply.status(404).send({ message: error.message })
     }
 
     throw error

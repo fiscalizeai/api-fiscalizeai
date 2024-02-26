@@ -1,3 +1,4 @@
+import { TransferNotFoundError } from '@/use-cases/errors/records/transfer-not-found'
 import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found'
 import { makeGetByIdUseCase } from '@/use-cases/factories/transfers/make-get-by-id-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
@@ -21,8 +22,8 @@ export async function getById(request: FastifyRequest, reply: FastifyReply) {
       transfer,
     })
   } catch (error) {
-    if (error instanceof ResourceNotFoundError) {
-      return reply.status(400).send({ message: error.message })
+    if (error instanceof TransferNotFoundError) {
+      return reply.status(404).send({ message: error.message })
     }
   }
 }

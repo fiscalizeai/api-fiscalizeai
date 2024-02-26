@@ -44,7 +44,7 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
     .send({
       authMetadata: {
         token,
-        expireIn: 600,
+        expireIn: 86400,
         refreshToken,
       },
       user: {

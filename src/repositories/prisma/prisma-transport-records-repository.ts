@@ -22,9 +22,14 @@ export class PrismaTransportRecordsRepository
   }
 
   async edit(id: string, data: Transport) {
+    const updatedData = {
+      ...data,
+      updated_at: new Date(),
+    }
+
     const transport_record = await prisma.transport.update({
       where: { id },
-      data,
+      data: updatedData,
     })
 
     return transport_record

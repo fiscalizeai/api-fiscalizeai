@@ -17,7 +17,7 @@ export class InMemoryTransportRecordsRepository
       cars: data.cars,
       bus: data.bus,
       machines: data.machines,
-      total: data.total,
+      total: BigInt(data.total),
       city_id: data.city_id,
       user_id: data.user_id,
       created_at: new Date(),
@@ -51,10 +51,6 @@ export class InMemoryTransportRecordsRepository
     let filteredTransportRecords = this.items.filter(
       (transportRecord) => transportRecord.city_id === cityId,
     )
-
-    if (!filteredTransportRecords) {
-      return null
-    }
 
     if (year) {
       filteredTransportRecords = filteredTransportRecords.filter(

@@ -62,7 +62,7 @@ export async function authenticate(
       .send({
         authMetadata: {
           token,
-          expireIn: 600,
+          expireIn: 86400,
           refreshToken,
         },
         user: {

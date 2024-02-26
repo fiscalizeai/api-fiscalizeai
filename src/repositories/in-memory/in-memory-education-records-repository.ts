@@ -17,7 +17,7 @@ export class InMemoryEducationRecordsRepository
       schools: data.schools,
       students: data.schools,
       teachers: data.teachers,
-      total: data.total,
+      total: BigInt(data.total),
       city_id: data.city_id,
       user_id: data.user_id,
       created_at: new Date(),
@@ -51,10 +51,6 @@ export class InMemoryEducationRecordsRepository
     let filteredEducationRecords = this.items.filter(
       (educationRecord) => educationRecord.city_id === cityId,
     )
-
-    if (!filteredEducationRecords) {
-      return null
-    }
 
     if (year) {
       filteredEducationRecords = filteredEducationRecords.filter(

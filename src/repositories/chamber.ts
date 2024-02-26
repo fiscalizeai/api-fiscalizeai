@@ -20,7 +20,7 @@ export interface ChamberRecordsRepository {
       pageNumber: number
       pageItems: number
     }
-  } | null>
+  }>
   edit(
     chamberId: string,
     data: Prisma.ChamberUncheckedUpdateInput,

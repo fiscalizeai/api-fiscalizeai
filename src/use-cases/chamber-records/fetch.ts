@@ -38,10 +38,6 @@ export class FetchChamberRecordsUseCase {
       year,
     )
 
-    if (!chamberRecords) {
-      throw new ResourceNotFoundError()
-    }
-
     const { chamber, pagination } = chamberRecords
 
     return {

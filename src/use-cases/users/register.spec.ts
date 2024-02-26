@@ -3,14 +3,23 @@ import { RegisterUseCase } from './register'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { UserAlreadyExistsError } from '../errors/user-already-exists'
 import { compare } from 'bcryptjs'
+import { InMemoryCitiesRepository } from '@/repositories/in-memory/in-memory-cities-repository'
 
 let userRepository: InMemoryUsersRepository
+let citiesRepository: InMemoryCitiesRepository
 let sut: RegisterUseCase
 
 describe('Register Users Use Case', () => {
   beforeEach(async () => {
     userRepository = new InMemoryUsersRepository()
-    sut = new RegisterUseCase(userRepository)
+    citiesRepository = new InMemoryCitiesRepository()
+    sut = new RegisterUseCase(userRepository, citiesRepository)
+
+    await citiesRepository.create({
+      id: 'city-1',
+      name: 'Sacramento',
+      state: 'MG',
+    })
   })
 
   it('should be hash user password upon registration', async () => {

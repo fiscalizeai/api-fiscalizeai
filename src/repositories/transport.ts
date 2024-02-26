@@ -20,7 +20,7 @@ export interface TransportRecordsRepository {
       pageNumber: number
       pageItems: number
     }
-  } | null>
+  }>
   edit(
     transportId: string,
     data: Prisma.TransportUncheckedUpdateInput,

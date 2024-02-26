@@ -18,7 +18,7 @@ export async function deleteUser(request: FastifyRequest, reply: FastifyReply) {
     })
   } catch (err) {
     if (err instanceof UserNotFoundError) {
-      return reply.status(409).send({ message: err.message })
+      return reply.status(404).send({ message: err.message })
     }
 
     throw err

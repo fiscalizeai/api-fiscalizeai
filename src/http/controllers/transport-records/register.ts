@@ -42,7 +42,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       return reply.status(409).send({ message: error.message })
     }
     if (error instanceof InvalidUserOrCityError) {
-      return reply.status(404).send({ message: error.message })
+      return reply.status(401).send({ message: error.message })
     }
 
     throw error
