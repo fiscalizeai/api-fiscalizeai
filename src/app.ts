@@ -25,7 +25,14 @@ export const app = fastify()
 
 app.register(cors, {
   origin: 'https://app.fiscalizeai.com.br/',
+  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+  allowedHeaders: 'Content-Type, Authorization',
   credentials: true,
+  preflightContinue: false,
+})
+
+app.get('/hello-world', async (request, reply) => {
+  return { message: 'Hello World' }
 })
 
 app.register(fastifyJwt, {
