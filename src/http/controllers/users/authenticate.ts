@@ -56,7 +56,6 @@ export async function authenticate(
         sameSite: 'none',
         httpOnly: true,
       })
-      .header('Access-Control-Allow-Origin', 'https://app.fiscalizeai.com.br')
       .header('Access-Control-Allow-Credentials', 'true')
       .status(200)
       .send({
