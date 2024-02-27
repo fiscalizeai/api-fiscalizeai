@@ -2,17 +2,16 @@ import { Finance, Prisma } from '@prisma/client'
 
 interface FetchReturnData {
   id: string
-  finance_id: string
   iptu: number
   iss: number
   itbi: number
   month: number
   year: number
-  created_at: number
-  updated_at: number
-  user_id: string
-  city_id: string
-  value: string
+  created_at: Date
+  totalTransfers: {
+    id: string
+    value: string
+  }
 }
 
 export interface FinancesRepository {

@@ -77,15 +77,19 @@ export const FetchFinanceSchema: FastifySchema = {
             type: 'object',
             properties: {
               id: { type: 'string' },
-              finance_id: { type: 'string' },
               iptu: { type: 'number' },
               iss: { type: 'number' },
               itbi: { type: 'number' },
               month: { type: 'number' },
               year: { type: 'number' },
               created_at: { type: 'string' },
-              updated_at: { type: 'string' },
-              value: { type: 'string' },
+              totalTransfers: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  value: { type: 'string' },
+                },
+              },
             },
           },
         },

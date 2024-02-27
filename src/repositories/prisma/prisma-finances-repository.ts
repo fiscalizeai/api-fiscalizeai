@@ -73,33 +73,36 @@ export class PrismaFinancesRepository implements FinancesRepository {
     const totalPages = Math.ceil(totalItems / items)
     const pageItems = page === totalPages ? totalItems % items : items
 
-    const itemsPerPage = items // Define o número de itens por página
+    const financePromise = await prisma.finance.findMany({
+      where: {
+        city_id: cityId,
+        AND: [{ month }, { year }],
+      },
+      orderBy: [{ year: 'desc' }, { month: 'desc' }],
+      take: items,
+      skip: (page - 1) * items,
+    })
 
-    const offset = (page - 1) * itemsPerPage
+    const totalTransfersPromise = await prisma.totalTransfer.findMany({
+      where: {
+        city_id: cityId,
+        AND: [{ month }, { year }],
+      },
+      orderBy: [{ year: 'desc' }, { month: 'desc' }],
+      take: items,
+      skip: (page - 1) * items,
+    })
 
-    const finances: FetchReturnData[] = await prisma.$queryRaw`
-      SELECT
-        f.id AS finance_id,
-        f.*, 
-        tt.value
-      FROM 
-        finances_data f
-      LEFT JOIN 
-        total_transfers tt 
-      ON 
-        f.city_id = tt.city_id
-        AND f.month = tt.month
-        AND f.year = tt.year
-      WHERE 
-        (f.month = tt.month AND f.year = tt.year) OR tt.value IS NULL
-        AND (f.city_id = ${cityId} AND tt.city_id = ${cityId})
-      ORDER BY 
-        f.year DESC, f.month DESC
-      LIMIT 
-        ${itemsPerPage}
-      OFFSET 
-        ${offset};
-    `
+    const finances = financePromise.map((finance, index) => ({
+      id: finance.id,
+      iptu: finance.iptu,
+      iss: finance.iss,
+      itbi: finance.itbi,
+      month: finance.month,
+      year: finance.year,
+      created_at: finance.created_at,
+      totalTransfers: totalTransfersPromise[index],
+    }))
 
     return {
       finances,
