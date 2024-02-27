@@ -23,7 +23,10 @@ import { financesRoutes } from './http/controllers/finances/routes'
 
 export const app = fastify()
 
-app.register(cors)
+app.register(cors, {
+  origin: 'https://app.fiscalizeai.com.br/',
+  credentials: true,
+})
 
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
