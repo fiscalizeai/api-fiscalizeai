@@ -25,13 +25,31 @@ export async function currentMonthTransfers(
           lte: new Date(), // Data atual
         },
       },
-      include: {
-        parcel: true,
+      select: {
+        id: true,
+        demonstrative: true,
+        created_at: true,
+        parcel: {
+          select: {
+            transfer_id: true,
+            value: true,
+          },
+        },
       },
     })
 
+    const transfersWithParcelValues = currentMonthTransfers.map((transfer) => ({
+      id: transfer.id,
+      demonstrative: transfer.demonstrative,
+      created_at: transfer.created_at,
+      value:
+        transfer.parcel[0].transfer_id === transfer.id
+          ? transfer.parcel[0].value
+          : null,
+    }))
+
     return reply.status(200).send({
-      currentMonthTransfers,
+      currentMonthTransfers: transfersWithParcelValues,
     })
   } catch (error) {
     if (error instanceof InvalidUserOrCityError) {

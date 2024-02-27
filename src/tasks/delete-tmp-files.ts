@@ -18,9 +18,9 @@ function deleteTmpFiles() {
       // Excluindo o arquivo
       fs.unlink(pathFile, (error) => {
         if (error) {
-          console.error(`Erro ao excluir o arquivo ${pathFile}`, error)
+          return console.error(`Erro ao excluir o arquivo ${pathFile}`, error)
         } else {
-          console.log(`O arquivo ${pathFile} foi excluido`)
+          return console.log(`O arquivo ${pathFile} foi excluido`)
         }
       })
     })

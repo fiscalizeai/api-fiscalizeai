@@ -146,20 +146,7 @@ export const CurrentMonthTransfersSchema: FastifySchema = {
               id: { type: 'string' },
               demonstrative: { type: 'string' },
               created_at: { type: 'string' },
-              parcel: {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  properties: {
-                    id: { type: 'string' },
-                    parcel: { type: 'string' },
-                    value: { type: 'string' },
-                    date: { type: 'string' },
-                    created_at: { type: 'string' },
-                    transfer_id: { type: 'string' },
-                  },
-                },
-              },
+              value: { type: 'string' },
             },
           },
         },

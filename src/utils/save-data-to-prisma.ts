@@ -52,9 +52,9 @@ export async function saveDataToPrisma(fileName: string, data: RowData[]) {
       })
 
       // Crie as parcelas associadas à transferência
-      await Promise.all(
-        row.parcels.map(async (parcel) => {
-          await prisma.parcel.create({
+      for (const parcel of row.parcels) {
+        try {
+          const createdParcel = await prisma.parcel.create({
             data: {
               parcel: parcel.parcel,
               value: parcel.value,
@@ -62,8 +62,16 @@ export async function saveDataToPrisma(fileName: string, data: RowData[]) {
               transfer: { connect: { id: transfer.id } },
             },
           })
-        }),
-      )
+          console.log(
+            `Parcela ${createdParcel.id} criada para transferência ${transfer.id}`,
+          )
+        } catch (error) {
+          console.error(
+            `Erro ao criar parcela para transferência ${transfer.id}:`,
+            error,
+          )
+        }
+      }
 
       let totalValue: number | null = null
       if (row.demonstrative.startsWith('TOTAL DOS REPASSES NO PERIODO')) {

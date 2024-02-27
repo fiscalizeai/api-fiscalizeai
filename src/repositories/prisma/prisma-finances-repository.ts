@@ -92,6 +92,7 @@ export class PrismaFinancesRepository implements FinancesRepository {
         AND f.year = tt.year
       WHERE 
         (f.month = tt.month AND f.year = tt.year) OR tt.value IS NULL
+        AND (f.city_id = ${cityId} AND tt.city_id = ${cityId})
       ORDER BY 
         f.year DESC, f.month DESC
       LIMIT 
