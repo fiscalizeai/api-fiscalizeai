@@ -29,6 +29,7 @@ app.register(cors, {
   allowedHeaders:
     'Origin, X-Request-Width, Content-Type, Authorization, Accept',
   credentials: true,
+  strictPreflight: false,
 })
 
 app.get('/hello-world', async (request, reply) => {
