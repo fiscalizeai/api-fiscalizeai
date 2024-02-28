@@ -176,7 +176,7 @@ model Parcel {
   date       DateTime
   created_at DateTime @default(now())
 
-  transfer    Transfer @relation(fields: [transfer_id], references: [id])
+  transfer    Transfer @relation(fields: [transfer_id], references: [id], onDelete: Cascade)
   transfer_id String
 
   @@map("parcels")
@@ -189,7 +189,7 @@ model Transfer {
   created_at    DateTime @default(now())
 
   parcel  Parcel[]
-  city    City     @relation(fields: [city_id], references: [id])
+  city    City     @relation(fields: [city_id], references: [id], onDelete: Cascade)
   city_id String
 
   @@map("transfers")
@@ -201,7 +201,7 @@ model TotalTransfer {
   year  Int
   value String
 
-  city    City   @relation(fields: [city_id], references: [id])
+  city    City   @relation(fields: [city_id], references: [id], onDelete: Cascade)
   city_id String
 
   @@map("total_transfers")
