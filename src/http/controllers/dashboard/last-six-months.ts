@@ -26,6 +26,7 @@ export async function LastSixMonthsTransfers(
     const lastSixMonthsTransportRecord = await prisma.transport.findMany({
       orderBy: [{ year: 'desc' }, { month: 'desc' }],
       where: {
+        city_id: city,
         AND: [
           {
             OR: [
@@ -55,6 +56,7 @@ export async function LastSixMonthsTransfers(
     const lastSixMonthsHealthRecord = await prisma.health.findMany({
       orderBy: [{ year: 'desc' }, { month: 'desc' }],
       where: {
+        city_id: city,
         AND: [
           {
             OR: [
@@ -83,6 +85,7 @@ export async function LastSixMonthsTransfers(
     const lastSixMonthsEducationRecord = await prisma.education.findMany({
       orderBy: [{ year: 'desc' }, { month: 'desc' }],
       where: {
+        city_id: city,
         AND: [
           {
             OR: [
@@ -112,6 +115,7 @@ export async function LastSixMonthsTransfers(
     const lastSixMonthsChamberRecord = await prisma.chamber.findMany({
       orderBy: [{ year: 'desc' }, { month: 'desc' }],
       where: {
+        city_id: city,
         AND: [
           {
             OR: [

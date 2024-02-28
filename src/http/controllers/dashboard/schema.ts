@@ -132,7 +132,7 @@ export const LastSixMonthsSchema: FastifySchema = {
 
 export const CurrentMonthTransfersSchema: FastifySchema = {
   description: 'GET a fetch transfers',
-  tags: ['transfer'],
+  tags: ['dashboard'],
   response: {
     200: {
       description: 'Successful',
