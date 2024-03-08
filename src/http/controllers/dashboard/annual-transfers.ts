@@ -4,7 +4,7 @@ import { startOfMonth, subMonths } from 'date-fns'
 import { FastifyReply, FastifyRequest } from 'fastify'
 
 // Definir um período de tempo de validade do cache em milissegundos
-const CACHE_EXPIRATION_TIME = 24 * 60 * 60 * 1000 // 24 horas em milissegundos
+const CACHE_EXPIRATION_TIME = 2 * 60 * 60 * 1000 // 2 horas em milissegundos
 
 // Criar um objeto para armazenar em cache os resultados das consultas
 const cache: { [key: string]: { timestamp: number; data: any } } = {}
@@ -47,57 +47,15 @@ export async function annualTransfers(
       })
     }
 
-    const annualTransfersFiltered = await prisma.transfer.findMany({
-      orderBy: { created_at: 'desc' },
+    const annualTransfers = await prisma.totalTransfer.findMany({
+      orderBy: [{ year: 'desc' }, { month: 'desc' }],
       where: {
         city_id: city,
-        demonstrative: 'TOTAL DOS REPASSES NO PERIODO',
-        created_at: {
-          gte: startOfMonth(lastYearDate), // Data de 12 meses atras
-          lte: new Date(), // Data atual
-        },
       },
-      select: {
-        id: true,
-        demonstrative: true,
-        created_at: true,
-        parcel: {
-          select: {
-            id: true,
-            value: true,
-          },
-        },
-      },
-    })
-
-    const annualTransfers: TransferYearProps[] = []
-
-    annualTransfersFiltered.forEach((transfer) => {
-      // Verifica se já existe uma entrada no array annualTransfers para o mês e ano atual
-      const existingEntry = annualTransfers.find(
-        (entry) =>
-          entry.month === transfer.created_at.getMonth() + 1 &&
-          entry.year === transfer.created_at.getFullYear(),
-      )
-
-      // Converte o valor para número
-      const parcelValue = parseFloat(transfer.parcel[0].value)
-
-      // Se já existe uma entrada, atualiza o valor somando o valor atual do registro
-      if (existingEntry) {
-        existingEntry.value += parcelValue
-      } else {
-        // Se não existe uma entrada, cria uma nova entrada no array sumInMonthYear
-        annualTransfers.push({
-          month: transfer.created_at.getMonth() + 1,
-          year: transfer.created_at.getFullYear(),
-          value: parcelValue,
-        })
-      }
     })
 
     const totalTransfersInLastYear = annualTransfers.reduce(
-      (acc, curr) => acc + curr.value,
+      (acc, curr) => acc + parseInt(curr.value),
       0,
     )
 
