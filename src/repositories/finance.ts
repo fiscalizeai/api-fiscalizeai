@@ -8,10 +8,12 @@ interface FetchReturnData {
   month: number
   year: number
   created_at: Date
-  totalTransfers: {
-    id: string
-    value: string
-  }
+  totalTransfers:
+    | {
+        id: string
+        value: string
+      }
+    | undefined
 }
 
 export interface FinancesRepository {

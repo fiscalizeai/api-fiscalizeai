@@ -9,21 +9,6 @@ interface WhereConditionsProps {
   items?: number
 }
 
-interface FetchReturnData {
-  id: string
-  finance_id: string
-  iptu: number
-  iss: number
-  itbi: number
-  month: number
-  year: number
-  created_at: number
-  updated_at: number
-  user_id: string
-  city_id: string
-  value: string
-}
-
 export class PrismaFinancesRepository implements FinancesRepository {
   async register(data: Prisma.FinanceUncheckedCreateInput) {
     const finance = await prisma.finance.create({
@@ -93,7 +78,7 @@ export class PrismaFinancesRepository implements FinancesRepository {
       skip: (page - 1) * items,
     })
 
-    const finances = financePromise.map((finance, index) => ({
+    const finances = financePromise.map((finance) => ({
       id: finance.id,
       iptu: finance.iptu,
       iss: finance.iss,
@@ -101,7 +86,10 @@ export class PrismaFinancesRepository implements FinancesRepository {
       month: finance.month,
       year: finance.year,
       created_at: finance.created_at,
-      totalTransfers: totalTransfersPromise[index],
+      totalTransfers: totalTransfersPromise.find(
+        (transfer) =>
+          transfer.month === finance.month && transfer.year === finance.year,
+      ),
     }))
 
     return {
