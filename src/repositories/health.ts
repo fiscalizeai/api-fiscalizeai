@@ -1,4 +1,3 @@
-import { edit } from '@/http/controllers/users/edit'
 import { Prisma, Health } from '@prisma/client'
 
 export interface HealthRecordsRepository {
@@ -6,6 +5,7 @@ export interface HealthRecordsRepository {
   findByMonthAndYear(
     month: number | Prisma.IntFieldUpdateOperationsInput,
     year: number | Prisma.IntFieldUpdateOperationsInput,
+    cityId: string,
   ): Promise<Health | null>
   fetch(
     page: number,

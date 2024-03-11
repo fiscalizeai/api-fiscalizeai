@@ -16,7 +16,7 @@ export class InMemoryHealthRecordsRepository
       year: data.year,
       doctors: data.doctors,
       services: data.services,
-      total: BigInt(data.total),
+      total: data.total,
       city_id: data.city_id,
       user_id: data.user_id,
       created_at: new Date(),

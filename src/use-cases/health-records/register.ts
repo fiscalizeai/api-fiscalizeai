@@ -43,7 +43,7 @@ export class RegisterHealthRecordsUseCase {
     }
 
     const hasSameHealthRecord =
-      await this.healthRecordsRepository.findByMonthAndYear(month, year)
+      await this.healthRecordsRepository.findByMonthAndYear(month, year, cityId)
 
     if (hasSameHealthRecord && hasSameHealthRecord.city_id === cityId) {
       throw new RecordsAlreadyExistsError()

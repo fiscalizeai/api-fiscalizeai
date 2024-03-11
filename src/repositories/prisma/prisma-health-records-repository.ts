@@ -43,9 +43,10 @@ export class PrismaHealthRecordsRepository implements HealthRecordsRepository {
     return health_record
   }
 
-  async findByMonthAndYear(month: number, year: number) {
+  async findByMonthAndYear(month: number, year: number, cityId: string) {
     const health_record = await prisma.health.findFirst({
       where: {
+        city_id: cityId,
         AND: [{ month }, { year }],
       },
     })

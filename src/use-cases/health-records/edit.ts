@@ -31,7 +31,11 @@ export class EditHealthRecordUseCase {
 
     if (month && year) {
       existingHealthRecordInMonth =
-        await this.healthRecordRepository.findByMonthAndYear(month, year)
+        await this.healthRecordRepository.findByMonthAndYear(
+          month,
+          year,
+          healthRecord.city_id,
+        )
     }
 
     if (existingHealthRecordInMonth && existingHealthRecordInMonth.id !== id) {
