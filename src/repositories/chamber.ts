@@ -5,6 +5,7 @@ export interface ChamberRecordsRepository {
   findByMonthAndYear(
     month: number | Prisma.IntFieldUpdateOperationsInput,
     year: number | Prisma.IntFieldUpdateOperationsInput,
+    cityId: string,
   ): Promise<Chamber | null>
   fetch(
     page: number,

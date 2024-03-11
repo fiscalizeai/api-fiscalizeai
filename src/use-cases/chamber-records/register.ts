@@ -40,12 +40,16 @@ export class RegisterChamberRecordsUseCase {
     const city = await this.citiesRepository.findById(cityId)
     const user = await this.usersRepository.findById(userId)
 
-    if (!city && !user) {
+    if (!city || !user) {
       throw new InvalidUserOrCityError()
     }
 
     const hasSameChamberRecord =
-      await this.chamberRecordsRepository.findByMonthAndYear(month, year)
+      await this.chamberRecordsRepository.findByMonthAndYear(
+        month,
+        year,
+        cityId,
+      )
 
     if (hasSameChamberRecord && hasSameChamberRecord.city_id === cityId) {
       throw new RecordsAlreadyExistsError()

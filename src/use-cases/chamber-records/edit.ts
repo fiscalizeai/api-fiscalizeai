@@ -31,7 +31,11 @@ export class EditChamberRecordUseCase {
 
     if (month && year) {
       existingChamberRecordInMonth =
-        await this.chamberRecordRepository.findByMonthAndYear(month, year)
+        await this.chamberRecordRepository.findByMonthAndYear(
+          month,
+          year,
+          chamberRecord.city_id,
+        )
     }
 
     if (

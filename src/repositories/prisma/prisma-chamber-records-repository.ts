@@ -45,9 +45,10 @@ export class PrismaChamberRecordsRepository
     return chamber_record
   }
 
-  async findByMonthAndYear(month: number, year: number) {
+  async findByMonthAndYear(month: number, year: number, cityId: string) {
     const chamber_record = await prisma.chamber.findFirst({
       where: {
+        city_id: cityId,
         AND: [{ month }, { year }],
       },
     })
