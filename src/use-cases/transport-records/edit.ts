@@ -31,7 +31,11 @@ export class EditTransportRecordUseCase {
 
     if (month && year) {
       existingEducationRecordInMonth =
-        await this.transportRecordRepository.findByMonthAndYear(month, year)
+        await this.transportRecordRepository.findByMonthAndYear(
+          month,
+          year,
+          educationRecord.city_id,
+        )
     }
 
     if (

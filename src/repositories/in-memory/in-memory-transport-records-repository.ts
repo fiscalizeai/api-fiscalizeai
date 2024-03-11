@@ -17,7 +17,7 @@ export class InMemoryTransportRecordsRepository
       cars: data.cars,
       bus: data.bus,
       machines: data.machines,
-      total: BigInt(data.total),
+      total: data.total,
       city_id: data.city_id,
       user_id: data.user_id,
       created_at: new Date(),

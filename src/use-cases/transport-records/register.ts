@@ -45,7 +45,11 @@ export class RegisterTransportRecordsUseCase {
     }
 
     const hasSameTransportRecord =
-      await this.transportRecordsRepository.findByMonthAndYear(month, year)
+      await this.transportRecordsRepository.findByMonthAndYear(
+        month,
+        year,
+        cityId,
+      )
 
     if (hasSameTransportRecord && hasSameTransportRecord.city_id === cityId) {
       throw new RecordsAlreadyExistsError()

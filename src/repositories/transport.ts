@@ -5,6 +5,7 @@ export interface TransportRecordsRepository {
   findByMonthAndYear(
     month: number | Prisma.IntFieldUpdateOperationsInput,
     year: number | Prisma.IntFieldUpdateOperationsInput,
+    cityId: string,
   ): Promise<Transport | null>
   fetch(
     page: number,

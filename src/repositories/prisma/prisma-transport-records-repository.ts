@@ -45,9 +45,10 @@ export class PrismaTransportRecordsRepository
     return transport_record
   }
 
-  async findByMonthAndYear(month: number, year: number) {
+  async findByMonthAndYear(month: number, year: number, cityId: string) {
     const transport_record = await prisma.transport.findFirst({
       where: {
+        city_id: cityId,
         AND: [{ month }, { year }],
       },
     })
