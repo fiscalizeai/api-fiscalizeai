@@ -33,6 +33,7 @@ export class EditFinanceUseCase {
       existingFinanceInMonth = await this.financeRepository.findByMonthAndYear(
         month,
         year,
+        finance.city_id,
       )
     }
 

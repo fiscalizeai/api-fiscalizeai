@@ -45,6 +45,7 @@ export class RegisterFinancesUseCase {
     const hasSameFinance = await this.financesRepository.findByMonthAndYear(
       month,
       year,
+      cityId,
     )
 
     if (hasSameFinance && hasSameFinance.city_id === cityId) {

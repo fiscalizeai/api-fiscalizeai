@@ -21,6 +21,7 @@ export interface FinancesRepository {
   findByMonthAndYear(
     month: number | Prisma.IntFieldUpdateOperationsInput,
     year: number | Prisma.IntFieldUpdateOperationsInput,
+    cityId: string,
   ): Promise<Finance | null>
   fetch(
     page: number,

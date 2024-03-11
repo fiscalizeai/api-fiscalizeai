@@ -103,9 +103,10 @@ export class PrismaFinancesRepository implements FinancesRepository {
     }
   }
 
-  async findByMonthAndYear(month: number, year: number) {
+  async findByMonthAndYear(month: number, year: number, cityId: string) {
     const finance = await prisma.finance.findFirst({
       where: {
+        city_id: cityId,
         AND: [{ month }, { year }],
       },
     })
