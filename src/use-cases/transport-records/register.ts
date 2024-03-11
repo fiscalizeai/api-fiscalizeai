@@ -40,7 +40,7 @@ export class RegisterTransportRecordsUseCase {
     const city = await this.citiesRepository.findById(cityId)
     const user = await this.usersRepository.findById(userId)
 
-    if (!city && !user) {
+    if (!city || !user) {
       throw new InvalidUserOrCityError()
     }
 

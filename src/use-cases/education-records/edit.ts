@@ -31,7 +31,11 @@ export class EditEducationRecordUseCase {
 
     if (month && year) {
       existingEducationRecordInMonth =
-        await this.educationRecordRepository.findByMonthAndYear(month, year)
+        await this.educationRecordRepository.findByMonthAndYear(
+          month,
+          year,
+          educationRecord.city_id,
+        )
     }
 
     if (

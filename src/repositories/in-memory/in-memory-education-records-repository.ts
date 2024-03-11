@@ -17,7 +17,7 @@ export class InMemoryEducationRecordsRepository
       schools: data.schools,
       students: data.schools,
       teachers: data.teachers,
-      total: BigInt(data.total),
+      total: data.total,
       city_id: data.city_id,
       user_id: data.user_id,
       created_at: new Date(),
@@ -29,9 +29,10 @@ export class InMemoryEducationRecordsRepository
     return education_record
   }
 
-  async findByMonthAndYear(month: number, year: number) {
+  async findByMonthAndYear(month: number, year: number, cityId: string) {
     const education_record = this.items.find(
-      (item) => item.month === month && item.year === year,
+      (item) =>
+        item.month === month && item.year === year && item.city_id === cityId,
     )
 
     if (!education_record) {

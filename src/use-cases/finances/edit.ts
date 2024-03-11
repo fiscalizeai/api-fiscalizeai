@@ -1,6 +1,7 @@
 import { FinancesRepository } from '@/repositories/finance'
 import { Finance, Prisma } from '@prisma/client'
 import { RecordsNotExistsError } from '../errors/records/records-not-exists'
+import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 
 interface EditFinanceUseCaseRequest {
   id: string
@@ -36,7 +37,7 @@ export class EditFinanceUseCase {
     }
 
     if (existingFinanceInMonth && existingFinanceInMonth.id !== id) {
-      throw new RecordsNotExistsError()
+      throw new RecordsAlreadyExistsError()
     }
 
     const financeEdited = await this.financeRepository.edit(id, data)

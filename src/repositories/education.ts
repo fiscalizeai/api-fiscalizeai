@@ -5,6 +5,7 @@ export interface EducationRecordsRepository {
   findByMonthAndYear(
     month: number | Prisma.IntFieldUpdateOperationsInput,
     year: number | Prisma.IntFieldUpdateOperationsInput,
+    cityId: string,
   ): Promise<Education | null>
   fetch(
     page: number,

@@ -45,7 +45,11 @@ export class RegisterEducationRecordsUseCase {
     }
 
     const hasSameEducationRecord =
-      await this.educationRecordsRepository.findByMonthAndYear(month, year)
+      await this.educationRecordsRepository.findByMonthAndYear(
+        month,
+        year,
+        cityId,
+      )
 
     if (hasSameEducationRecord && hasSameEducationRecord.city_id === cityId) {
       throw new RecordsAlreadyExistsError()

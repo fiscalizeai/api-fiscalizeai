@@ -45,9 +45,10 @@ export class PrismaEducationRecordsRepository
     return education_record
   }
 
-  async findByMonthAndYear(month: number, year: number) {
+  async findByMonthAndYear(month: number, year: number, cityId: string) {
     const education_record = await prisma.education.findFirst({
       where: {
+        city_id: cityId,
         AND: [{ month }, { year }],
       },
     })
