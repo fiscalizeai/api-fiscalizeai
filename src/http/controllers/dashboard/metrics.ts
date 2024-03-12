@@ -33,6 +33,7 @@ export async function metrics(request: FastifyRequest, reply: FastifyReply) {
       recentChamberRecord,
       recentHealthRecord,
       totalTransfersInMonth,
+      totalAmountFinance,
     ] = await Promise.all([
       (
         await prisma.transport.findFirst({
@@ -92,6 +93,13 @@ export async function metrics(request: FastifyRequest, reply: FastifyReply) {
           },
         },
       })) || [],
+      await prisma.finance.findFirst({
+        where: {
+          city_id: city,
+          month: formattedDate.getMonth() + 1,
+          year: formattedDate.getFullYear(),
+        },
+      }),
     ])
 
     const monthTransfers: TransferMonthProps[] = []
@@ -125,6 +133,10 @@ export async function metrics(request: FastifyRequest, reply: FastifyReply) {
         (acc, curr) => acc + curr.value,
         0,
       ),
+      totalAmountFinance:
+        (totalAmountFinance?.iptu || 0) +
+        (totalAmountFinance?.iss || 0) +
+        (totalAmountFinance?.itbi || 0),
     })
   } catch (error) {
     if (error instanceof z.ZodError) {

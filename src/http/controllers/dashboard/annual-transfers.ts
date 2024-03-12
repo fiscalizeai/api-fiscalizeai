@@ -53,7 +53,7 @@ export async function annualTransfers(
     const currentYear = currentDate.getFullYear()
     const currentMonth = currentDate.getMonth() + 1
 
-    // Calcula o ano e o mês há 6 meses atrás
+    // Calcula o ano e o mês há 12 meses atrás
     const lastYearDate = subMonths(currentDate, 11)
     const lastYear = lastYearDate.getFullYear()
     const lastMonth = lastYearDate.getMonth() + 1

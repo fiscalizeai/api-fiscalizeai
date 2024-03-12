@@ -27,6 +27,7 @@ export const MetricsSchema: FastifySchema = {
           type: 'string',
         },
         totalTransfersInMonth: { type: 'number' },
+        totalAmountFinance: { type: 'number' },
       },
     },
   },
