@@ -201,7 +201,16 @@ export async function annualTransfers(
     const allRecords = [...health, ...education, ...chamber, ...transport]
 
     // Calcule os totais mensais
-    const totalSpending = calculateMonthlyTotals(allRecords)
+    const recordsGroup = calculateMonthlyTotals(allRecords)
+
+    const totalSpending = annualTransfers
+      .map((transfer) => {
+        return recordsGroup.find(
+          (item) =>
+            item.month === transfer.month && item.year === transfer.year,
+        )
+      })
+      .filter((item) => item !== undefined)
 
     const totalAmountWithFinance = finance.map((item) => {
       const total = item.iptu + item.iss + item.itbi
