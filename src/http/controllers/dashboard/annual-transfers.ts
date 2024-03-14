@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { InvalidUserOrCityError } from '@/use-cases/errors/records/invalid-user-or-city'
+import { calculateMonthlyTotals } from '@/utils/calculate-total-for-month-and-year'
 import { subMonths } from 'date-fns'
 import { FastifyReply, FastifyRequest } from 'fastify'
 
@@ -76,6 +77,14 @@ export async function annualTransfers(
           },
         ],
       },
+      select: {
+        id: true,
+        iptu: true,
+        iss: true,
+        itbi: true,
+        month: true,
+        year: true,
+      },
     })
 
     // Health Records
@@ -116,6 +125,12 @@ export async function annualTransfers(
           },
         ],
       },
+      select: {
+        id: true,
+        month: true,
+        year: true,
+        total: true,
+      },
     })
 
     // Chamber Records
@@ -135,6 +150,12 @@ export async function annualTransfers(
             ],
           },
         ],
+      },
+      select: {
+        id: true,
+        month: true,
+        year: true,
+        total: true,
       },
     })
 
@@ -156,6 +177,12 @@ export async function annualTransfers(
           },
         ],
       },
+      select: {
+        id: true,
+        month: true,
+        year: true,
+        total: true,
+      },
     })
 
     const totalTransfersInLastYear = annualTransfers.reduce(
@@ -163,40 +190,28 @@ export async function annualTransfers(
       0,
     )
 
-    const totalSpendingWithEducation = education.reduce(
-      (acc, curr) => acc + parseInt(curr.total.toString()),
-      0,
-    )
+    const totalSpendingWithChamber = chamber
 
-    const totalSpendingWithChamber = chamber.reduce(
-      (acc, curr) => acc + parseInt(curr.total.toString()),
-      0,
-    )
+    const totalSpendingWithEducation = education
 
-    const totalSpendingWithTransport = transport.reduce(
-      (acc, curr) => acc + parseInt(curr.total.toString()),
-      0,
-    )
+    const totalSpendingWithHealth = health
 
-    const totalSpendingWithHealth = health.reduce(
-      (acc, curr) => acc + parseInt(curr.total.toString()),
-      0,
-    )
+    const totalSpendingWithTransport = transport
 
-    const totalAmountWithFinance = finance.reduce(
-      (acc, curr) =>
-        acc +
-        (parseInt(curr.iptu.toString()) +
-          parseInt(curr.iss.toString()) +
-          parseInt(curr.itbi.toString())),
-      0,
-    )
+    const allRecords = [...health, ...education, ...chamber, ...transport]
 
-    const totalSpending =
-      totalSpendingWithChamber +
-      totalSpendingWithEducation +
-      totalSpendingWithHealth +
-      totalSpendingWithTransport
+    // Calcule os totais mensais
+    const totalSpending = calculateMonthlyTotals(allRecords)
+
+    const totalAmountWithFinance = finance.map((item) => {
+      const total = item.iptu + item.iss + item.itbi
+      return {
+        id: item.id,
+        month: item.month,
+        year: item.year,
+        total,
+      }
+    })
 
     // Armazenar os resultados em cache
     cache[cacheKey] = {
@@ -204,6 +219,7 @@ export async function annualTransfers(
       data: {
         annualTransfers,
         totalTransfersInLastYear,
+        totalSpending,
         totalSpendingWithHealth,
         totalSpendingWithEducation,
         totalSpendingWithTransport,

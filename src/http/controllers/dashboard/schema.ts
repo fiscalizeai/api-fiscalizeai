@@ -53,12 +53,78 @@ export const AnnualTransfersSchema: FastifySchema = {
           },
         },
         totalTransfersInLastYear: { type: 'number' },
-        totalAmountWithFinance: { type: 'number' },
-        totalSpending: { type: 'number' },
-        totalSpendingWithChamber: { type: 'number' },
-        totalSpendingWithEducation: { type: 'number' },
-        totalSpendingWithHealth: { type: 'number' },
-        totalSpendingWithTransport: { type: 'number' },
+        totalAmountWithFinance: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              month: { type: 'number' },
+              year: { type: 'number' },
+              total: { type: 'number' },
+            },
+          },
+        },
+        totalSpending: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              month: { type: 'number' },
+              year: { type: 'number' },
+              total: { type: 'number' },
+            },
+          },
+        },
+        totalSpendingWithChamber: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              month: { type: 'number' },
+              year: { type: 'number' },
+              total: { type: 'number' },
+            },
+          },
+        },
+        totalSpendingWithEducation: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              month: { type: 'number' },
+              year: { type: 'number' },
+              total: { type: 'number' },
+            },
+          },
+        },
+        totalSpendingWithHealth: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              month: { type: 'number' },
+              year: { type: 'number' },
+              total: { type: 'number' },
+            },
+          },
+        },
+        totalSpendingWithTransport: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              month: { type: 'number' },
+              year: { type: 'number' },
+              total: { type: 'number' },
+            },
+          },
+        },
         cached: { type: 'boolean' },
       },
     },
