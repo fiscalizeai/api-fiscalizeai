@@ -33,6 +33,7 @@ export async function annualTransfers(
       return reply.status(200).send({
         annualTransfers: cachedData.annualTransfers,
         totalTransfersInLastYear: cachedData.totalTransfersInLastYear,
+        totalSpending: cachedData.totalSpending,
         totalSpendingWithChamber: cachedData.totalSpendingWithChamber,
         totalSpendingWithEducation: cachedData.totalSpendingWithEducation,
         totalSpendingWithHealth: cachedData.totalSpendingWithHealth,
