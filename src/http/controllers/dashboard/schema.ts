@@ -54,6 +54,7 @@ export const AnnualTransfersSchema: FastifySchema = {
         },
         totalTransfersInLastYear: { type: 'number' },
         totalAmountWithFinance: { type: 'number' },
+        totalSpending: { type: 'number' },
         totalSpendingWithChamber: { type: 'number' },
         totalSpendingWithEducation: { type: 'number' },
         totalSpendingWithHealth: { type: 'number' },

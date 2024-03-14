@@ -192,6 +192,12 @@ export async function annualTransfers(
       0,
     )
 
+    const totalSpending =
+      totalSpendingWithChamber +
+      totalSpendingWithEducation +
+      totalSpendingWithHealth +
+      totalSpendingWithTransport
+
     // Armazenar os resultados em cache
     cache[cacheKey] = {
       timestamp: Date.now(),
@@ -208,6 +214,7 @@ export async function annualTransfers(
 
     return reply.status(200).send({
       annualTransfers,
+      totalSpending,
       totalTransfersInLastYear,
       totalAmountWithFinance,
       totalSpendingWithHealth,
