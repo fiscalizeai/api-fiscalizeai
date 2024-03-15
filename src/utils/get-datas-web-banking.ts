@@ -34,12 +34,8 @@ export async function getDatasWebBanking(
   // Criar um objeto de data
   const formattedDate = new Date(year, month, day)
 
-  console.log(date)
-
   try {
-    browser = await launch({
-      headless: 'new', // Navegador invisivel, use 'new' | false
-    })
+    browser = await launch({ headless: 'new', args: ['--no-sandbox'] })
     page = await browser.newPage()
 
     await page.goto('https://www42.bb.com.br/portalbb/daf/beneficiario.bbx')
