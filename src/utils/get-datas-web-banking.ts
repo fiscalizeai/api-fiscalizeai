@@ -164,6 +164,7 @@ export async function getDatasWebBanking(
     })
 
     const tmpDir = path.join(__dirname, '../tmp')
+    console.log(tmpDir, 'local tmp')
     if (!fs.existsSync(tmpDir)) {
       fs.mkdirSync(tmpDir)
     }
