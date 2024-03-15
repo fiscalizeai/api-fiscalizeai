@@ -1,12 +1,13 @@
 import path from 'node:path'
 import fs from 'node:fs'
 import { FastifyRequest, FastifyReply } from 'fastify'
+import { env } from '@/env'
 
 export async function deleteFiles(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const tmpFolderPath = path.join(__dirname, '../../../tmp')
+  const tmpFolderPath = path.join(__dirname, env.PROCCESS_TMP_DIR)
   // Lendo o conteudo da pasta tmp
   fs.readdir(tmpFolderPath, (error, files) => {
     // Verificando se ocorreu algum erro durante a leitura

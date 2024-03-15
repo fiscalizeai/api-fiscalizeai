@@ -3,9 +3,10 @@ import fs from 'node:fs/promises'
 
 import { saveDataToPrisma } from '@/utils/save-data-to-prisma'
 import { FastifyReply, FastifyRequest } from 'fastify'
+import { env } from '@/env'
 
 export async function feed(request: FastifyRequest, reply: FastifyReply) {
-  const tmpFolderPath = path.join(__dirname, '../../../tmp')
+  const tmpFolderPath = path.join(__dirname, env.PROCCESS_TMP_DIR)
 
   try {
     // Lendo os arquivos na pasta temporaria

@@ -7,6 +7,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(3333),
   JWT_SECRET: z.string(),
   DATABASE_URL: z.string(),
+  PROCCESS_TMP_DIR: z.string(),
 })
 
 // validation of env
