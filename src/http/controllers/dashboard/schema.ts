@@ -77,54 +77,6 @@ export const AnnualTransfersSchema: FastifySchema = {
             },
           },
         },
-        totalSpendingWithChamber: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'string' },
-              month: { type: 'number' },
-              year: { type: 'number' },
-              total: { type: 'number' },
-            },
-          },
-        },
-        totalSpendingWithEducation: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'string' },
-              month: { type: 'number' },
-              year: { type: 'number' },
-              total: { type: 'number' },
-            },
-          },
-        },
-        totalSpendingWithHealth: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'string' },
-              month: { type: 'number' },
-              year: { type: 'number' },
-              total: { type: 'number' },
-            },
-          },
-        },
-        totalSpendingWithTransport: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'string' },
-              month: { type: 'number' },
-              year: { type: 'number' },
-              total: { type: 'number' },
-            },
-          },
-        },
         cached: { type: 'boolean' },
       },
     },

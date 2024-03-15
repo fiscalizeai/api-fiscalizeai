@@ -34,10 +34,6 @@ export async function annualTransfers(
         annualTransfers: cachedData.annualTransfers,
         totalTransfersInLastYear: cachedData.totalTransfersInLastYear,
         totalSpending: cachedData.totalSpending,
-        totalSpendingWithChamber: cachedData.totalSpendingWithChamber,
-        totalSpendingWithEducation: cachedData.totalSpendingWithEducation,
-        totalSpendingWithHealth: cachedData.totalSpendingWithHealth,
-        totalSpendingWithTransport: cachedData.totalSpendingWithTransport,
         totalAmountWithFinance: cachedData.totalAmountWithFinance,
         cached: true,
       })
@@ -191,14 +187,6 @@ export async function annualTransfers(
       0,
     )
 
-    const totalSpendingWithChamber = chamber
-
-    const totalSpendingWithEducation = education
-
-    const totalSpendingWithHealth = health
-
-    const totalSpendingWithTransport = transport
-
     const allRecords = [...health, ...education, ...chamber, ...transport]
 
     // Calcule os totais mensais
@@ -230,10 +218,6 @@ export async function annualTransfers(
         annualTransfers,
         totalTransfersInLastYear,
         totalSpending,
-        totalSpendingWithHealth,
-        totalSpendingWithEducation,
-        totalSpendingWithTransport,
-        totalSpendingWithChamber,
         totalAmountWithFinance,
       },
     }
@@ -243,10 +227,6 @@ export async function annualTransfers(
       totalSpending,
       totalTransfersInLastYear,
       totalAmountWithFinance,
-      totalSpendingWithHealth,
-      totalSpendingWithEducation,
-      totalSpendingWithTransport,
-      totalSpendingWithChamber,
       cached: false,
     })
   } catch (error) {
