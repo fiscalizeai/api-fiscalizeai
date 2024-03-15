@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { CityNotFoundError } from '@/use-cases/errors/cities/city-not-found'
 import { getDatasWebBanking } from '@/utils/get-datas-web-banking'
 import { formatDateForWriteInBanking } from '@/utils/format-date-for-write-in-banking'
+import shell from 'shelljs'
 
 export async function getTransferInBankByDate(
   request: FastifyRequest,
@@ -12,6 +13,8 @@ export async function getTransferInBankByDate(
   const feedByDateBodySchema = z.object({
     date: z.string(),
   })
+
+  shell.exec('npx puppeteer browsers install chrome')
 
   const { date } = feedByDateBodySchema.parse(request.body)
 
