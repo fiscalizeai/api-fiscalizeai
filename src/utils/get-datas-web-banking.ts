@@ -26,6 +26,16 @@ export async function getDatasWebBanking(
   let browser: Browser | null = null
   let page: Page | null = null
 
+  // Extrair os componentes da data
+  const day = parseInt(date.substring(0, 2), 10)
+  const month = parseInt(date.substring(2, 4), 10) - 1 // Os meses em JavaScript são baseados em zero (0 a 11)
+  const year = parseInt(date.substring(4, 8), 10)
+
+  // Criar um objeto de data
+  const formattedDate = new Date(year, month, day)
+
+  console.log(date)
+
   try {
     browser = await launch({
       headless: 'new', // Navegador invisivel, use 'new' | false
@@ -116,7 +126,7 @@ export async function getDatasWebBanking(
         .nextUntil('tr.rich-table-row.even', 'tr.rich-subtable-row')
         .each((subIndex, subElement) => {
           const subData: SubData = {
-            date: new Date(),
+            date: formattedDate,
             parcel: '',
             value: '',
           }
@@ -129,7 +139,7 @@ export async function getDatasWebBanking(
             .text()
             .slice(2)
             .trim()
-          subData.date = new Date()
+          subData.date = formattedDate
 
           if (
             subData.parcel === 'CREDITO BENEF.' ||

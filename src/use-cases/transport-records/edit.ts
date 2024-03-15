@@ -2,6 +2,7 @@ import { Prisma, Transport } from '@prisma/client'
 import { RecordsNotExistsError } from '../errors/records/records-not-exists'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { TransportRecordsRepository } from '@/repositories/transport'
+import { InvalidDateError } from '../errors/records/invalid-date'
 
 interface EditTransportRecordUseCaseRequest {
   id: string
@@ -30,6 +31,15 @@ export class EditTransportRecordUseCase {
     let existingEducationRecordInMonth
 
     if (month && year) {
+      const dateForVerification = new Date()
+
+      if (
+        Number(month) >= dateForVerification.getMonth() &&
+        Number(year) > dateForVerification.getFullYear()
+      ) {
+        throw new InvalidDateError()
+      }
+
       existingEducationRecordInMonth =
         await this.transportRecordRepository.findByMonthAndYear(
           month,

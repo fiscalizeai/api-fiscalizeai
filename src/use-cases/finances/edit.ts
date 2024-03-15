@@ -2,6 +2,7 @@ import { FinancesRepository } from '@/repositories/finance'
 import { Finance, Prisma } from '@prisma/client'
 import { RecordsNotExistsError } from '../errors/records/records-not-exists'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
+import { InvalidDateError } from '../errors/records/invalid-date'
 
 interface EditFinanceUseCaseRequest {
   id: string
@@ -30,6 +31,15 @@ export class EditFinanceUseCase {
     let existingFinanceInMonth
 
     if (month && year) {
+      const dateForVerification = new Date()
+
+      if (
+        Number(month) >= dateForVerification.getMonth() &&
+        Number(year) > dateForVerification.getFullYear()
+      ) {
+        throw new InvalidDateError()
+      }
+
       existingFinanceInMonth = await this.financeRepository.findByMonthAndYear(
         month,
         year,

@@ -8,8 +8,8 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   request.jwtVerify({ onlyCookie: true })
 
   const registerBodySchema = z.object({
-    month: z.coerce.number(),
-    year: z.coerce.number(),
+    month: z.coerce.number().min(1).max(12),
+    year: z.coerce.number().min(1974).max(new Date().getFullYear()),
     bus: z.number(),
     cars: z.number(),
     machines: z.number(),

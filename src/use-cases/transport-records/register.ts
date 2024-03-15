@@ -4,6 +4,7 @@ import { CitiesRepository } from '@/repositories/cities'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 import { TransportRecordsRepository } from '@/repositories/transport'
+import { InvalidDateError } from '../errors/records/invalid-date'
 
 interface RegisterTransportRecordsUseCaseRequest {
   month: number
@@ -53,6 +54,15 @@ export class RegisterTransportRecordsUseCase {
 
     if (hasSameTransportRecord && hasSameTransportRecord.city_id === cityId) {
       throw new RecordsAlreadyExistsError()
+    }
+
+    const dateForVerification = new Date()
+
+    if (
+      month >= dateForVerification.getMonth() &&
+      year > dateForVerification.getFullYear()
+    ) {
+      throw new InvalidDateError()
     }
 
     const transport_record = await this.transportRecordsRepository.register({

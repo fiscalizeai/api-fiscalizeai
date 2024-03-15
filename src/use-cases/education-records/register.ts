@@ -4,6 +4,7 @@ import { UsersRepository } from '@/repositories/users'
 import { CitiesRepository } from '@/repositories/cities'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
+import { InvalidDateError } from '../errors/records/invalid-date'
 
 interface RegisterEducationRecordsUseCaseRequest {
   month: number
@@ -53,6 +54,15 @@ export class RegisterEducationRecordsUseCase {
 
     if (hasSameEducationRecord && hasSameEducationRecord.city_id === cityId) {
       throw new RecordsAlreadyExistsError()
+    }
+
+    const dateForVerification = new Date()
+
+    if (
+      month >= dateForVerification.getMonth() &&
+      year > dateForVerification.getFullYear()
+    ) {
+      throw new InvalidDateError()
     }
 
     const education_record = await this.educationRecordsRepository.register({

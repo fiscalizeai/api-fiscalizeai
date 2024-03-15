@@ -3,23 +3,6 @@ import { formatDateForWriteInBanking } from '@/utils/format-date-for-write-in-ba
 import { getDatasWebBanking } from '@/utils/get-datas-web-banking'
 import { City } from '@prisma/client'
 
-async function scraping() {
-  try {
-    // Buscando todas as cidades no banco de dados
-    const cities = await prisma.city.findMany()
-
-    // Verificando se ha cidades no banco de dados
-    if (cities.length === 0) {
-      throw new Error()
-    }
-
-    // Execute a função imediatamente para processar as cidades
-    await processCities(cities)
-  } catch (error) {
-    console.error(error)
-  }
-}
-
 async function processCities(cities: City[]) {
   // Obtendo a data formatada para utilizacao no scraping
   const date = formatDateForWriteInBanking(new Date())
@@ -35,6 +18,23 @@ async function processCities(cities: City[]) {
     } catch (error) {
       console.log(error)
     }
+  }
+}
+
+export async function scraping() {
+  try {
+    // Buscando todas as cidades no banco de dados
+    const cities = await prisma.city.findMany()
+
+    // Verificando se ha cidades no banco de dados
+    if (cities.length === 0) {
+      throw new Error()
+    }
+
+    // Execute a função imediatamente para processar as cidades
+    await processCities(cities)
+  } catch (error) {
+    console.error(error)
   }
 }
 

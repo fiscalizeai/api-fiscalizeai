@@ -14,8 +14,8 @@ export async function edit(request: FastifyRequest, reply: FastifyReply) {
   // Definindo o esquema de validação para os parametros
   const editChamberRecordBodySchema = z.object({
     data: z.object({
-      year: z.coerce.number(),
-      month: z.coerce.number().optional(),
+      year: z.coerce.number().min(1974).max(new Date().getFullYear()),
+      month: z.coerce.number().min(1).max(12).optional(),
       contractors: z.number().optional(),
       headcounts: z.number().optional(),
       staffs: z.number().optional(),

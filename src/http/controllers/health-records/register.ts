@@ -3,13 +3,14 @@ import { InvalidUserOrCityError } from '@/use-cases/errors/records/invalid-user-
 import { makeRegisterUseCase } from '@/use-cases/factories/health-records/make-register-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
+import { InvalidDateError } from '@/use-cases/errors/records/invalid-date'
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {
   request.jwtVerify({ onlyCookie: true })
 
   const registerBodySchema = z.object({
-    month: z.coerce.number(),
-    year: z.coerce.number(),
+    month: z.coerce.number().min(1).max(12),
+    year: z.coerce.number().min(1974).max(new Date().getFullYear()),
     doctors: z.number(),
     services: z.number(),
     total: z.number(),
@@ -40,6 +41,10 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       return reply.status(409).send({ message: error.message })
     }
     if (error instanceof InvalidUserOrCityError) {
+      return reply.status(404).send({ message: error.message })
+    }
+
+    if (error instanceof InvalidDateError) {
       return reply.status(404).send({ message: error.message })
     }
 

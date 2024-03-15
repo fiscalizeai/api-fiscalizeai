@@ -4,6 +4,7 @@ import { UsersRepository } from '@/repositories/users'
 import { Finance } from '@prisma/client'
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
+import { InvalidDateError } from '../errors/records/invalid-date'
 
 interface FinancesUseCaseRequest {
   month: number
@@ -50,6 +51,15 @@ export class RegisterFinancesUseCase {
 
     if (hasSameFinance && hasSameFinance.city_id === cityId) {
       throw new RecordsAlreadyExistsError()
+    }
+
+    const dateForVerification = new Date()
+
+    if (
+      month >= dateForVerification.getMonth() &&
+      year > dateForVerification.getFullYear()
+    ) {
+      throw new InvalidDateError()
     }
 
     const finance = await this.financesRepository.register({

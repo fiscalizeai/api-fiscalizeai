@@ -4,6 +4,7 @@ import { UsersRepository } from '@/repositories/users'
 import { CitiesRepository } from '@/repositories/cities'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
 import { InvalidUserOrCityError } from '../errors/records/invalid-user-or-city'
+import { InvalidDateError } from '../errors/records/invalid-date'
 
 interface RegisterHealthRecordsUseCaseRequest {
   month: number
@@ -47,6 +48,15 @@ export class RegisterHealthRecordsUseCase {
 
     if (hasSameHealthRecord && hasSameHealthRecord.city_id === cityId) {
       throw new RecordsAlreadyExistsError()
+    }
+
+    const dateForVerification = new Date()
+
+    if (
+      month >= dateForVerification.getMonth() &&
+      year > dateForVerification.getFullYear()
+    ) {
+      throw new InvalidDateError()
     }
 
     const health_record = await this.healthRecordsRepository.register({

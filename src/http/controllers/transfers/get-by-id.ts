@@ -1,5 +1,4 @@
 import { TransferNotFoundError } from '@/use-cases/errors/records/transfer-not-found'
-import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found'
 import { makeGetByIdUseCase } from '@/use-cases/factories/transfers/make-get-by-id-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'

@@ -2,6 +2,7 @@ import { HealthRecordsRepository } from '@/repositories/health'
 import { Health, Prisma } from '@prisma/client'
 import { RecordsNotExistsError } from '../errors/records/records-not-exists'
 import { RecordsAlreadyExistsError } from '../errors/records/record-already-exists'
+import { InvalidDateError } from '../errors/records/invalid-date'
 
 interface EditHealthRecordUseCaseRequest {
   id: string
@@ -30,6 +31,15 @@ export class EditHealthRecordUseCase {
     let existingHealthRecordInMonth
 
     if (month && year) {
+      const dateForVerification = new Date()
+
+      if (
+        Number(month) >= dateForVerification.getMonth() &&
+        Number(year) > dateForVerification.getFullYear()
+      ) {
+        throw new InvalidDateError()
+      }
+
       existingHealthRecordInMonth =
         await this.healthRecordRepository.findByMonthAndYear(
           month,

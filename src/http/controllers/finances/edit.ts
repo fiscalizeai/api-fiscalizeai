@@ -11,8 +11,12 @@ export async function edit(request: FastifyRequest, reply: FastifyReply) {
 
   const editFinanceBodySchema = z.object({
     data: z.object({
-      year: z.coerce.number().optional(),
-      month: z.coerce.number().optional(),
+      year: z.coerce
+        .number()
+        .min(1974)
+        .max(new Date().getFullYear())
+        .optional(),
+      month: z.coerce.number().min(1).max(12).optional(),
       iptu: z.coerce.number().optional(),
       iss: z.coerce.number().optional(),
       itbi: z.coerce.number().optional(),

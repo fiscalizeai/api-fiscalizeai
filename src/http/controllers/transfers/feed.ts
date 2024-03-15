@@ -1,24 +1,11 @@
-import { saveDataToPrisma } from '@/utils/save-data-to-prisma'
+import path from 'path'
 import fs from 'node:fs/promises'
-import path from 'node:path'
 
-/* Interface Props */
-interface SubData {
-  parcel: string
-  value: string
-  date: Date
-}
+import { saveDataToPrisma } from '@/utils/save-data-to-prisma'
+import { FastifyReply, FastifyRequest } from 'fastify'
 
-interface RowData {
-  demonstrative: string
-  parcels: SubData[]
-  cityId: string
-}
-
-// Função assincrona para processar arquivos temporários
-export async function processTmpFiles() {
-  // Caminha da pasta temporaria
-  const tmpFolderPath = path.join(__dirname, '../tmp')
+export async function feed(request: FastifyRequest, reply: FastifyReply) {
+  const tmpFolderPath = path.join(__dirname, '../../../tmp')
 
   try {
     // Lendo os arquivos na pasta temporaria
@@ -32,9 +19,8 @@ export async function processTmpFiles() {
         const fileContent = await fs.readFile(filePath, 'utf-8') // Lendo o conteudo do arquivo como string
 
         try {
-          // Convertendo o conteudo do arquivo JSON para um array de objetos
-          const jsonData: RowData[] = JSON.parse(fileContent)
-          // Salvando os dados no Prisma usando funcao saveDateToPrisma que esta dentro da pasta utils
+          const jsonData = JSON.parse(fileContent)
+
           await saveDataToPrisma(fileName, jsonData)
         } catch (error) {
           console.error(
@@ -46,7 +32,8 @@ export async function processTmpFiles() {
     }
   } catch (error) {
     console.error('Erro ao ler arquivos da pasta tmp:', error)
+    return reply.status(400).send()
   }
-}
 
-processTmpFiles()
+  return reply.status(200).send()
+}

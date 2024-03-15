@@ -10,8 +10,8 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 
   // Definindo o esquema de validação para os parametros, o coerce converte para número
   const registerBodySchema = z.object({
-    month: z.coerce.number(),
-    year: z.coerce.number(),
+    month: z.coerce.number().min(1).max(12),
+    year: z.coerce.number().min(1974).max(new Date().getFullYear()),
     contractors: z.number(),
     headcounts: z.number(),
     staffs: z.number(),
