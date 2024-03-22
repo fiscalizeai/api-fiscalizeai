@@ -205,18 +205,22 @@ export async function annualTransfers(
       const total = item.iptu + item.iss + item.itbi
       return {
         id: item.id,
-        month: item.month,
         year: item.year,
         total,
       }
     })
+
+    const totalFinance = totalAmountWithFinance.reduce(
+      (acc, curr) => acc + curr.total,
+      0,
+    )
 
     // Armazenar os resultados em cache
     cache[cacheKey] = {
       timestamp: Date.now(),
       data: {
         annualTransfers,
-        totalTransfersInLastYear,
+        totalTransfersInLastYear: totalTransfersInLastYear + totalFinance,
         totalSpending,
         totalAmountWithFinance,
       },
@@ -225,7 +229,7 @@ export async function annualTransfers(
     return reply.status(200).send({
       annualTransfers,
       totalSpending,
-      totalTransfersInLastYear,
+      totalTransfersInLastYear: totalTransfersInLastYear + totalFinance,
       totalAmountWithFinance,
       cached: false,
     })
