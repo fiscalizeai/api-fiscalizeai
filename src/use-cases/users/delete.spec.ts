@@ -13,7 +13,7 @@ describe('Delete User Use Case', () => {
   })
 
   it('should be able delete user', async () => {
-    const userToDelete = usersRepository.create({
+    const userToDelete = await usersRepository.create({
       id: 'user-1',
       name: 'John Doe',
       email: 'johndoe@example.com',
@@ -23,10 +23,10 @@ describe('Delete User Use Case', () => {
     })
 
     await sut.execute({
-      id: (await userToDelete).id,
+      id: userToDelete.id,
     })
 
-    const deletedUser = await usersRepository.findById((await userToDelete).id)
+    const deletedUser = await usersRepository.findById(userToDelete.id)
     expect(deletedUser).toBeNull()
   })
 

@@ -29,10 +29,6 @@ app.register(cors, {
   credentials: true,
 })
 
-app.get('/hello-world', async (request, reply) => {
-  return { message: 'Hello World' }
-})
-
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
   cookie: {
