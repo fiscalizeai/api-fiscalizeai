@@ -1,8 +1,8 @@
-import { load } from 'cheerio'
-import { launch, Browser, Page } from 'puppeteer'
-import console from 'console'
 import fs from 'node:fs'
-import path from 'path'
+import path from 'node:path'
+
+import { CheerioAPI, load } from 'cheerio'
+import { launch, Browser, Page } from 'puppeteer'
 
 /* Interfaces */
 interface SubData {
@@ -35,63 +35,64 @@ export async function getDatasWebBanking(
   const formattedDate = new Date(year, month, day)
 
   try {
-    browser = await launch({ headless: 'new', args: ['--no-sandbox'] })
+    browser = await launch({
+      headless: false,
+    })
+
     page = await browser.newPage()
 
-    await page.goto('https://www42.bb.com.br/portalbb/daf/beneficiario.bbx')
+    await page.goto('https://demonstrativos.apps.bb.com.br/arrecadacao-federal')
 
-    // Seletores para inputs e botoes
-    const beneficiarioSelector = '#formulario\\:txtBenef'
-    const beneficiarioSubmit =
-      '#formulario > div:nth-child(4) > div > input:nth-child(1)'
-    const startOfDateSelector = '#formulario\\:dataInicial'
-    const endOfDateSelector = '#formulario\\:dataFinal'
-    const dadosDeConsultaSubmit =
-      '#formulario > div:nth-child(7) > div > input:nth-child(1)'
-    const fundoSelector = '#formulario\\:comboFundo'
+    // Initial Page
+    const beneficiarySelector =
+      '#root > div.apw-root-jss1.apw-root-jss4 > div.apw-root-jss2 > apw-ng-app > app-template > bb-layout > div > div > div > div > div > bb-layout-column > ng-component > div > div > div > app-demonstrativo-daf > form > div > div > div > bb-card > bb-card-body > bb-text-field > div'
 
-    // Home
-    await page.click(beneficiarioSelector)
-    await page.type(beneficiarioSelector, cityName)
+    await page.waitForNetworkIdle({
+      idleTime: 3000,
+    })
 
-    // Submetendo o formulario e aguardando a navegacao
+    await page.waitForSelector(beneficiarySelector)
+    await page.click(beneficiarySelector)
+    await page.type(beneficiarySelector, cityName)
+
+    const beneficiaryFormSubmitSelector =
+      '#root > div.apw-root-jss1.apw-root-jss4 > div.apw-root-jss2 > apw-ng-app > app-template > bb-layout > div > div > div > div > div > bb-layout-column > ng-component > div > div > div > app-demonstrativo-daf > form > div > div > div > bb-card > bb-card-footer > div:nth-child(2) > button'
+
     await Promise.all([
-      page.click(beneficiarioSubmit),
+      page.click(beneficiaryFormSubmitSelector),
       page.waitForNavigation(),
     ])
 
-    // Preenchendo os campos de data e fundo
-    await page.waitForSelector(startOfDateSelector)
-    await page.waitForSelector(endOfDateSelector)
-    await page.waitForSelector(dadosDeConsultaSubmit)
+    // Demonstrative Form
+    const initialDateSelector =
+      '#root > div.apw-root-jss1.apw-root-jss4 > div.apw-root-jss2 > apw-ng-app > app-template > bb-layout > div.scrollable-container > div > div > div > div > bb-layout-column > ng-component > div > div > div > app-demonstrativo-daf-selecao > div > div:nth-child(2) > div > div > form > bb-card > bb-card-body > div:nth-child(2) > bb-date-field > bb-text-field > div'
+    const endDateSelector =
+      '#root > div.apw-root-jss1.apw-root-jss4 > div.apw-root-jss2 > apw-ng-app > app-template > bb-layout > div.scrollable-container > div > div > div > div > bb-layout-column > ng-component > div > div > div > app-demonstrativo-daf-selecao > div > div:nth-child(2) > div > div > form > bb-card > bb-card-body > div:nth-child(3) > bb-date-field > bb-text-field > div'
 
-    await page.type(startOfDateSelector, date)
-    await page.type(endOfDateSelector, date)
-    await page.type(fundoSelector, 'TODOS')
+    await page.waitForSelector(initialDateSelector)
+    await page.waitForSelector(endDateSelector)
 
-    // Submetendo o formulario de consulta
-    try {
-      await Promise.all([
-        page.waitForNavigation(),
-        page.click(dadosDeConsultaSubmit),
-      ])
+    await page.click(initialDateSelector)
+    await page.type(initialDateSelector, date)
 
-      // Verificando se ha uma mensagem de alerta de erro
-      const alertMessage = await page.waitForSelector('.alert.alert-danger', {
-        visible: true,
-        timeout: 3000,
-      })
+    await page.click(endDateSelector)
+    await page.type(endDateSelector, date)
 
-      if (alertMessage) {
-        return null
-      }
-    } catch (err) {
-      console.error(err)
-    }
+    const demonstrativeFormSubmitSelector =
+      '#root > div.apw-root-jss1.apw-root-jss4 > div.apw-root-jss2 > apw-ng-app > app-template > bb-layout > div.scrollable-container > div > div > div > div > bb-layout-column > ng-component > div > div > div > app-demonstrativo-daf-selecao > div > div:nth-child(2) > div > div > form > bb-card > bb-card-footer > div > button.bb-button.primary.size-regular'
 
-    // Extrair dados da pagina
-    await page.waitForSelector('#formulario\\:demonstrativoList\\:tb')
+    await Promise.all([
+      page.click(demonstrativeFormSubmitSelector),
+      page.waitForNavigation(),
+    ])
 
+    // Demonstrative Page
+    const demonstrativeTableSelector =
+      '#root > div.apw-root-jss1.apw-root-jss4 > div.apw-root-jss2 > apw-ng-app > app-template > bb-layout > div.scrollable-container > div > div > div > div > bb-layout-column > ng-component > div > div > div > app-demonstrativo-daf-final > div > div:nth-child(2) > div > div > bb-card > bb-card-body > div > table'
+
+    await page.waitForSelector(demonstrativeTableSelector)
+
+    // Extract Data
     const pageData = await page.evaluate(() => {
       return {
         html: document.documentElement.innerHTML,
@@ -103,81 +104,86 @@ export async function getDatasWebBanking(
     const $ = load(pageData.html)
     const data: RowData[] = []
 
-    $('tr.rich-table-row.even').each((index, element) => {
-      const rowData: RowData = {
-        demonstrative: '',
-        parcels: [],
-        cityId,
-      }
+    // const $ = load(pageData.html)
+    // const data: RowData[] = []
 
-      // Obter o nome do demonstrativo
-      rowData.demonstrative = $(element)
-        .find('.rich-table-cell')
-        .text()
-        .replace(/\s+/g, ' ')
-        .trim()
+    await extractDatas($, data, cityId)
 
-      // Obter as informações das sub-tabelas
-      $(element)
-        .nextUntil('tr.rich-table-row.even', 'tr.rich-subtable-row')
-        .each((subIndex, subElement) => {
-          const subData: SubData = {
-            date: formattedDate,
-            parcel: '',
-            value: '',
-          }
-          subData.parcel = $(subElement)
-            .find('.rich-subtable-cell.texto1')
-            .text()
-            .trim()
-          subData.value = $(subElement)
-            .find('.rich-subtable-cell.extratoValorPositivoAlinhaDireita')
-            .text()
-            .slice(2)
-            .trim()
-          subData.date = formattedDate
-
-          if (
-            subData.parcel === 'CREDITO BENEF.' ||
-            subData.parcel === 'CREDITO FUNDO'
-          ) {
-            if (subData.value !== '') {
-              let valor
-              let valorFormatado
-
-              if (subData.value.includes('C')) {
-                valorFormatado = subData.value
-                  .replace('C', '')
-                  .replace(',', '.')
-                valor = parseFloat(valorFormatado.replace(/\./g, ''))
-
-                subData.value = valor.toString()
-                rowData.parcels.push(subData)
-              }
-            }
-          }
-        })
-
-      if (rowData.parcels.length > 0) {
-        data.push(rowData)
-      }
-    })
-
-    const tmpDir = path.join(__dirname, '../tmp')
-    console.log(tmpDir, 'local tmp')
-    if (!fs.existsSync(tmpDir)) {
-      fs.mkdirSync(tmpDir)
-    }
+    // const tmpDir = path.join(__dirname, '../tmp')
+    // console.log(tmpDir, 'local tmp')
+    // if (!fs.existsSync(tmpDir)) {
+    //   fs.mkdirSync(tmpDir)
+    // }
 
     // screvendo os dados em um arquivo JSON na pasta tmp
-    const fileName = `${cityName}_${date}.json`
-    const filePath = path.join(tmpDir, fileName)
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2))
+    // const fileName = `${cityName}_${date}.json`
+    // const filePath = path.join(tmpDir, fileName)
+    // fs.writeFileSync(filePath, JSON.stringify(data, null, 2))
   } catch (err) {
     console.error(err)
   } finally {
     if (browser) {
-      await browser.close() // Fechando o navegador
+      // await browser.close()
     }
   }
+}
+
+async function extractDatas($: CheerioAPI, data: RowData[], cityId: string) {
+  $('tr.rich-table-row.even').each((index, element) => {
+    const rowData: RowData = {
+      demonstrative: '',
+      parcels: [],
+      cityId,
+    }
+
+    // Obter o nome do demonstrativo
+    rowData.demonstrative = $(element)
+      .find('.rich-table-cell')
+      .text()
+      .replace(/\s+/g, ' ')
+      .trim()
+
+    // Obter as informações das sub-tabelas
+    $(element)
+      .nextUntil('tr.rich-table-row.even', 'tr.rich-subtable-row')
+      .each((subIndex, subElement) => {
+        const subData: SubData = {
+          date: formattedDate,
+          parcel: '',
+          value: '',
+        }
+        subData.parcel = $(subElement)
+          .find('.rich-subtable-cell.texto1')
+          .text()
+          .trim()
+        subData.value = $(subElement)
+          .find('.rich-subtable-cell.extratoValorPositivoAlinhaDireita')
+          .text()
+          .slice(2)
+          .trim()
+        subData.date = formattedDate
+
+        if (
+          subData.parcel === 'CREDITO BENEF.' ||
+          subData.parcel === 'CREDITO FUNDO'
+        ) {
+          if (subData.value !== '') {
+            let valor
+            let valorFormatado
+
+            if (subData.value.includes('C')) {
+              valorFormatado = subData.value.replace('C', '').replace(',', '.')
+              valor = parseFloat(valorFormatado.replace(/\./g, ''))
+
+              subData.value = valor.toString()
+              rowData.parcels.push(subData)
+            }
+          }
+        }
+      })
+
+    if (rowData.parcels.length > 0) {
+      data.push(rowData)
+    }
+  })
 }
