@@ -8,6 +8,7 @@ const envSchema = z.object({
   JWT_SECRET: z.string(),
   DATABASE_URL: z.string(),
   PROCCESS_TMP_DIR: z.string(),
+  GEMINI_KEY_API: z.string(),
 })
 
 // validation of env
