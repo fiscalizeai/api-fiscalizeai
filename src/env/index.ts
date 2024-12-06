@@ -9,6 +9,7 @@ const envSchema = z.object({
   DATABASE_URL: z.string(),
   PROCCESS_TMP_DIR: z.string(),
   GEMINI_KEY_API: z.string(),
+  PATH_FILE_DOWNLOAD: z.string(),
 })
 
 // validation of env

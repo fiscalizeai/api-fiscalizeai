@@ -16,7 +16,6 @@ interface RowData {
 export async function saveDataToPrisma(fileName: string, data: RowData[]) {
   for (const row of data) {
     try {
-      // Verifique se a cidade existe no Prisma
       const existingCity = await prisma.city.findUnique({
         where: { id: row.cityId },
       })
@@ -42,7 +41,6 @@ export async function saveDataToPrisma(fileName: string, data: RowData[]) {
         return
       }
 
-      // Crie a transferência
       const transfer = await prisma.transfer.create({
         data: {
           file: fileName,
@@ -51,7 +49,6 @@ export async function saveDataToPrisma(fileName: string, data: RowData[]) {
         },
       })
 
-      // Crie as parcelas associadas à transferência
       for (const parcel of row.parcels) {
         try {
           const createdParcel = await prisma.parcel.create({
@@ -74,27 +71,24 @@ export async function saveDataToPrisma(fileName: string, data: RowData[]) {
       }
 
       let totalValue: number | null = null
-      if (row.demonstrative.startsWith('TOTAL DOS REPASSES NO PERIODO')) {
+      if (row.demonstrative.startsWith('TOTAL DISTRIBUIDO NO PERIODO')) {
         totalValue = parseInt(row.parcels[0].value)
       }
 
-      // Verificar se o valor total foi extraído com sucesso
       if (totalValue !== null && !isNaN(totalValue)) {
         const currentDate = new Date()
         const month = getMonth(currentDate) + 1
         const year = getYear(currentDate)
 
-        // Verificar se já existe um registro para o mês e ano correntes na tabela totalTransfer
         const existingTotalTransfer = await prisma.totalTransfer.findFirst({
           where: {
             month,
             year,
-            city_id: existingCity.id, // Adicione a condição para a cidade
+            city_id: existingCity.id,
           },
         })
 
         if (existingTotalTransfer) {
-          // Se já existir um registro, atualizar o valor total
           await prisma.totalTransfer.update({
             where: { id: existingTotalTransfer.id },
             data: {
@@ -104,13 +98,12 @@ export async function saveDataToPrisma(fileName: string, data: RowData[]) {
             },
           })
         } else {
-          // Se não existir, criar um novo registro
           await prisma.totalTransfer.create({
             data: {
               month,
               year,
               value: totalValue.toString(),
-              city: { connect: { id: existingCity.id } }, // Conecte a cidade ao registro totalTransfer
+              city: { connect: { id: existingCity.id } },
             },
           })
         }

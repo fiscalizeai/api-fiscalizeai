@@ -4,19 +4,26 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 const genAI = new GoogleGenerativeAI(env.GEMINI_KEY_API)
 export const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
 
-export const promptModel = (data: string) => {
+export const promptModel = (data: string, cityId: string) => {
   return `
-    Process the information provided below and return the name of the instalmment and the final amount credited, already converted to cents:
-    
+    Process the following data and return the installment names and their credited amounts, already converted to cents:
+
+    Data:
     ${data}
 
     Instructions:
-    Step 1. Identify the name of the parcels next to the date
-    Step 2. Find the final amount credited and covert it to cents.
-    Step 3. Also extract the total value that is in "TOTAL DISTRIBUTED IN THE PERIOD", extract this name and the amount credited
-    Step 4. Return results in the following format json:
-      Parcel: [Full name of parcel]
-      Value: [Value in cents]
-      Date: [Current Date]
+    1. Identify each installment name located next to a date.
+    2. Extract the final credited amount for each installment and convert it to cents.
+    3. Additionally, extract the "TOTAL DISTRIBUIDO NO PERIODO" entry, including the name and credited amount.
+    4. Format the results exactly as the only JSON structure below, using only the current date and the provided "cityId" value:
+    5. Return only JSON Format for insert in file JSON.
+    [
+      {
+        "parcel": "[full name of installment]",
+        "value": [amount in cents],
+        "date": "[current date in YYYY-MM-DD format]",
+        "cityId": "${cityId}"
+      }
+    ]
   `
 }

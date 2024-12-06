@@ -3,7 +3,7 @@ import fs from 'node:fs'
 
 const tmpFolderPath = path.join(__dirname, '../tmp')
 
-export function deleteTmpFiles() {
+export async function deleteTmpFiles() {
   // Lendo o conteudo da pasta tmp
   fs.readdir(tmpFolderPath, (error, files) => {
     // Verificando se ocorreu algum erro durante a leitura
