@@ -230,7 +230,7 @@ export async function getDatasWebBanking(
     }
 
     browser = await launch({
-      headless: false,
+      headless: true,
       args: [`--disable-extensions`, `--disable-gpu`],
       defaultViewport: null,
       timeout: 4500,
