@@ -8,7 +8,7 @@ async function processCities(cities: City[]) {
 
   for (const city of cities) {
     try {
-      const transfers = getDatasWebBanking(city.id, city.name, date)
+      const transfers = await getDatasWebBanking(city.id, city.name, date)
 
       if (transfers === null) {
         return null
@@ -24,7 +24,7 @@ export async function scraping() {
     const cities = await prisma.city.findMany()
 
     if (cities.length === 0) {
-      throw new Error()
+      throw new Error('Nenhuma cidade encontrada')
     }
 
     await processCities(cities)

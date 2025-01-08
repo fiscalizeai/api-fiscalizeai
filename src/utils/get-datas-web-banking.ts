@@ -2,7 +2,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { load as cheerioLoad } from 'cheerio'
 import { Browser, launch, Page } from 'puppeteer'
-import { setTimeout } from 'node:timers'
+import { setTimeout } from 'node:timers/promises' // Usar versão de promises do setTimeout
+import pLimit from 'p-limit'
 
 interface SubData {
   parcel: string
@@ -16,9 +17,10 @@ interface RowData {
   cityId: string
 }
 
+const limit = pLimit(10) // Limitar a 10 conexões simultâneas
+
 async function homePage(page: Page): Promise<void> {
   const buttonSelector = 'button[routerlink="/arrecadacao-federal"]'
-
   await page.waitForSelector(buttonSelector)
   await page.click(buttonSelector)
 }
@@ -29,57 +31,38 @@ async function navigateToInitialPage(
 ): Promise<void> {
   const beneficiarySelector = 'input[formcontrolname="nomeBeneficiarioEntrada"]'
   const beneficiaryFormSubmitSelector = 'button[aria-label="Continuar"]'
-
   await page.waitForSelector(beneficiarySelector)
-
-  await page.waitForNetworkIdle({
-    idleTime: 3000,
-  })
-
-  await page.click(beneficiarySelector)
+  await page.waitForNetworkIdle({ idleTime: 1000 })
   await page.type(beneficiarySelector, cityName)
-
   await page.click(beneficiaryFormSubmitSelector)
 }
 
 async function formPageWebBanking(page: Page, date: string): Promise<void> {
-  await page.waitForNetworkIdle({
-    idleTime: 3000,
-  })
-
+  await page.waitForNetworkIdle({ idleTime: 1000 })
   const demonstrativeFormSubmitSelector = 'button[aria-label="Continuar"]'
-
   const $ = cheerioLoad(await page.content())
 
   const initialInputDateId = $('input[placeholder="DD / MM / AAAA"]')
     .eq(0)
     .attr('id')
-
   const endDateInputId = $('input[placeholder="DD / MM / AAAA"]')
     .eq(1)
     .attr('id')
-
   const initialDateInputSelector = `input[id="${initialInputDateId}"]`
   const endDateInputSelector = `input[id="${endDateInputId}"]`
 
   await page.waitForSelector(initialDateInputSelector)
-
   await page.waitForSelector(endDateInputSelector)
-
-  await page.click(initialDateInputSelector)
   await page.type(initialDateInputSelector, date)
-
-  await page.click(endDateInputSelector)
   await page.type(endDateInputSelector, date)
-
-  page.click(demonstrativeFormSubmitSelector)
-  page.waitForNavigation()
+  await Promise.all([
+    page.click(demonstrativeFormSubmitSelector),
+    page.waitForNavigation({ waitUntil: 'networkidle2' }),
+  ])
 }
 
 async function demonstrativePageWebBanking(page: Page): Promise<void> {
-  await page.waitForNetworkIdle({
-    idleTime: 3000,
-  })
+  await page.waitForNetworkIdle({ idleTime: 1000 })
 }
 
 async function downloadContentWebBaking(
@@ -89,41 +72,30 @@ async function downloadContentWebBaking(
   const downloadIconSelector = 'button[aria-haspopup="true"]'
   await page.waitForSelector(downloadIconSelector)
   await page.click(downloadIconSelector)
-
   const menuDownloadSelector = 'ul[class="menu-items"]'
-  await page.waitForSelector(menuDownloadSelector, {
-    visible: true,
-  })
-
-  const textOptionSelector = `a[title=${fileType.toUpperCase()}]`
-  await page.waitForSelector(textOptionSelector, {
-    visible: true,
-  })
-
-  await page.click(textOptionSelector, {
-    delay: 1000,
-  })
+  await page.waitForSelector(menuDownloadSelector, { visible: true })
+  const textOptionSelector = `a[title="${fileType.toUpperCase()}"]`
+  await page.waitForSelector(textOptionSelector, { visible: true })
+  await page.click(textOptionSelector, { delay: 1000 })
 }
 
-async function renameFile(pathFile: string, fileName: string): Promise<void> {
-  const oldFilePath = `${pathFile}/demonstrativoDAF.txt`
-  const newFilePath = `${pathFile}/${fileName}`
-
+async function renameFile(
+  pathFile: string,
+  oldFileName: string,
+  newFileName: string,
+): Promise<void> {
+  const oldFilePath = path.join(pathFile, oldFileName)
+  const newFilePath = path.join(pathFile, newFileName)
   while (!fs.existsSync(oldFilePath)) {
-    setTimeout(() => 1000)
+    await setTimeout(1000)
   }
-
-  try {
-    await fs.promises.rename(oldFilePath, newFilePath)
-  } catch (err) {
-    throw new Error('Erro on rename file.')
-  }
+  await fs.promises.rename(oldFilePath, newFilePath)
 }
 
 async function readFile(pathFile: string, fileName: string): Promise<string> {
+  const filePath = path.join(pathFile, fileName)
   try {
-    const data = await fs.promises.readFile(`${pathFile}/${fileName}`, 'utf8')
-    return data
+    return await fs.promises.readFile(filePath, 'utf8')
   } catch (err) {
     console.error(err)
     throw new Error('Error on read file.')
@@ -131,11 +103,8 @@ async function readFile(pathFile: string, fileName: string): Promise<string> {
 }
 
 async function deleteFile(pathFile: string, fileName: string): Promise<void> {
-  fs.unlink(`${pathFile}/${fileName}`, function (err) {
-    if (err) {
-      throw err
-    }
-  })
+  const filePath = path.join(pathFile, fileName)
+  await fs.promises.unlink(filePath)
 }
 
 async function parseTransferMunicipal(
@@ -219,25 +188,23 @@ export async function getDatasWebBanking(
 ): Promise<void> {
   let browser: Browser | null = null
   let page: Page | null = null
-
   const fileType = 'txt'
+  const downloadPath = path.join(__dirname, '../tmp/downloads')
+  const fileName = `${cityName}_${date}.${fileType}`
 
   try {
-    const downloadPath = path.join(__dirname, '../tmp/downloads')
-
     if (!fs.existsSync(downloadPath)) {
       fs.mkdirSync(downloadPath, { recursive: true })
     }
 
     browser = await launch({
-      headless: true,
-      args: [`--disable-extensions`, `--disable-gpu`],
+      headless: false,
+      args: ['--disable-extensions', '--disable-gpu'],
       defaultViewport: null,
       timeout: 4500,
     })
 
     page = await browser.newPage()
-
     await page.goto('https://demonstrativos.apps.bb.com.br/', {
       waitUntil: 'networkidle2',
     })
@@ -249,32 +216,23 @@ export async function getDatasWebBanking(
     })
 
     await homePage(page)
-
     await navigateToInitialPage(page, cityName)
-
     await formPageWebBanking(page, date)
-
     await demonstrativePageWebBanking(page)
-
     await downloadContentWebBaking(page, fileType)
+    await renameFile(downloadPath, 'demonstrativoDAF.txt', fileName)
 
-    const fileName = `${cityName}_${date}`
-
-    await renameFile(downloadPath, `${fileName}.${fileType}`)
-
-    const data = await readFile(downloadPath, `${fileName}.${fileType}`)
-
-    await deleteFile(downloadPath, `${fileName}.${fileType}`)
+    const data = await readFile(downloadPath, fileName)
+    await deleteFile(downloadPath, fileName)
 
     const result = await parseTransferMunicipal(data, cityId)
-
     const tmpDir = path.join(__dirname, '../tmp')
 
     if (!fs.existsSync(tmpDir)) {
       fs.mkdirSync(tmpDir)
     }
 
-    const filePath = path.join(tmpDir, `${fileName}.json`)
+    const filePath = path.join(tmpDir, `${cityName}_${date}.json`)
     fs.writeFileSync(filePath, JSON.stringify(result, null, 2))
   } catch (err) {
     console.error(err)
